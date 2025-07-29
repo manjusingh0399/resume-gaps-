@@ -2,61 +2,50 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+
 st.set_page_config(page_title="Job Snob", layout="wide")
 
 st.markdown("""
 <style>
-    /* Ombre cloudy monsoon background */
+    /* Ombre yellow-orange background container */
     .container {
         max-width: 720px;
         margin: 3rem auto 5rem auto;
         padding: 2.5rem 3rem;
-        background: linear-gradient(135deg, #cbd6e3 0%, #9fb8c9 40%, #7d8f9f 75%, #62717e 100%);
+        background: linear-gradient(135deg, #fff8dc 0%, #ffd580 40%, #ffae42 75%, #ff7f11 100%);
         border-radius: 16px;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 12px 40px rgba(255, 140, 0, 0.3);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: #f0f4f8;
+        color: #4a2c00; /* Dark brown for contrast */
         line-height: 1.65;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
     }
 
-    /* Title styling with soft white */
     h1 {
         font-family: 'Georgia', serif;
-        color: #e3eaf2;
+        color: #5c3300; /* Deep brown */
         font-weight: 700;
         font-size: 3rem;
         margin-bottom: 0.2rem;
         letter-spacing: 1.1px;
         text-align: center;
-        text-shadow: 1px 2px 5px #36454f;
+        text-shadow: 2px 2px 4px #f3b14d;
     }
 
-    /* Tagline */
     h2 {
         font-weight: 500;
         font-style: italic;
         font-size: 1.3rem;
         margin-top: 0;
         margin-bottom: 2.5rem;
-        color: #d9e2eccc;
+        color: #633e00cc;
         text-align: center;
-        text-shadow: 1px 1px 4px #3a4a5e;
+        text-shadow: 1px 1px 3px #e69900;
     }
 
-    /* Headings */
-    h3 {
-        color: #d9e2eccc;
-        border-bottom: 2px solid #a2b1c6;
-        padding-bottom: 0.3rem;
-        margin-top: 3rem;
-        margin-bottom: 1.2rem;
-    }
-
-    /* Paragraph text */
     p, ul {
         font-size: 1.1rem;
-        color: #e9f0f7cc;
+        color: #663c00cc;
         margin-bottom: 1.25rem;
     }
 
@@ -68,45 +57,17 @@ st.markdown("""
         margin-bottom: 0.5rem;
     }
 
-    /* Intent box */
-    .intent-box {
-        background: #aab9ccaa;
-        border-left: 5px solid #7a8fa5cc;
-        border-radius: 10px;
-        padding: 1.2rem 1.5rem;
-        margin-top: 3rem;
-        font-style: italic;
-        color: #e9f0f7dd;
-        font-size: 1rem;
-        box-shadow: inset 0 0 8px #6c7b8b88;
-    }
-
-    /* Footer */
-    .footer {
-        margin-top: 4rem;
-        font-size: 0.9rem;
-        color: #b0bccfcc;
-        text-align: center;
-        font-style: italic;
-        text-shadow: 0 0 2px #3b4a60cc;
-    }
-
-    /* Tabs custom */
-    .stTabs [data-baseweb="tab-list"] {
-        margin-bottom: 1.5rem;
-    }
-
     /* Feedback box */
     .feedback-box {
-        background-color: #7a8fa5cc;
-        border-left: 5px solid #aab9ccaa;
+        background-color: #ffdd991a;
+        border-left: 5px solid #ffae421a;
         padding: 1rem 1.2rem;
         border-radius: 8px;
         margin-top: 1rem;
         font-style: italic;
-        color: #e9f0f7dd;
+        color: #5c3300cc;
         font-size: 1rem;
-        box-shadow: inset 0 0 6px #62717ecc;
+        box-shadow: inset 0 0 6px #ffae4277;
     }
 
     /* Responsive */
@@ -125,18 +86,48 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-@st.cache_data(persist=True)
-def load_data():
-    return pd.read_csv("genz_resume_market_data.csv")
-
-df = load_data()
-
-def get_resume_data():
-    resume_ids = df['ResumeID'].unique()
-    selected_id = st.selectbox("Select a Resume ID", resume_ids, key="resume_selector")
-    return df[df['ResumeID'] == selected_id].iloc[0]
-
 st.markdown('<div class="container">', unsafe_allow_html=True)
+
+st.markdown("<h1>Job Snob</h1>", unsafe_allow_html=True)
+st.markdown("<h2>“Only the best skills make the cut. No basic resumes allowed.”</h2>", unsafe_allow_html=True)
+
+st.markdown("""
+<p>Welcome to <strong>Job Snob</strong>, your warm and focused career companion inspired by the golden hues of sunrise and autumn leaves.  
+We help you spot the crucial skill gaps in your resume and guide you to stand out in today’s competitive job market.</p>
+
+<p>Whether you are just starting your professional journey or aiming for your next career milestone, Job Snob provides clear, data-driven insights to help you grow confidently.</p>
+""", unsafe_allow_html=True)
+
+st.markdown("<h3>What You Can Expect</h3>")
+st.markdown("""
+<ul>
+    <li><strong>Skill Gap Analysis:</strong> Identify the high-impact skills you’re missing.</li>
+    <li><strong>Market Comparison:</strong> See how your resume stacks up against real hiring data.</li>
+    <li><strong>Personalized Suggestions:</strong> Tailored, actionable steps for improvement.</li>
+    <li><strong>Trends & Insights:</strong> Stay updated on hiring patterns in your field.</li>
+    <li><strong>Easy Report Download:</strong> Save your progress and recommendations for future reference.</li>
+</ul>
+""", unsafe_allow_html=True)
+
+st.markdown("<h3>How To Use This App</h3>")
+st.markdown("""
+<ul>
+    <li>Select your resume from the list.</li>
+    <li>Explore your skill match and gaps in detail.</li>
+    <li>Read customized advice to enhance your profile.</li>
+    <li>Download a personal report summarizing your insights.</li>
+    <li>Use the feedback regularly to update and improve your resume.</li>
+</ul>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div class="feedback-box">
+This app empowers you with clear, warm guidance to confidently build the career you deserve — no stress, just steady growth.
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
+
 
 st.markdown("<h1>Job Snob</h1>", unsafe_allow_html=True)
 st.markdown("<h2>“Only the best skills make the cut. No basic resumes allowed.”</h2>", unsafe_allow_html=True)
