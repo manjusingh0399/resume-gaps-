@@ -81,7 +81,9 @@ selected_resume = st.sidebar.selectbox("Select a Resume ID:", resume_df["ResumeI
 user_data = resume_df[resume_df["ResumeID"] == selected_resume].squeeze()
 
 # Tabs Setup
-tabs = st.tabs(["🏠 Welcome", "👤 Profile Snapshot", "📊 Market Comparison", "🎯 Match Score", "💡 Suggestions", "📚 Insights"])
+tabs = st.tabs([
+    "🏠 Welcome", "👤 Profile Snapshot", "📊 Market Comparison",
+    "🎯 Match Score", "💡 Suggestions", "📚 Insights"])
 
 # Welcome Tab
 with tabs[0]:
@@ -99,85 +101,76 @@ with tabs[0]:
 
     This app compares your resume data to real hiring trends, job market signals, and peer-level benchmarks. Think of it as your brutally honest (but stylish) career mirror.
 
-    ---
-    
-    #### Most resumes tell stories. We make sure yours tells the right one — for the jobs you actually want.
-
-    ✨ Use the sidebar to select your resume and start exploring your profile snapshot.
-    """)
+    👈 Use the sidebar to select a resume profile.
+    🔍 Then, explore each tab to uncover fun, insightful, and actionable insights — one click at a time.
+    """
+    )
 
 # Profile Snapshot Tab
 with tabs[1]:
     st.header("👤 Profile Snapshot")
     st.markdown("""
-    Here's your extracted profile:
-    """)
+    🧾 Here’s a breakdown of what your resume is really saying about you — distilled into digestible data.
+    """
+    )
     st.json(user_data.to_dict())
-
-    st.info("Most candidates either overshare or undershare. This will help you strike the perfect balance.")
-    st.success("Tip: Use keywords from the job descriptions you’re targeting!")
+    st.info("✨ This is your first impression on paper. Let’s make sure it’s saying the right things!")
+    st.success("📌 Tip: Mirror your dream job descriptions — recruiters notice keyword alignment.")
 
 # Market Comparison Tab
 with tabs[2]:
     st.header("📊 Market Comparison")
     st.markdown("""
-    Here's how your profile compares to what employers in your field are really asking for. 
-    We’ll chart your skillset against hiring trends, demand data, and peer candidates.
-    """)
-
-    # Example chart
+    🚀 See how your skills stack up against real job market demand and peer-level benchmarks.
+    """
+    )
     skills = ["Python", "Excel", "SQL", "Power BI", "Communication"]
     user_scores = [user_data.get(skill, 0) for skill in skills]
     market_avg = [80, 75, 70, 60, 85]
-    df_compare = pd.DataFrame({
-        "Skill": skills,
-        "You": user_scores,
-        "Market Avg": market_avg
-    })
-    fig = px.bar(df_compare, x='Skill', y=['You', 'Market Avg'], barmode='group', title='Your Skills vs Market Demand')
+    df_compare = pd.DataFrame({"Skill": skills, "You": user_scores, "Market Avg": market_avg})
+    fig = px.bar(df_compare, x='Skill', y=['You', 'Market Avg'],
+                 barmode='group', title='🧠 Your Skills vs Market Expectations')
     st.plotly_chart(fig, use_container_width=True)
-    st.warning("If you're below average in key skills, that's your upgrade area!")
+    st.warning("🧠 Insight: Any skill below market average = prime growth opportunity.")
 
 # Match Score Tab
 with tabs[3]:
     st.header("🎯 Match Score")
     st.markdown("""
-    Based on your resume and the job roles you're aiming for, here's your personalized match score.
-    It helps you understand where you stand and what you can improve.
+    🎯 This score represents how aligned your resume is with the roles you're targeting.
+    The closer to 100%, the more 'interview-ready' your profile is!
     """)
-
     score = int(user_data.get("MatchScore", 72))
-    st.metric("Match Score", f"{score}%")
-
+    st.metric("🔥 Match Score", f"{score}%")
     if score >= 80:
-        st.success("You're closely aligned with top industry requirements. Great job!")
+        st.success("✅ Nailed it! You're closely aligned with what top roles require.")
     elif score >= 60:
-        st.info("You're on the right track. A few enhancements will help you shine.")
+        st.info("⚠️ Almost there! A few focused tweaks could level you up big time.")
     else:
-        st.warning("Let's work on boosting your core skills for better alignment.")
+        st.warning("🚧 Work in progress — this is your chance to stand out by upskilling smart.")
 
 # Suggestions Tab
 with tabs[4]:
     st.header("💡 Suggestions & Role Fit")
     st.markdown("""
-    These are some career roles where your current skillset already gives you a headstart. Let’s bridge the rest!
+    🧩 Based on your strengths and current resume highlights, here are roles you’re already pretty close to:
     """)
     st.markdown("""
-    - 📌 **Data Analyst** — Needs deeper SQL & Power BI
-    - 📌 **Marketing Associate** — You’re a great fit! Emphasize your communication & project work.
-    - 📌 **Business Analyst** — Add 1-2 certifications in process mapping or Excel modeling
+    - 📌 **Data Analyst** — Strengthen SQL & Power BI to fully qualify.
+    - 📌 **Marketing Associate** — Emphasize your storytelling & communication.
+    - 📌 **Business Analyst** — Try adding certifications in Excel modeling or workflows.
     """)
-    st.success("Remember: Roles evolve, and so should you. Keep learning!")
+    st.success("💬 Advice: Even a 5% upgrade in skills can unlock premium opportunities.")
 
 # Insights Tab
 with tabs[5]:
     st.header("📚 Career Insights & Trends")
     st.markdown("""
-    Stay ahead with curated insights about hiring trends, resume best practices, and skill evolution.
+    💭 Want to future-proof your resume? Check out these growing trends in the job market:
     """)
     st.markdown("""
     - 🔥 Soft skills like adaptability and storytelling are more in-demand than ever.
-    - 📈 Tools like Excel and Power BI are still gold — combine with Python for a killer combo.
-    - 🚀 AI literacy is the new MS Office. Get comfortable with ChatGPT, Midjourney, or prompt writing.
+    - 📈 Excel & Power BI are still industry essentials — even more when paired with Python.
+    - 🚀 AI literacy is the new basic — from prompt crafting to using ChatGPT at work.
     """)
-    st.info("Reflect weekly: What did you learn this week that your resume still doesn’t show?")
+    st.info("✨ Weekly Challenge: Add one new achievement or learning to your resume every Friday!")
