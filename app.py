@@ -2,6 +2,14 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 
+# Load resume dataset
+@st.cache_data
+
+def load_data():
+    return pd.read_csv("resumegaps_dataset.csv")  # Update this with your actual dataset filename
+
+resume_df = load_data()
+
 # Page Config
 st.set_page_config(page_title="JobSnob: Resume vs Reality", layout="wide")
 
@@ -67,6 +75,11 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Resume Selector
+st.sidebar.header("🔍 Choose Resume Profile")
+selected_resume = st.sidebar.selectbox("Select a Resume ID:", resume_df["ResumeID"].unique())
+user_data = resume_df[resume_df["ResumeID"] == selected_resume].squeeze()
+
 # Tabs Setup
 tabs = st.tabs(["🏠 Welcome", "👤 Profile Snapshot", "📊 Market Comparison", "🎯 Match Score", "💡 Suggestions", "📚 Insights"])
 
@@ -90,23 +103,17 @@ with tabs[0]:
     
     #### Most resumes tell stories. We make sure yours tells the right one — for the jobs you actually want.
 
-    ✨ Start by uploading your resume or head to "Profile Snapshot" to get started!
+    ✨ Use the sidebar to select your resume and start exploring your profile snapshot.
     """)
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.button("📄 Upload Resume")
-    with col2:
-        st.button("🔍 Explore My Snapshot")
 
 # Profile Snapshot Tab
 with tabs[1]:
     st.header("👤 Profile Snapshot")
     st.markdown("""
-    This section gives you a quick overview of your resume stats — education, experience, skills, and project areas.
-
-    We'll convert your raw entries into clean infographics so you can understand what your resume is *actually* saying.
+    Here's your extracted profile:
     """)
+    st.json(user_data.to_dict())
+
     st.info("Most candidates either overshare or undershare. This will help you strike the perfect balance.")
     st.success("Tip: Use keywords from the job descriptions you’re targeting!")
 
@@ -117,15 +124,19 @@ with tabs[2]:
     Here's how your profile compares to what employers in your field are really asking for. 
     We’ll chart your skillset against hiring trends, demand data, and peer candidates.
     """)
-    st.warning("If you're below average in key skills, that's your upgrade area!")
-    # Sample dummy chart
-    df = pd.DataFrame({
-        'Skill': ['Python', 'Excel', 'SQL', 'Power BI', 'Communication'],
-        'You': [85, 70, 65, 50, 90],
-        'Market Avg': [80, 75, 70, 60, 85]
+
+    # Example chart
+    skills = ["Python", "Excel", "SQL", "Power BI", "Communication"]
+    user_scores = [user_data.get(skill, 0) for skill in skills]
+    market_avg = [80, 75, 70, 60, 85]
+    df_compare = pd.DataFrame({
+        "Skill": skills,
+        "You": user_scores,
+        "Market Avg": market_avg
     })
-    fig = px.bar(df, x='Skill', y=['You', 'Market Avg'], barmode='group', title='Your Skills vs Market Demand')
+    fig = px.bar(df_compare, x='Skill', y=['You', 'Market Avg'], barmode='group', title='Your Skills vs Market Demand')
     st.plotly_chart(fig, use_container_width=True)
+    st.warning("If you're below average in key skills, that's your upgrade area!")
 
 # Match Score Tab
 with tabs[3]:
@@ -134,8 +145,16 @@ with tabs[3]:
     Based on your resume and the job roles you're aiming for, here's your personalized match score.
     It helps you understand where you stand and what you can improve.
     """)
-    st.success("Great start! You're 78% aligned with top industry requirements.")
-    st.info("Boosting data storytelling or SQL skills could lift your match to 90%.")
+
+    score = int(user_data.get("MatchScore", 72))
+    st.metric("Match Score", f"{score}%")
+
+    if score >= 80:
+        st.success("You're closely aligned with top industry requirements. Great job!")
+    elif score >= 60:
+        st.info("You're on the right track. A few enhancements will help you shine.")
+    else:
+        st.warning("Let's work on boosting your core skills for better alignment.")
 
 # Suggestions Tab
 with tabs[4]:
