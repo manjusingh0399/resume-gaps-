@@ -29,6 +29,7 @@ st.markdown("""
         .stTabs [aria-selected="true"] {
             background: linear-gradient(90deg, #ffe0b2, #ffd180);
             color: black;
+            box-shadow: 0px 0px 8px rgba(255, 183, 77, 0.7);
         }
         .stProgress > div > div > div > div {
             background-color: #fbc687 !important;
