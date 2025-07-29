@@ -13,6 +13,7 @@ st.markdown("""
         body {
             background-color: #fefcfb;
             color: #222222;
+            font-family: 'Georgia', serif;
         }
         .stApp {
             background-color: #fefcfb;
@@ -34,20 +35,49 @@ st.markdown("""
 # Welcome Page
 st.markdown("""
 <div style='background: linear-gradient(to right, #ffe0e9, #e0f7fa); padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);'>
-    <h1 style='text-align:center; color: #444;'>💼 Welcome to <em>Resume vs Reality</em></h1>
-    <p style='text-align:center; font-size: 1.1rem;'>Your sassy, smart career wingwoman. 💅</p>
-    <p style='text-align:center;'>Ever stared at your resume wondering, "Will this get me hired or ghosted?" You’re not alone — and you’re not going in blind anymore.</p>
-    <p style='text-align:center;'>With real data, interactive visuals, and a touch of empathy, this app acts like your career mentor. Let’s turn guesswork into guidance and doubt into direction. 🌱</p>
-    <p style='text-align:center;'>I'm <strong>Manju Singh</strong>, an MBA student and a job seeker like you. I’ve been through the anxious nights of tweaking resumes, unsure if my skills are enough. This app is my way of turning that uncertainty into clarity — a light in the dark for all of us navigating today’s job market.</p>
-    <ul>
-        <li>💥 Mirror meets mentor: Know what your resume says <em>and</em> what it’s missing.</li>
-        <li>🎯 Target your goals: Understand what job listings actually prioritize.</li>
-        <li>🧠 Get real feedback: Actionable advice based on <em>real</em> market data.</li>
-        <li>🌈 Grow with guidance: Personalized suggestions to help you level up fast.</li>
+    <h1 style='text-align:center; color: #444;'>🌸 Welcome to <em>Resume vs Reality</em></h1>
+    <p style='text-align:center; font-size: 1.2rem;'><em>“Think of me as your cozy café career counselor.” ☕</em></p>
+    <p style='text-align:center;'>Hey you, yes you — the overthinker tweaking their resume at midnight. Welcome. 🧡</p>
+    <p style='text-align:center;'>This isn’t just an app. It’s a conversation. It's your late-night reality check, your soft nudge toward growth, and your honest mirror with warm lighting.</p>
+    <p style='text-align:center;'>I'm <strong>Manju Singh</strong> — a fellow dreamer, MBA student, and seeker of better. I’ve sat exactly where you are, wondering if the words I chose were enough. That’s why this exists. To hold your hand through the haze and show you exactly where you shine and where you can glow brighter.</p>
+    <p style='text-align:center;'>🧶 So grab a chai, settle in, and let’s unravel the threads of your resume story — stitch by stitch.</p>
+    <ul style='font-size: 1.05rem;'>
+        <li>💬 <strong>Gentle Insight:</strong> Know what your resume whispers and where it’s silent.</li>
+        <li>🪞 <strong>Reflection + Direction:</strong> Get soft but clear nudges to improve what matters.</li>
+        <li>📖 <strong>Understand What’s Missing:</strong> Not judgment, just honesty — wrapped in data.</li>
+        <li>🌻 <strong>Guided Growth:</strong> Steps tailored to your field, your path, and your pace.</li>
     </ul>
-    <blockquote style='background:#fffde7; padding:1rem; border-left:5px solid #ffecb3; border-radius:8px;'>“Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”</blockquote>
+    <blockquote style='background:#fffde7; padding:1rem; border-left:5px solid #ffecb3; border-radius:8px; font-style: italic;'>“This isn’t critique — it’s clarity. Your resume is a living story. Let’s help it speak gently, wisely, and well.”</blockquote>
 </div>
 """, unsafe_allow_html=True)
+
+# Resume Upload (Future expansion)
+uploaded_file = st.sidebar.file_uploader("📤 Upload Your Resume (PDF/DOCX)", type=["pdf", "docx"])
+if uploaded_file:
+    st.sidebar.success("Resume uploaded. Parsing will be added in next version.")
+
+# Load dataset
+@st.cache_data
+def load_data():
+    return pd.read_csv("genz_resume_market_data.csv")
+
+df = load_data()
+
+# Tabs
+tabs = st.tabs([
+    "👤 Profile Snapshot", 
+    "📈 Market Comparison", 
+    "📈 Match Score", 
+    "💡 Suggestions", 
+    "📚 Trends & Insights", 
+    "📅 Download Report"])
+
+# Resume Selection Logic
+def get_resume_data():
+    resume_ids = df['ResumeID'].unique()
+    selected_id = st.selectbox("Select a Resume ID", resume_ids, key="resume_selector")
+    resume_data = df[df['ResumeID'] == selected_id].iloc[0]
+    return resume_data
 
 
 # Load dataset
