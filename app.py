@@ -68,40 +68,42 @@ This app compares your resume to real job market data and gives you blunt-but-lo
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-### 🔍 What is This App Really?
+with st.expander("🔍 What is This App Really About?"):
+    st.markdown("""
 - 💥 **Mirror meets mentor**: Know what your resume says *and* what it’s missing.
 - 🔍 **Resume vs Job Data**: We pull trends across domains — what gets people hired, what you’re lacking, what you need to add.
 - 💬 **Witty, real-world advice**: Because the job hunt doesn’t need to be a soul-sucking scroll.
+""")
 
----
-
-### 🛠️ How to Use This App
+with st.expander("🛠️ How to Use This App"):
+    st.markdown("""
 1. **👤 Profile Snapshot** – Upload or select a sample resume. Get the overview.
 2. **📈 Market Comparison** – How does your resume stand in your chosen field?
 3. **📊 Match Score** – Visual breakdown of how close you are to ideal profiles.
 4. **💡 Suggestions** – Helpful, no-BS advice to close skill and keyword gaps.
 5. **📥 Download Report** – Save your growth map as a TXT report.
+""")
 
----
-
-### 🎁 What You'll Walk Away With
+with st.expander("🎁 What You'll Walk Away With"):
+    st.markdown("""
 - 🔎 **Insights that matter** — no more guessing what to fix.
 - 🧠 **Understanding your job-readiness** like a hiring manager would.
 - 📌 **Skill roadmaps** based on what others got hired for.
 - 💪 **Confidence** that comes from clarity.
+""")
 
+st.markdown("""
 <div class="quote-box">
 “Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
 </div>
 
-🚀 Ready? Let’s build a resume that doesn’t just talk — it lands you offers.
-""")
+🚀 **Ready? Let’s build a resume that doesn’t just talk — it lands you offers.**
+""", unsafe_allow_html=True)
 
 # Tabs
 tabs = st.tabs(["👤 Profile Snapshot", "📈 Market Comparison", "📊 Match Score", "💡 Suggestions", "📥 Download Report"])
 
-# ... (existing tab content remains unchanged below)
+
 
 
 # --- Tab 0: Profile Snapshot ---
