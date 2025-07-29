@@ -3,7 +3,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import io
 
 # Page config
 st.set_page_config(page_title="Resume vs Reality", layout="wide")
@@ -183,10 +182,9 @@ Skill Gap: {gap}
 Style: {style}
 Suggested Improvement: Learn {gap} and improve formatting for ATS if needed.
 """
-   st.download_button(
-    label="Download TXT Report",
-    data=result_text,
-    file_name="resume_vs_reality_report.txt",
-    mime="text/plain"
-)
-
+    st.download_button(
+        label="Download TXT Report",
+        data=result_text,
+        file_name="resume_vs_reality_report.txt",
+        mime="text/plain"
+    )
