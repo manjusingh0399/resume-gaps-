@@ -32,6 +32,7 @@ st.markdown("""
         padding: 2rem;
         box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         margin-bottom: 2rem;
+        font-family: 'DM Sans', sans-serif;
     }
     .quote-box {
         background-color: #fff8e1;
@@ -44,32 +45,22 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-    <div style="
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-radius: 15px;
-        padding: 2rem 2.5rem;
-        margin-top: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        color: #1e1e1e;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 1.15rem;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-    ">
-        <h1 style="color:#6A0DAD; font-size: 2.2rem; margin-bottom: 0.5rem;">✨ Welcome to <em>Resume vs Reality</em></h1>
-
-        <p><strong>We all build resumes hoping they reflect our potential.</strong> But behind every hiring decision lies a pattern. This project is a search for those patterns — an exploration of the gap between what we write and what employers value.</p>
-
-        <p>I'm <strong>Manju Singh</strong>, an MBA student and a job seeker like you. I’ve been through the anxious nights of tweaking resumes, unsure if my skills are enough. This app is my way of turning that uncertainty into clarity — a light in the dark for all of us navigating today’s job market.</p>
-
-        <p>With real data, interactive visuals, and a touch of empathy, <em>Resume vs Reality</em> is your personal career mentor. It doesn’t just show you the gap — it helps you bridge it. Let’s turn guesswork into guidance, and doubt into direction. 🌱</p>
-    </div>
-""", unsafe_allow_html=True)
+with st.container():
+    st.markdown("""
+        <div class="welcome-container">
+            <h1 style="color:#6A0DAD; font-size: 2.2rem; margin-bottom: 0.5rem;">✨ Welcome to <em>Resume vs Reality</em></h1>
+            <p><strong>We all build resumes hoping they reflect our potential.</strong> But behind every hiring decision lies a pattern. This project is a search for those patterns — an exploration of the gap between what we write and what employers value.</p>
+            <p>I'm <strong>Manju Singh</strong>, an MBA student and a job seeker like you. I’ve been through the anxious nights of tweaking resumes, unsure if my skills are enough. This app is my way of turning that uncertainty into clarity — a light in the dark for all of us navigating today’s job market.</p>
+            <p>With real data, interactive visuals, and a touch of empathy, <em>Resume vs Reality</em> is your personal career mentor. It doesn’t just show you the gap — it helps you bridge it. Let’s turn guesswork into guidance, and doubt into direction. 🌱</p>
+            <div class="quote-box">
+                “Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
 # Load dataset
 @st.cache_data
+
 def load_data():
     return pd.read_csv("genz_resume_market_data.csv")
 
