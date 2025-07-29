@@ -55,7 +55,7 @@ df = load_data()
 st.markdown("""
 <div class="welcome-container">
 <h1>💼 Welcome to <span style='color:#3b82f6'>Resume vs Reality</span></h1>
-<h3>Your sassy, smart career wingwoman. 💁‍♀️</h3>
+<h3>Your sassy, smart career wingwoman. 💅‍♂️</h3>
 <p>
 Ever stared at your resume wondering, "Will this get me hired or ghosted?" <br>
 You're not alone — and you're not going in blind anymore.
@@ -79,10 +79,10 @@ with st.expander("🛠️ How to Use This App"):
 2. **📈 Market Comparison** – How does your resume stand in your chosen field?
 3. **📊 Match Score** – Visual breakdown of how close you are to ideal profiles.
 4. **💡 Suggestions** – Helpful, no-BS advice to close skill and keyword gaps.
-5. **📥 Download Report** – Save your growth map as a TXT report.
+5. **📅 Download Report** – Save your growth map as a TXT report.
 """)
 
-with st.expander("🎁 What You'll Walk Away With"):
+with st.expander("🏱 What You'll Walk Away With"):
     st.markdown("""
 - 🔎 **Insights that matter** — no more guessing what to fix.
 - 🧠 **Understanding your job-readiness** like a hiring manager would.
@@ -99,7 +99,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Tabs
-tabs = st.tabs(["👤 Profile Snapshot", "📈 Market Comparison", "📊 Match Score", "💡 Suggestions", "📥 Download Report"])
+tabs = st.tabs(["👤 Profile Snapshot", "📈 Market Comparison", "📊 Match Score", "💡 Suggestions", "📅 Download Report"])
 
 # Tab 1: Profile Snapshot
 with tabs[0]:
@@ -131,29 +131,38 @@ with tabs[0]:
 # Tab 2: Market Comparison
 with tabs[1]:
     st.header("📈 Market Comparison")
-    domain_scores = df.groupby("Domain")["AI_MatchScore"].mean().sort_values()
-    st.subheader("🔍 Average AI Match Score by Domain")
-    fig = px.bar(domain_scores, orientation='h', color=domain_scores, color_continuous_scale='Blues')
-    st.plotly_chart(fig)
 
-    st.subheader("📌 Most Common Top Skill Gaps")
-    gap_counts = df["TopSkillGap"].value_counts().head(10)
-    st.bar_chart(gap_counts)
+    st.subheader("📊 AI Match Score Distribution Across Domains")
+    fig1 = px.box(df, x="Domain", y="AI_MatchScore", color="Domain", title="How Competitive Are Different Fields?")
+    st.plotly_chart(fig1, use_container_width=True)
+
+    st.subheader("🔥 Skill Gaps by Domain")
+    top_gaps = df['TopSkillGap'].value_counts().nlargest(10).index.tolist()
+    heat_df = df[df['TopSkillGap'].isin(top_gaps)].groupby(['Domain', 'TopSkillGap']).size().unstack().fillna(0)
+    fig2 = px.imshow(heat_df, text_auto=True, aspect='auto', color_continuous_scale='Viridis')
+    st.plotly_chart(fig2, use_container_width=True)
+
+    st.subheader("📌 Top Certifications Candidates Are Listing")
+    certs = df['Certifications'].dropna().str.split(', ').explode()
+    cert_counts = certs.value_counts().head(10)
+    fig3 = px.bar(cert_counts, title="Most Common Certifications Across Domains")
+    st.plotly_chart(fig3, use_container_width=True)
 
 # Tab 3: Match Score
 with tabs[2]:
     st.header("📊 Match Score Breakdown")
-    skills_present = len(resume_data["SkillsListed"].split(", "))
-    skills_required = len(resume_data["JobPostingSkillsRequired"].split(", "))
+    listed = set(resume_data["SkillsListed"].split(", "))
+    required = set(resume_data["JobPostingSkillsRequired"].split(", "))
+    overlap = listed.intersection(required)
+    missing = required - listed
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatterpolar(
-        r=[skills_present, skills_required, ai_score / 10],
-        theta=['Skills Listed', 'Skills Required', 'AI Match Score'],
-        fill='toself',
-        name='Resume Match'
-    ))
-    fig.update_layout(polar=dict(radialaxis=dict(visible=True)), showlegend=False)
+    st.write(f"**Matched Skills:** {len(overlap)} / {len(required)}")
+    st.markdown("**✅ Matched:** " + ", ".join(overlap))
+    st.markdown("**🚧 Missing:** " + ", ".join(missing))
+
+    match_labels = ["Matched", "Missing"]
+    match_values = [len(overlap), len(missing)]
+    fig = px.pie(names=match_labels, values=match_values, color_discrete_sequence=px.colors.sequential.RdBu)
     st.plotly_chart(fig)
 
 # Tab 4: Suggestions
@@ -167,7 +176,7 @@ with tabs[3]:
         "4. 🎯 Add a summary section that clearly states your intent and what makes you a match for the role.",
         "5. 🚀 Build a portfolio site. Even a Notion or Canva link with project summaries makes a difference."
     ]
-    
+
     for advice in advices:
         st.markdown(advice)
 
@@ -191,7 +200,7 @@ Stop thinking of your resume as a biography — it’s a brochure. You’re the 
 
 # Tab 5: Download Report
 with tabs[4]:
-    st.header("📥 Download Report")
+    st.header("📅 Download Report")
     result_text = f"""
 Resume ID: {resume_data['ResumeID']}
 Match Score: {ai_score}/100
