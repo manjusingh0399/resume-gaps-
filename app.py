@@ -7,59 +7,54 @@ import plotly.graph_objects as go
 # Page config
 st.set_page_config(page_title="Resume vs Reality", layout="wide")
 
-# Pastel theme (light + soft tones)
+# Therapeutic Aesthetic Theme - Soft Yellow & Pastel Ombre
 st.markdown("""
     <style>
         body {
-            background-color: #fefcfb;
-            color: #222222;
+            background-color: #fffdf6;
+            color: #333333;
             font-family: 'Georgia', serif;
         }
         .stApp {
-            background-color: #fefcfb;
-            color: #222222;
+            background-color: #fffdf6;
         }
         .css-1d391kg, .css-1q8dd3e {
-            background-color: #f6f6f9;
-            color: #222222;
+            background-color: #ffffff;
+            color: #333333;
         }
         .st-bw, .st-bv, .st-c2 {
-            color: #222222;
+            color: #333333;
         }
         .stProgress > div > div > div > div {
-            background-color: #A1C6EA !important;
+            background-color: #fbc687 !important;
         }
     </style>
 """, unsafe_allow_html=True)
 
 # Welcome Page
 st.markdown("""
-<div style='background: linear-gradient(to right, #ffe0e9, #e0f7fa); padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);'>
-    <h1 style='text-align:center; color: #444;'>🌸 Welcome to <em>Resume vs Reality</em></h1>
-    <p style='text-align:center; font-size: 1.2rem;'><em>“Think of me as your cozy café career counselor.” ☕</em></p>
-    <p style='text-align:center;'>Hey you, yes you — the overthinker tweaking their resume at midnight. Welcome. 🧡</p>
-    <p style='text-align:center;'>This isn’t just an app. It’s a conversation. It's your late-night reality check, your soft nudge toward growth, and your honest mirror with warm lighting.</p>
-    <p style='text-align:center;'>I'm <strong>Manju Singh</strong> — a fellow dreamer, MBA student, and seeker of better. I’ve sat exactly where you are, wondering if the words I chose were enough. That’s why this exists. To hold your hand through the haze and show you exactly where you shine and where you can glow brighter.</p>
-    <p style='text-align:center;'>🧶 So grab a chai, settle in, and let’s unravel the threads of your resume story — stitch by stitch.</p>
+<div style='background: linear-gradient(to right, #fffde7, #ffe0b2); padding: 2rem; border-radius: 15px; box-shadow: 0 2px 12px rgba(0,0,0,0.04);'>
+    <h1 style='text-align:center; color: #5d4037;'>🌞 Welcome to <em>Resume vs Reality</em></h1>
+    <p style='text-align:center; font-size: 1.15rem;'>Hi, I'm <strong>Manju Singh</strong> — your calm career companion.</p>
+    <p style='text-align:center;'>You’ve landed in a gentle, thoughtful space — a space that holds both your ambitions and anxieties with care.</p>
+    <p style='text-align:center;'>We’re here not to critique, but to listen. Not to judge, but to reflect. Together, we’ll uncover what your resume truly conveys — and what it can still become.</p>
+    <p style='text-align:center;'>This is your moment to breathe, reflect, and evolve — softly and purposefully.</p>
     <ul style='font-size: 1.05rem;'>
-        <li>💬 <strong>Gentle Insight:</strong> Know what your resume whispers and where it’s silent.</li>
-        <li>🪞 <strong>Reflection + Direction:</strong> Get soft but clear nudges to improve what matters.</li>
-        <li>📖 <strong>Understand What’s Missing:</strong> Not judgment, just honesty — wrapped in data.</li>
-        <li>🌻 <strong>Guided Growth:</strong> Steps tailored to your field, your path, and your pace.</li>
+        <li>🪞 <strong>Mirror your truth:</strong> What story does your resume tell — and what stories is it missing?</li>
+        <li>🧘 <strong>Calm, data-informed clarity:</strong> Insights without overwhelm, judgments, or confusion.</li>
+        <li>🌷 <strong>Empathetic, honest suggestions:</strong> Because you deserve a career path that fits your essence.</li>
+        <li>🧭 <strong>Gentle guidance:</strong> Forward momentum rooted in who you are, not just what you do.</li>
     </ul>
-    <blockquote style='background:#fffde7; padding:1rem; border-left:5px solid #ffecb3; border-radius:8px; font-style: italic;'>“This isn’t critique — it’s clarity. Your resume is a living story. Let’s help it speak gently, wisely, and well.”</blockquote>
+    <blockquote style='background:#fff3e0; padding:1rem; border-left:5px solid #f9a825; border-radius:8px; font-style: italic;'>“The right career story doesn’t yell to be seen — it feels aligned. Let’s help yours find that harmony.”</blockquote>
 </div>
 """, unsafe_allow_html=True)
 
-# Resume Upload (Future expansion)
-uploaded_file = st.sidebar.file_uploader("📤 Upload Your Resume (PDF/DOCX)", type=["pdf", "docx"])
-if uploaded_file:
-    st.sidebar.success("Resume uploaded. Parsing will be added in next version.")
 
 # Load dataset
 @st.cache_data
 def load_data():
     return pd.read_csv("genz_resume_market_data.csv")
+
 
 df = load_data()
 
