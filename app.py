@@ -69,12 +69,6 @@ st.markdown("""
 def load_data():
     return pd.read_csv("genz_resume_market_data.csv")
 
-df = load_data()
-# --- LOAD DATA ---
-resumes = pd.read_csv("resumes.csv")
-hired = pd.read_csv("hired_profiles.csv")
-jobs = pd.read_csv("job.csv")
-
 # Simulated matching results
 match_score = 72
 top_missing_skills = ['SQL', 'Tableau', 'Cloud Computing']
