@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 # Page config
 st.set_page_config(page_title="Job Snob", layout="wide")
 
-# Therapeutic Aesthetic Theme - Soft Yellow & Pastel Ombre
+# Therapeutic Aesthetic Theme - Pastel Yellow & Ombre UI
 st.markdown("""
     <style>
         body {
@@ -36,7 +36,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Welcome Section
+# Welcome Header & Intro Section
 st.markdown("""
 <div style='background: linear-gradient(to right, #fffde7, #ffe0b2); padding: 2rem; border-radius: 15px; box-shadow: 0 2px 12px rgba(0,0,0,0.04);'>
     <h1 style='text-align:center; color: #5d4037;'>🎯 Job Snob</h1>
@@ -98,6 +98,7 @@ with tabs[0]:
     st.metric("AI Match Score", f"{resume_data['AI_MatchScore']}/100")
     st.progress(resume_data['AI_MatchScore'] / 100)
     st.markdown("✅ *This score reflects how well your resume aligns with AI-based applicant screening systems.*")
+    st.markdown("💡 *Think of this as your first impression checkpoint. If it's low, it's your cue to fine-tune.*")
 
 # Tab 2: Market Comparison
 with tabs[1]:
@@ -126,6 +127,7 @@ with tabs[2]:
     st.plotly_chart(px.pie(values=[len(overlap), len(missing)], names=["Matched", "Missing"]))
     st.caption("🍰 This pie chart reveals how many job-required skills are reflected in your resume.")
     st.markdown("✅ *Fewer missing skills = higher likelihood of getting shortlisted.*")
+    st.markdown("💡 *Use this space to plan how to strategically improve your profile.*")
 
 # Tab 4: Suggestions
 with tabs[3]:
@@ -142,6 +144,7 @@ Try this:
 - 🧪 Add a portfolio or project link that showcases that skill.
 """)
     st.markdown("✅ *Even a single improvement here can push you ahead of 70% of applicants.*")
+    st.markdown("💡 *This tab is your low-hanging fruit. Start here for fast impact.*")
 
 # Tab 5: Trends & Insights
 with tabs[4]:
@@ -163,6 +166,7 @@ with tabs[4]:
     st.plotly_chart(px.bar(cert_counts, title="Top Certifications"))
     st.caption("🎖️ Certifications most recognized and rewarded by employers today.")
     st.markdown("✅ *Trends help you plan your next steps with clarity and data.*")
+    st.markdown("💡 *Explore this tab for long-term upskilling and strategy.*")
 
 # Tab 6: Download Report
 with tabs[5]:
@@ -171,3 +175,4 @@ with tabs[5]:
     text = f"Resume ID: {resume_data['ResumeID']}\nScore: {resume_data['AI_MatchScore']}\nGap: {resume_data['TopSkillGap']}\nAdvice: Improve your skill in {resume_data['TopSkillGap']} and update resume formatting."
     st.download_button("Download as TXT", data=text, file_name="resume_vs_reality.txt")
     st.markdown("✅ *A mini career blueprint to keep on hand.*")
+    st.markdown("💡 *Keep iterating — success is in the follow-through.*")
