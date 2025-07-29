@@ -31,11 +31,16 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Welcome Page
-st.markdown("""
-<div style='background: linear-gradient(to right, #fffde7, #ffe0b2); padding: 2rem; border-radius: 15px; box-shadow: 0 2px 12px rgba(0,0,0,0.04);'>
-    <h1 style='text-align:center; color: #5d4037;'>🌞 Welcome to <em>The Resume Reflection Room</em></h1>
-   <p>Ever stared at your resume wondering, "Will this get me hired or ghosted?" You're not alone — and you're not going in blind anymore.</p>
+</style>
+""", unsafe_allow_html=True)
+
+# Welcome message section
+with st.container():
+    st.markdown("""
+        <div class="welcome-container">
+            <h1 style="color:#6A0DAD; font-size: 2.2rem; margin-bottom: 0.5rem;">💼 Welcome to <em>Resume vs Reality</em></h1>
+            <p><strong>Your sassy, smart career wingwoman. 💅‍♂</strong></p>
+            <p>Ever stared at your resume wondering, "Will this get me hired or ghosted?" You're not alone — and you're not going in blind anymore.</p>
             <p><strong>We all build resumes hoping they reflect our potential.</strong> But behind every hiring decision lies a pattern. This project is a search for those patterns — an exploration of the gap between what we write and what employers value.</p>
             <p>I'm <strong>Manju Singh</strong>, an MBA student and a job seeker like you. I’ve been through the anxious nights of tweaking resumes, unsure if my skills are enough. This app is my way of turning that uncertainty into clarity — a light in the dark for all of us navigating today’s job market.</p>
             <p>With real data, interactive visuals, and a touch of empathy, <em>Resume vs Reality</em> is your personal career mentor. It doesn’t just show you the gap — it helps you bridge it. Let’s turn guesswork into guidance, and doubt into direction. 🌱</p>
@@ -48,18 +53,44 @@ st.markdown("""
             </ul>
             <div class="quote-box">
                 “Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
-
-  </div>
+            </div>
         </div>
     """, unsafe_allow_html=True)
 
-# Load dataset
+# Load dataset (Correct placement of decorator)
 @st.cache_data
+
 def load_data():
     return pd.read_csv("genz_resume_market_data.csv")
 
-
+# Load the dataset
 df = load_data()
+
+
+with st.expander("🛠 How to Use This App"):
+    st.markdown("""
+1. *👤 Profile Snapshot* – Upload or select a sample resume. Get the overview.
+2. *📈 Market Comparison* – How does your resume stand in your chosen field?
+3. *📈 Match Score* – Visual breakdown of how close you are to ideal profiles.
+4. *💡 Suggestions* – Helpful, no-BS advice to close skill and keyword gaps.
+5. *📅 Download Report* – Save your growth map as a TXT report.
+""")
+
+with st.expander("🏡 What You'll Walk Away With"):
+    st.markdown("""
+- 🔎 *Insights that matter* — no more guessing what to fix.
+- 🧠 *Understanding your job-readiness* like a hiring manager would.
+- 📌 *Skill roadmaps* based on what others got hired for.
+- 💪 *Confidence* that comes from clarity.
+""")
+
+st.markdown("""
+<div class="quote-box">
+“Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
+</div>
+
+🚀 *Ready? Let’s build a resume that doesn’t just talk — it lands you offers.*
+""", unsafe_allow_html=True)
 
 # Tabs
 tabs = st.tabs([
@@ -70,31 +101,7 @@ tabs = st.tabs([
     "📚 Trends & Insights", 
     "📅 Download Report"])
 
-# Resume Selection Logic
-def get_resume_data():
-    resume_ids = df['ResumeID'].unique()
-    selected_id = st.selectbox("Select a Resume ID", resume_ids, key="resume_selector")
-    resume_data = df[df['ResumeID'] == selected_id].iloc[0]
-    return resume_data
-
-
-# Load dataset
-@st.cache_data
-def load_data():
-    return pd.read_csv("genz_resume_market_data.csv")
-
-df = load_data()
-
-# Tabs
-tabs = st.tabs([
-    "👤 Profile Snapshot", 
-    "📈 Market Comparison", 
-    "📈 Match Score", 
-    "💡 Suggestions", 
-    "📚 Trends & Insights", 
-    "📅 Download Report"])
-
-# Resume Selection Logic
+# Reuse same resume logic
 def get_resume_data():
     resume_ids = df['ResumeID'].unique()
     selected_id = st.selectbox("Select a Resume ID", resume_ids, key="resume_selector")
