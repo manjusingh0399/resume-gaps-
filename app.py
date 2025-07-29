@@ -35,6 +35,7 @@ st.caption("Let your resume speak reality, not just aspiration.")
 
 # Load dataset
 @st.cache_data
+
 def load_data():
     return pd.read_csv("genz_resume_market_data.csv")
 
@@ -68,6 +69,9 @@ with tabs[0]:
         resume_data['JobAppliedFor'], resume_data['ResumeStyle'], resume_data['GenZ_Trait_Tags'], resume_data['Certifications']
     ), unsafe_allow_html=True)
 
+    st.markdown(f"### 🧠 Insight:")
+    st.info(f"This candidate is applying for **{resume_data['JobAppliedFor']}** with a background in **{resume_data['FieldOfStudy']}**. Let's see how their skills match the market.")
+
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("### 🧰 Skills in Resume")
@@ -91,11 +95,16 @@ with tabs[1]:
     )
     st.plotly_chart(fig, use_container_width=True)
 
+    st.markdown("### 📊 Insight:")
+    st.success("Data and Marketing domains currently show the highest match scores among Gen Z applicants.")
+
     st.subheader("📌 Most Common Top Skill Gaps")
     top_gaps = df["TopSkillGap"].value_counts().head(10).reset_index()
     top_gaps.columns = ["Skill", "Count"]
     fig2 = px.bar(top_gaps, x="Count", y="Skill", orientation="h", title="Top 10 Skill Gaps", color="Count")
     st.plotly_chart(fig2, use_container_width=True)
+
+    st.info("These are the most common missing skills across all resumes. Prioritize filling these gaps if you're applying to tech-heavy roles.")
 
 # --- Tab 2: Match Score Breakdown ---
 with tabs[2]:
@@ -116,6 +125,9 @@ with tabs[2]:
     fig.update_layout(polar=dict(radialaxis=dict(visible=True)), showlegend=False)
     st.plotly_chart(fig)
 
+    st.markdown("### 🔍 Insight:")
+    st.warning(f"You listed **{skills_present}** skills, but **{skills_required}** were expected. Your AI match score is **{match_score}/100**. Focus on aligning more with job expectations.")
+
 # --- Tab 3: Suggestions ---
 with tabs[3]:
     st.subheader("💡 Mentor Suggestions")
@@ -132,6 +144,9 @@ with tabs[3]:
         st.info("🎨 Your resume style is clean. Make sure it also stands out visually.")
     elif style == "Infographic":
         st.warning("⚠️ Infographic resumes look great, but be cautious — ATS systems may not parse them correctly.")
+
+    st.markdown("### 📌 Insight:")
+    st.info("Tailoring your resume style to the job you're applying for — while maintaining ATS compatibility — increases your shortlisting chances.")
 
 # --- Tab 4: Download Report ---
 with tabs[4]:
