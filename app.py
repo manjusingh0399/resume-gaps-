@@ -1,4 +1,3 @@
-# app.py
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -30,9 +29,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("📄 Resume vs Reality")
-st.caption("Think of this like your older sister giving you the real talk — honest, loving, and full of solid advice.")
-
 # Load dataset
 @st.cache_data
 
@@ -41,8 +37,47 @@ def load_data():
 
 df = load_data()
 
+# --- Welcome Tab ---
+st.title("🎯 Welcome to Resume vs Reality")
+st.markdown("""
+### 📚 What is this?
+This isn’t your typical boring career tool. **This app is your brutally honest best friend (with data)** — part career mirror, part mentor, part motivational chaos. 
+
+Every Gen Z'er knows that applying for jobs is stressful, confusing, and often filled with conflicting advice. This app is here to cut through the noise.
+
+We help you:
+- Compare your resume to **real job market data**
+- Spot what’s missing (without making you feel bad about it)
+- Show you how others with similar profiles are getting hired
+- Offer warm, witty advice — because your career deserves clarity AND compassion
+
+---
+
+### 💡 How to Use This App
+1. **👤 Profile Snapshot** – Pick a resume, see what it’s got. Skills, job applied, resume style, etc.
+2. **📈 Market Comparison** – What’s hot in your domain? See demand & gaps.
+3. **📊 Match Score** – A radar score of how close you are to your dream job.
+4. **💡 Suggestions** – Actionable advice, learning tips, resume feedback.
+5. **📥 Download Report** – Download all insights to keep or share.
+
+---
+
+### ✨ What You’ll Take Away
+- A **clearer understanding** of how well your resume aligns with industry needs
+- A list of **skills you may want to learn** (backed by actual hiring data)
+- Tips on **resume styling and keyword usage** that hiring managers love
+- A boost in **clarity and confidence** to chase the roles you deserve
+
+---
+
+> "Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things."
+
+Now let’s dive in like the world is yours, because honestly? It is 💁‍♀️
+""")
+
 # Tabs
 tabs = st.tabs(["👤 Profile Snapshot", "📈 Market Comparison", "📊 Match Score", "💡 Suggestions", "📥 Download Report"])
+
 
 # --- Tab 0: Profile Snapshot ---
 with tabs[0]:
