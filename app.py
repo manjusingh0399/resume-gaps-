@@ -7,31 +7,48 @@ import plotly.graph_objects as go
 # Page config
 st.set_page_config(page_title="Resume vs Reality", layout="wide")
 
-# Midnight theme (dark)
+# Pastel theme (light + soft tones)
 st.markdown("""
     <style>
         body {
-            background-color: #0E1117;
-            color: #FAFAFA;
+            background-color: #fefcfb;
+            color: #222222;
         }
         .stApp {
-            background-color: #0E1117;
-            color: #FAFAFA;
+            background-color: #fefcfb;
+            color: #222222;
         }
         .css-1d391kg, .css-1q8dd3e {
-            background-color: #1E1E2F;
-            color: #FAFAFA;
+            background-color: #f6f6f9;
+            color: #222222;
         }
         .st-bw, .st-bv, .st-c2 {
-            color: #FAFAFA;
+            color: #222222;
+        }
+        .stProgress > div > div > div > div {
+            background-color: #A1C6EA !important;
         }
     </style>
 """, unsafe_allow_html=True)
 
-# Resume Upload (Future expansion)
-uploaded_file = st.sidebar.file_uploader("📤 Upload Your Resume (PDF/DOCX)", type=["pdf", "docx"])
-if uploaded_file:
-    st.sidebar.success("Resume uploaded. Parsing will be added in next version.")
+# Welcome Page
+st.markdown("""
+<div style='background: linear-gradient(to right, #ffe0e9, #e0f7fa); padding: 2rem; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);'>
+    <h1 style='text-align:center; color: #444;'>💼 Welcome to <em>Resume vs Reality</em></h1>
+    <p style='text-align:center; font-size: 1.1rem;'>Your sassy, smart career wingwoman. 💅</p>
+    <p style='text-align:center;'>Ever stared at your resume wondering, "Will this get me hired or ghosted?" You’re not alone — and you’re not going in blind anymore.</p>
+    <p style='text-align:center;'>With real data, interactive visuals, and a touch of empathy, this app acts like your career mentor. Let’s turn guesswork into guidance and doubt into direction. 🌱</p>
+    <p style='text-align:center;'>I'm <strong>Manju Singh</strong>, an MBA student and a job seeker like you. I’ve been through the anxious nights of tweaking resumes, unsure if my skills are enough. This app is my way of turning that uncertainty into clarity — a light in the dark for all of us navigating today’s job market.</p>
+    <ul>
+        <li>💥 Mirror meets mentor: Know what your resume says <em>and</em> what it’s missing.</li>
+        <li>🎯 Target your goals: Understand what job listings actually prioritize.</li>
+        <li>🧠 Get real feedback: Actionable advice based on <em>real</em> market data.</li>
+        <li>🌈 Grow with guidance: Personalized suggestions to help you level up fast.</li>
+    </ul>
+    <blockquote style='background:#fffde7; padding:1rem; border-left:5px solid #ffecb3; border-radius:8px;'>“Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”</blockquote>
+</div>
+""", unsafe_allow_html=True)
+
 
 # Load dataset
 @st.cache_data
@@ -55,6 +72,7 @@ def get_resume_data():
     selected_id = st.selectbox("Select a Resume ID", resume_ids, key="resume_selector")
     resume_data = df[df['ResumeID'] == selected_id].iloc[0]
     return resume_data
+
 
 # Tab 1 - Profile Snapshot
 with tabs[0]:
