@@ -3,230 +3,125 @@ import pandas as pd
 import plotly.express as px
 
 # Page Config
-st.set_page_config(page_title="Resume vs Reality", layout="wide")
+st.set_page_config(page_title="Job Snob", layout="wide")
 
-# 🌼 Custom Pastel Styling
+# Minimal Custom Styling with horizontal centering
 st.markdown("""
     <style>
-        html, body {
-            background-color: #fdfcf7;
-            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        /* Center container */
+        .centered-content {
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2rem 1rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333333;
         }
-        .stApp {
-            background: linear-gradient(to bottom, #fffdf6 0%, #fef8e7 100%);
-            padding: 1rem;
-        }
-        h1, h2, h3 {
+        h1 {
             font-family: 'Georgia', serif;
             color: #6A0DAD;
+            margin-bottom: 0.2rem;
+            text-align: center;
         }
-        .card {
-            background-color: #ffffff;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            margin-bottom: 1.5rem;
-        }
-        .streamlit-expanderHeader {
-            font-weight: bold;
-            color: #6A0DAD;
-        }
-        button[kind="primary"] {
-            background-color: #ff8ba7 !important;
-            color: white !important;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-        .stDownloadButton > button {
-            background-color: #ffb347 !important;
-            color: white;
-            border-radius: 10px;
-            padding: 0.5rem 1rem;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        .stProgress > div > div > div > div {
-            background-color: #fbc687 !important;
-        }
-        .quote-box {
+        h3 {
+            color: #ff4da6;
+            margin-top: 0;
+            font-weight: normal;
             font-style: italic;
-            color: #444;
-            background: #fff5d7;
-            padding: 1rem;
-            border-left: 5px solid #ffa500;
-            border-radius: 10px;
-            margin-top: 1.5rem;
+            text-align: center;
         }
-        .stTabs [data-baseweb="tab-list"] {
-            margin-bottom: 1rem;
-        }
-        .feedback-box {
-            background-color: #ffeff5;
-            border-left: 5px solid #ff8ba7;
-            padding: 1rem;
-            border-radius: 10px;
+        p {
+            font-size: 1.1rem;
+            line-height: 1.5;
             margin-top: 1rem;
-            color: #6A0DAD;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        ul {
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            padding-left: 1.2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        li {
+            margin-bottom: 0.4rem;
+        }
+        .intent {
+            background-color: #fce4f0;
+            border-left: 5px solid #ff4da6;
+            padding: 1rem 1.2rem;
+            border-radius: 5px;
+            margin-top: 2rem;
             font-style: italic;
+            color: #6a0d6a;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        .footer {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 3rem;
+            text-align: center;
         }
     </style>
 """, unsafe_allow_html=True)
 
-# === TITLE & TAGLINE ===
-with st.container():
-    st.markdown('<div class="card" style="text-align:center;">', unsafe_allow_html=True)
-    st.markdown("""
-        <h1 style="font-family: Georgia, serif; color:#6A0DAD; margin-bottom:0;">Job Snob</h1>
-        <p style="font-size:1.2rem; font-style: italic; color:#ff8ba7; margin-top:0;">
-            “Only the best skills make the cut. No basic resumes allowed.”
-        </p>
-    """, unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+# Wrap all content inside div.centered-content to center horizontally
+st.markdown('<div class="centered-content">', unsafe_allow_html=True)
 
-# Load Data
-@st.cache_data(persist=True)
-def load_data():
-    return pd.read_csv("genz_resume_market_data.csv")
+# Title and Tagline
+st.markdown("<h1>Job Snob</h1>", unsafe_allow_html=True)
+st.markdown("<h3>“Only the best skills make the cut. No basic resumes allowed.”</h3>", unsafe_allow_html=True)
 
-df = load_data()
+# Introduction
+st.markdown("""
+Welcome to **Job Snob**, your smart career companion designed to help you uncover the real skill gaps in your resume and align it with what employers are actively looking for.
 
-# --- Sample Static Insights ---
-match_score = 72
-top_missing_skills = ['SQL', 'Tableau', 'Cloud Computing']
-skill_insights = {
-    'SQL': "Structured Query Language is essential for handling and analyzing data in databases.",
-    'Tableau': "A leading tool for data visualization and business intelligence dashboards.",
-    'Cloud Computing': "Increasingly vital for scalable and secure infrastructure (AWS, Azure, GCP)."
-}
-tailored_suggestions = [
-    {'title': 'Data Analyst Path', 'why': 'You already know Excel and Python.', 'tip': 'Boost it with Tableau + SQL.'},
-    {'title': 'Support Engineer', 'why': 'Strong communication skills.', 'tip': 'Pair it with CRM/Jira tools.'},
-]
-
-def get_resume_data():
-    resume_ids = df['ResumeID'].unique()
-    selected_id = st.selectbox("Select a Resume ID", resume_ids, key="resume_selector")
-    return df[df['ResumeID'] == selected_id].iloc[0]
-
-# --- Welcome + Match Score ---
-with st.container():
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.title("📄 Resume vs Reality: Are You Job-Ready?")
-    st.subheader("Compare your resume skills with real hiring data and get personalized advice.")
-    st.markdown("</div>", unsafe_allow_html=True)
-
-with st.container():
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.header("📊 Resume Match Score")
-    st.markdown("Here you see an overall match percentage showing how well your skills align with current hiring trends.")
-    st.metric("🔍 Match Score", f"{match_score}%", delta="Based on hiring trends")
-    if match_score > 85:
-        st.success("🌟 Excellent Match!")
-        st.markdown("""
-        **Insight:** You’re highly aligned with the industry.  
-        **Advice:** Keep updating your portfolio and prepare for behavioral interviews.  
-        > “Success usually comes to those who are too busy to be looking for it.” – Thoreau
-        """)
-    elif match_score > 60:
-        st.warning("🟡 Moderate Match")
-        st.markdown("""
-        **Insight:** You're close to market expectations, with a few skill gaps.  
-        **Advice:** Focus on acquiring the top 2 missing skills below.  
-        > “Don’t watch the clock; do what it does. Keep going.” – Sam Levenson
-        """)
-    else:
-        st.error("🔴 Low Match")
-        st.markdown("""
-        **Insight:** Your resume doesn’t align with most current job needs.  
-        **Advice:** Start small—learn one tool at a time.  
-        > “The future depends on what you do today.” – Mahatma Gandhi
-        """)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-# --- Missing Skills & Career Advice ---
-with st.container():
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.header("📉 Top Missing Skills & Why They Matter")
-    st.markdown("This section highlights the skills most commonly missing from resumes like yours, but highly sought after by employers.")
-    for skill in top_missing_skills:
-        st.markdown(f"""
-        ✅ **{skill}**  
-        - _Why it matters:_ {skill_insights[skill]}  
-        - _Where to learn:_ [LinkedIn Learning](#) · [Coursera](#) · [YouTube](#)  
-        > “Every expert was once a beginner.”
-        """)
-    st.markdown('<div class="feedback-box">💡 <strong>Tip:</strong> Start by focusing on one missing skill. Small consistent steps win the race.</div>', unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-with st.container():
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.header("🚀 Career Suggestions Tailored to You")
-    st.markdown("Based on your current skills, here are some curated career paths you could consider along with actionable next steps.")
-    for suggestion in tailored_suggestions:
-        st.markdown(f"""
-        💼 **{suggestion['title']}**  
-        - _Why this fits:_ {suggestion['why']}  
-        - _Your next step:_ {suggestion['tip']}  
-        > “Opportunities don’t happen, you create them.” – Chris Grosser
-        """)
-    st.markdown('<div class="feedback-box">💬 Remember, your career is a journey. Keep exploring and growing every day!</div>', unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-# --- Motivational Reminder ---
-with st.container():
-    st.markdown('<div class="quote-box">', unsafe_allow_html=True)
-    st.markdown("""
-    💬 **Reminder:** Your resume is a snapshot, not a verdict.  
-    _“Believe you can and you're halfway there.” – Theodore Roosevelt_
-    """)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-# --- Intro Expander Section ---
-with st.container():
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown("""
-        <h1>💼 Welcome to <em>Resume vs Reality</em></h1>
-        <p><strong>Your sassy, smart career wingwoman. 💅</strong></p>
-        <p>This app decodes what recruiters really want.</p>
-        <ul>
-            <li>💥 <strong>Mirror meets mentor:</strong> Know what your resume says and what it’s missing.</li>
-            <li>🎯 <strong>Target your goals:</strong> See what employers actually look for.</li>
-            <li>🧠 <strong>Real feedback:</strong> Actionable advice from hiring data.</li>
-            <li>🌈 <strong>Grow smart:</strong> Personal tips to level-up faster.</li>
-        </ul>
-        <div class="quote-box">
-            “Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
-        </div>
-    """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-with st.expander("🛠 How to Use This App"):
-    st.markdown("""
-1. 👤 Select a Resume  
-2. 📈 Compare to Market  
-3. 📊 View Skill Match  
-4. 💡 Get Suggestions  
-5. 📅 Download a custom report
+Whether you’re a fresh graduate or an early professional, this tool acts like a career mentor — providing clear insights, personalized feedback, and actionable advice to help you stand out in today's competitive job market.
 """)
 
-with st.expander("🏡 What You'll Walk Away With"):
-    st.markdown("""
-- 🔍 Clarity on your resume  
-- 🧠 Realistic hiring expectations  
-- 🛠 Personalized growth roadmap  
-- 💪 Confidence, backed by data
+# What to Expect
+st.markdown("""
+### What You Can Expect
+
+- **Skill Gap Analysis:** Discover which key skills you’re missing that employers value most.  
+- **Market Comparison:** See how your resume stacks up against real hiring data.  
+- **Personalized Suggestions:** Get tailored recommendations for improving your profile.  
+- **Trends & Insights:** Stay updated with hiring trends in your field.  
+- **Easy Report Download:** Summarize your analysis and advice in a shareable report.
 """)
 
-# --- Interactive Tabs ---
-tabs = st.tabs([
-    "👤 Profile Snapshot", 
-    "📈 Market Comparison", 
-    "📊 Match Score", 
-    "💡 Suggestions", 
-    "📚 Trends & Insights", 
-    "📅 Download Report"
-])
+# How To Use
+st.markdown("""
+### How To Use This App
+
+1. **Select your resume** from the available options.  
+2. **Explore the skill match and gaps** compared to the job market.  
+3. **Review personalized tips** and suggested next steps.  
+4. **Download your tailored report** to keep track and share your progress.  
+5. **Repeat regularly** as you grow your skills and update your resume.
+""")
+
+# Intent Behind Making It
+st.markdown("""
+<div class="intent">
+This app was created to empower job seekers — especially Gen Z and early professionals — with data-driven clarity about what employers want today.  
+Our goal is to move beyond generic advice and provide you with **real, actionable insights** so you can confidently build the career you deserve.
+</div>
+""", unsafe_allow_html=True)
+
+# Footer
+st.markdown("""
+<div class="footer">
+© 2025 Job Snob | Built with ❤️ using Streamlit
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True) 
 
 # Tab 1 - Profile
 with tabs[0]:
