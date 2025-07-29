@@ -103,6 +103,35 @@ st.markdown("""
 # Tabs
 tabs = st.tabs(["👤 Profile Snapshot", "📈 Market Comparison", "📊 Match Score", "💡 Suggestions", "📥 Download Report"])
 
+# Resume Scoring Function
+with tabs[0]:
+    st.header("👤 Profile Snapshot")
+    resume_ids = df['ResumeID'].unique()
+    selected_id = st.selectbox("Select a Resume ID", resume_ids)
+    resume_data = df[df['ResumeID'] == selected_id].iloc[0]
+
+    st.subheader("Resume Summary")
+    st.write(f"**Age:** {resume_data['Age']}")
+    st.write(f"**Education:** {resume_data['EducationLevel']} in {resume_data['FieldOfStudy']}")
+    st.write(f"**Applied For:** {resume_data['JobAppliedFor']}")
+    st.write(f"**Resume Style:** {resume_data['ResumeStyle']}")
+    st.write(f"**Certifications:** {resume_data['Certifications']}")
+
+    st.markdown("---")
+    st.subheader("🎯 Resume Score")
+    ai_score = resume_data['AI_MatchScore']
+    st.metric("AI Match Score", f"{ai_score}/100")
+
+    st.progress(ai_score / 100)
+
+    if ai_score >= 85:
+        st.success("🔥 This resume is job-ready. Very strong match with market expectations!")
+    elif ai_score >= 60:
+        st.warning("⚠️ Decent resume, but needs tweaks to be more aligned with current hiring trends.")
+    else:
+        st.error("🚨 Your resume is likely being overlooked. Let’s upgrade it together.")
+
+
 
 
 
