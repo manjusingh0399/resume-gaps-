@@ -1,59 +1,107 @@
-
 import streamlit as st
 import pandas as pd
-import numpy as np
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+import plotly.express as px
+from PIL import Image
 
-# Load dataset
-data = pd.read_csv('credit_data.csv')
+# --- CONFIGURATION ---
+st.set_page_config(page_title="Resume vs Reality", layout="wide")
 
-# Target and features
-X = data.drop(columns=['SeriousDlqin2yrs'])
-y = data['SeriousDlqin2yrs']
+# --- Load Data ---
+@st.cache_data
+def load_data():
+    df = pd.read_csv("data/skills_data.csv")
+    return df
 
-# Train-test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+df = load_data()
 
-# Scale features
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
+# --- Header & Intro ---
+st.markdown("""
+    <style>
+    html, body, [class*="css"]  {
+        font-family: 'Helvetica';
+        background-color: #fdfdfd;
+    }
+    .big-header {
+        font-size: 2.4em;
+        font-weight: bold;
+        color: #ff4da6;
+        margin-bottom: 10px;
+    }
+    .sub {
+        font-size: 1.1em;
+        color: #444;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-# Train model
-model = RandomForestClassifier(random_state=42)
-model.fit(X_train_scaled, y_train)
+st.markdown('<div class="big-header">🚀 Resume vs Reality</div>', unsafe_allow_html=True)
+st.markdown("""
+<div class="sub">
+    We all build resumes hoping they reflect our potential. But behind every hiring decision lies a pattern.<br>
+    This app is an exploration of that gap — comparing what job seekers say, what jobs demand, and what actually gets you hired.<br><br>
+    I’m Manju Singh, an MBA student and job seeker too. Like you, I’ve felt the anxiety and uncertainty — and I built this app to turn that doubt into clarity.
+</div>
+""", unsafe_allow_html=True)
 
-# Streamlit UI
-st.title("🏦 Credit Risk Prediction App")
+st.markdown("---")
 
-st.sidebar.header("Enter Customer Details")
+# --- Interactive Filters ---
+industry = st.selectbox("📂 Choose Industry", ["All", "Tech", "Marketing", "Finance"])
+role = st.selectbox("👩‍💼 Target Role", ["Analyst", "Marketer", "HR", "Sales", "Generalist"])
+skill_level = st.radio("🧠 Skill Level", ["Beginner", "Intermediate", "Advanced"])
 
-# Collect user input
-age = st.sidebar.slider("Age", 18, 70, 30)
-monthly_income = st.sidebar.number_input("Monthly Income (INR)", value=10000)
-debt_ratio = st.sidebar.slider("Debt Ratio", 0.0, 2.0, 0.5)
-revolving_utilization = st.sidebar.slider("Revolving Utilization", 0.0, 1.0, 0.5)
-num_dependents = st.sidebar.number_input("Number of Dependents", value=1, step=1)
-num_open_credit = st.sidebar.number_input("Open Credit Lines and Loans", value=5, step=1)
-num_real_estate_loans = st.sidebar.number_input("Real Estate Loans", value=1, step=1)
-num_30_59 = st.sidebar.slider("30-59 Days Past Due", 0, 10, 0)
-num_60_89 = st.sidebar.slider("60-89 Days Past Due", 0, 10, 0)
-num_90_late = st.sidebar.slider("90+ Days Late", 0, 10, 0)
+# --- Main Charts ---
+st.subheader("📊 Visualizing Skills Across the Board")
 
-# Predict
-input_data = pd.DataFrame([[revolving_utilization, age, num_30_59, debt_ratio, monthly_income,
-                            num_open_credit, num_90_late, num_real_estate_loans,
-                            num_60_89, num_dependents]],
-                          columns=X.columns)
+col1, col2 = st.columns(2)
 
-input_scaled = scaler.transform(input_data)
-prediction = model.predict(input_scaled)[0]
-probability = model.predict_proba(input_scaled)[0][1]
+with col1:
+    st.plotly_chart(
+        px.bar(df, x="Skill", y=["Resumes", "Hires", "Job Ads"], barmode="group",
+               title="Skill Distribution (Bar Chart)", color_discrete_sequence=["#ff4da6", "#3ec1d3", "#ffc93c"]),
+        use_container_width=True
+    )
 
-# Output
-if prediction == 1:
-    st.error(f"❌ High Credit Risk\nProbability of Default: {probability:.2f}")
-else:
-    st.success(f"✅ Low Credit Risk\nProbability of Default: {probability:.2f}")
+    st.plotly_chart(
+        px.scatter(df, x="Resumes", y="Hires", text="Skill", size="Job Ads",
+                   title="Resume vs Hires (Scatter Plot)", color="Skill"),
+        use_container_width=True
+    )
+
+with col2:
+    st.plotly_chart(
+        px.pie(df, names="Skill", values="Hires", title="Distribution of Hired Skills (Pie Chart)"),
+        use_container_width=True
+    )
+
+    st.plotly_chart(
+        px.area(df, x="Skill", y=["Resumes", "Hires", "Job Ads"],
+                title="Skill Trend Overview (Area Chart)", color_discrete_sequence=["#e76f51", "#2a9d8f", "#f4a261"]),
+        use_container_width=True
+    )
+
+# --- Smart Suggestions Panel ---
+st.markdown("### 💡 Personalized Takeaways")
+user_skills = st.text_input("Enter your skills (comma-separated)", "Excel, SQL, Communication").lower().split(',')
+
+matched = df[df['Skill'].str.lower().isin([s.strip() for s in user_skills])]
+unmatched = [s for s in user_skills if s.strip() not in df['Skill'].str.lower().tolist()]
+
+if not matched.empty:
+    st.success(f"✅ You listed {len(matched)} skill(s) that align with real hiring data.")
+    st.dataframe(matched.set_index("Skill")[["Hires", "Job Ads"]])
+
+if unmatched:
+    st.warning(f"⚠️ These skills are not recognized in the current dataset: {', '.join(unmatched)}")
+
+# --- Prediction-like Feature (Simple Likelihood Score) ---
+score = (matched["Hires"].sum() / matched["Resumes"].sum()) if not matched.empty else 0
+st.metric("📈 Likelihood Score (Based on Data)", f"{min(score * 100, 100):.2f}%")
+
+# --- Footer ---
+st.markdown("---")
+st.markdown("""
+<p style='text-align: center; font-size: 0.9em; color: gray;'>
+Made with ❤️ by Manju Singh | Empowering careers with data. | Project: Resume vs Reality
+</p>
+""", unsafe_allow_html=True)
