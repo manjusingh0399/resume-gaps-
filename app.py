@@ -71,6 +71,8 @@ with st.expander("🔍 What is This App Really About?"):
 - 💥 **Mirror meets mentor**: Know what your resume says *and* what it’s missing.
 - 🔍 **Resume vs Job Data**: We pull trends across domains — what gets people hired, what you’re lacking, what you need to add.
 - 💬 **Witty, real-world advice**: Because the job hunt doesn’t need to be a soul-sucking scroll.
+- 📊 **Visual data & coaching**: Get instant charts, skill scores, and action items.
+- 🧱 **Built for Gen Z**: Think: aesthetics + analytics + honest feedback.
 """)
 
 with st.expander("🛠️ How to Use This App"):
@@ -79,7 +81,7 @@ with st.expander("🛠️ How to Use This App"):
 2. **📈 Market Comparison** – How does your resume stand in your chosen field?
 3. **📈 Match Score** – Visual breakdown of how close you are to ideal profiles.
 4. **💡 Suggestions** – Helpful, no-BS advice to close skill and keyword gaps.
-5. **🗕️ Download Report** – Save your growth map as a TXT report.
+5. **📅 Download Report** – Save your growth map as a TXT report.
 """)
 
 with st.expander("🏡 What You'll Walk Away With"):
@@ -99,7 +101,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Tabs
-tabs = st.tabs(["Profile Snapshot", "Market Comparison", "Match Score", "Suggestions", "Trends & Insights", "Download Report"])
+tabs = st.tabs([
+    "👤 Profile Snapshot", 
+    "📈 Market Comparison", 
+    "📈 Match Score", 
+    "💡 Suggestions", 
+    "📚 Trends & Insights", 
+    "📅 Download Report"])
 
 # Reuse same resume logic
 def get_resume_data():
@@ -110,7 +118,8 @@ def get_resume_data():
 
 # Tab 1
 with tabs[0]:
-    st.header("Profile Snapshot")
+    st.header("👤 Profile Snapshot")
+    st.caption("\nThis section shows a detailed view of the resume you selected. It helps you assess the basic profile details, resume style, and overall score before diving deeper.")
     resume_data = get_resume_data()
     st.subheader("Resume Summary")
     st.write(f"**Age:** {resume_data['Age']}")
@@ -119,54 +128,81 @@ with tabs[0]:
     st.write(f"**Resume Style:** {resume_data['ResumeStyle']}")
     st.write(f"**Certifications:** {resume_data['Certifications']}")
     st.metric("AI Match Score", f"{resume_data['AI_MatchScore']}/100")
+    st.markdown("---")
+    st.markdown("✅ *This gives a bird's eye view of your resume profile. Your score indicates how likely your resume is to get shortlisted in the AI-filtered hiring process.*")
 
 # Tab 2
 with tabs[1]:
-    st.header("Market Comparison")
+    st.header("📈 Market Comparison")
+    st.caption("\nCompare your score and skills with what the market expects in your field.")
+    st.subheader("AI Match Score by Domain")
     st.plotly_chart(px.box(df, x="Domain", y="AI_MatchScore", color="Domain"))
+    st.caption("\n🔍 This graph helps you compare how resumes perform across industries. Domains like Data and Marketing tend to have higher match scores.")
+
     gap_counts = df['TopSkillGap'].value_counts().head(10)
+    st.subheader("Top Skill Gaps Across Resumes")
     st.plotly_chart(px.bar(gap_counts, title="Top Skill Gaps"))
+    st.caption("\n📉 These are the most common skills missing across applicants. If yours appears here, you're not alone — but it's fixable!")
+
+    st.markdown("---")
+    st.markdown("✅ *This tab helps you understand how competitive your resume is within your target domain. Take note of the common gaps to address them proactively.*")
 
 # Tab 3
 with tabs[2]:
-    st.header("Match Score")
+    st.header("📈 Match Score")
+    st.caption("\nFind out how well your skills align with what employers want.")
     listed = set(resume_data["SkillsListed"].split(", "))
     required = set(resume_data["JobPostingSkillsRequired"].split(", "))
     overlap = listed & required
     missing = required - listed
     st.metric("Skill Match", f"{len(overlap)} / {len(required)}")
     st.plotly_chart(px.pie(values=[len(overlap), len(missing)], names=["Matched", "Missing"]))
+    st.caption("\n📊 This pie chart shows how many skills you already have vs what's expected for the job. Fill the gap, boost your chances!")
+    st.markdown("---")
+    st.markdown("✅ *The more overlap you achieve here, the higher your job-fit and recruiter match potential becomes.*")
 
 # Tab 4
 with tabs[3]:
-    st.header("Suggestions")
+    st.header("💡 Suggestions")
+    st.caption("\nHere’s your career coach moment. Let’s make things better.")
     gap = resume_data['TopSkillGap']
     st.markdown("### Personalized Advice")
-    st.markdown("""
-- Learn **{}** on LinkedIn Learning or Coursera.
-- Rewrite bullets with measurable impact.
-- Add a profile summary that aligns with job goals.
-- Try building a portfolio using Notion or GitHub Pages.
-- Tailor your resume for each job description.
-""".format(gap))
+    st.markdown(f"""
+- 🎯 Learn **{gap}** on LinkedIn Learning, Coursera, or YouTube.
+- ✍️ Rewrite resume bullets using STAR format (Situation, Task, Action, Result).
+- 💬 Add keywords like "{gap}" naturally in your profile summary.
+- 💼 Use real project links in portfolio if applying for tech/marketing roles.
+- 🎨 Avoid overly creative resume styles if applying to traditional fields like Finance/HR.
+""")
+    st.markdown("---")
+    st.markdown("✅ *These are practical next steps you can take immediately. Don’t wait — recruiters won’t.*")
 
 # Tab 5: Extra graphs
 with tabs[4]:
-    st.header("Trends & Insights")
+    st.header("📚 Trends & Insights")
+    st.caption("\nDiscover macro trends in education, field, and certification performance.")
     avg_score_by_edu = df.groupby("EducationLevel")["AI_MatchScore"].mean().sort_values()
     st.subheader("Average Match Score by Education Level")
     st.plotly_chart(px.bar(avg_score_by_edu, orientation='h'))
+    st.caption("🎓 See how your education compares in terms of AI-readiness.")
 
     field_score = df.groupby("FieldOfStudy")["AI_MatchScore"].mean().sort_values(ascending=False).head(10)
     st.subheader("Top Performing Fields")
     st.plotly_chart(px.bar(field_score, title="Fields with Strongest Resume Match"))
+    st.caption("📘 These fields have the best resume-to-job alignment.")
 
     cert_counts = df['Certifications'].dropna().str.split(', ').explode().value_counts().head(10)
     st.subheader("Popular Certifications")
     st.plotly_chart(px.bar(cert_counts, title="Top Certifications"))
+    st.caption("✅ Want to upgrade your resume fast? These are the top certifications recruiters recognize.")
+    st.markdown("---")
+    st.markdown("✅ *This data gives you an edge on how to align your background with real market performance.*")
 
 # Tab 6
 with tabs[5]:
-    st.header("Download Report")
+    st.header("📅 Download Report")
+    st.caption("\nSave your personalized advice and resume insight summary.")
     text = f"Resume ID: {resume_data['ResumeID']}\nScore: {resume_data['AI_MatchScore']}\nGap: {resume_data['TopSkillGap']}\nAdvice: Improve your skill in {resume_data['TopSkillGap']} and update resume formatting."
     st.download_button("Download as TXT", data=text, file_name="resume_vs_reality.txt")
+    st.markdown("---")
+    st.markdown("✅ *Take this report with you as a reminder of what to fix and where to grow.*")
