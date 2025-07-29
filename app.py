@@ -222,3 +222,72 @@ Perspective: Your resume is a marketing tool, not a life story.
         file_name="resume_vs_reality_report.txt",
         mime="text/plain"
     )
+# Reuse same resume logic
+def get_resume_data():
+    resume_ids = df['ResumeID'].unique()
+    selected_id = st.selectbox("Select a Resume ID", resume_ids)
+    resume_data = df[df['ResumeID'] == selected_id].iloc[0]
+    return resume_data
+
+# Tab 1
+with tabs[0]:
+    st.header("Profile Snapshot")
+    resume_data = get_resume_data()
+    st.subheader("Resume Summary")
+    st.write(f"**Age:** {resume_data['Age']}")
+    st.write(f"**Education:** {resume_data['EducationLevel']} in {resume_data['FieldOfStudy']}")
+    st.write(f"**Applied For:** {resume_data['JobAppliedFor']}")
+    st.write(f"**Resume Style:** {resume_data['ResumeStyle']}")
+    st.write(f"**Certifications:** {resume_data['Certifications']}")
+    st.metric("AI Match Score", f"{resume_data['AI_MatchScore']}/100")
+
+# Tab 2
+with tabs[1]:
+    st.header("Market Comparison")
+    st.plotly_chart(px.box(df, x="Domain", y="AI_MatchScore", color="Domain"))
+    gap_counts = df['TopSkillGap'].value_counts().head(10)
+    st.plotly_chart(px.bar(gap_counts, title="Top Skill Gaps"))
+
+# Tab 3
+with tabs[2]:
+    st.header("Match Score")
+    listed = set(resume_data["SkillsListed"].split(", "))
+    required = set(resume_data["JobPostingSkillsRequired"].split(", "))
+    overlap = listed & required
+    missing = required - listed
+    st.metric("Skill Match", f"{len(overlap)} / {len(required)}")
+    st.plotly_chart(px.pie(values=[len(overlap), len(missing)], names=["Matched", "Missing"]))
+
+# Tab 4
+with tabs[3]:
+    st.header("Suggestions")
+    gap = resume_data['TopSkillGap']
+    st.markdown("### Personalized Advice")
+    st.markdown("""
+- Learn **{}** on LinkedIn Learning or Coursera.
+- Rewrite bullets with measurable impact.
+- Add a profile summary that aligns with job goals.
+- Try building a portfolio using Notion or GitHub Pages.
+- Tailor your resume for each job description.
+""".format(gap))
+
+# Tab 5: Extra graphs
+with tabs[4]:
+    st.header("Trends & Insights")
+    avg_score_by_edu = df.groupby("EducationLevel")["AI_MatchScore"].mean().sort_values()
+    st.subheader("Average Match Score by Education Level")
+    st.plotly_chart(px.bar(avg_score_by_edu, orientation='h'))
+
+    field_score = df.groupby("FieldOfStudy")["AI_MatchScore"].mean().sort_values(ascending=False).head(10)
+    st.subheader("Top Performing Fields")
+    st.plotly_chart(px.bar(field_score, title="Fields with Strongest Resume Match"))
+
+    cert_counts = df['Certifications'].dropna().str.split(', ').explode().value_counts().head(10)
+    st.subheader("Popular Certifications")
+    st.plotly_chart(px.bar(cert_counts, title="Top Certifications"))
+
+# Tab 6
+with tabs[5]:
+    st.header("Download Report")
+    text = f"Resume ID: {resume_data['ResumeID']}\nScore: {resume_data['AI_MatchScore']}\nGap: {resume_data['TopSkillGap']}\nAdvice: Improve your skill in {resume_data['TopSkillGap']} and update resume formatting."
+    st.download_button("Download as TXT", data=text, file_name="resume_vs_reality.txt")
