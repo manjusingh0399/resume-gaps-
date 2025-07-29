@@ -61,15 +61,37 @@ st.markdown("""
         .stTabs [data-baseweb="tab-list"] {
             margin-bottom: 1rem;
         }
+        .feedback-box {
+            background-color: #ffeff5;
+            border-left: 5px solid #ff8ba7;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            color: #6A0DAD;
+            font-style: italic;
+        }
     </style>
 """, unsafe_allow_html=True)
+
+# === TITLE & TAGLINE ===
+with st.container():
+    st.markdown('<div class="card" style="text-align:center;">', unsafe_allow_html=True)
+    st.markdown("""
+        <h1 style="font-family: Georgia, serif; color:#6A0DAD; margin-bottom:0;">Job Snob</h1>
+        <p style="font-size:1.2rem; font-style: italic; color:#ff8ba7; margin-top:0;">
+            “Only the best skills make the cut. No basic resumes allowed.”
+        </p>
+    """, unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # Load Data
 @st.cache_data(persist=True)
 def load_data():
     return pd.read_csv("genz_resume_market_data.csv")
 
-# Simulated matching results
+df = load_data()
+
+# --- Sample Static Insights ---
 match_score = 72
 top_missing_skills = ['SQL', 'Tableau', 'Cloud Computing']
 skill_insights = {
@@ -82,7 +104,12 @@ tailored_suggestions = [
     {'title': 'Support Engineer', 'why': 'Strong communication skills.', 'tip': 'Pair it with CRM/Jira tools.'},
 ]
 
-# --- PAGE LAYOUT ---
+def get_resume_data():
+    resume_ids = df['ResumeID'].unique()
+    selected_id = st.selectbox("Select a Resume ID", resume_ids, key="resume_selector")
+    return df[df['ResumeID'] == selected_id].iloc[0]
+
+# --- Welcome + Match Score ---
 with st.container():
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.title("📄 Resume vs Reality: Are You Job-Ready?")
@@ -92,40 +119,36 @@ with st.container():
 with st.container():
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.header("📊 Resume Match Score")
+    st.markdown("Here you see an overall match percentage showing how well your skills align with current hiring trends.")
     st.metric("🔍 Match Score", f"{match_score}%", delta="Based on hiring trends")
-
     if match_score > 85:
         st.success("🌟 Excellent Match!")
         st.markdown("""
-        **Insight:** You’re highly aligned with the industry. Maintain your momentum!
-        
-        **Advice:** Keep updating your portfolio and prepare for behavioral interviews.
-
+        **Insight:** You’re highly aligned with the industry.  
+        **Advice:** Keep updating your portfolio and prepare for behavioral interviews.  
         > “Success usually comes to those who are too busy to be looking for it.” – Thoreau
         """)
     elif match_score > 60:
         st.warning("🟡 Moderate Match")
         st.markdown("""
-        **Insight:** You're close to market expectations, with a few skill gaps.
-
-        **Advice:** Focus on acquiring the top 2 missing skills below to boost your profile.
-
+        **Insight:** You're close to market expectations, with a few skill gaps.  
+        **Advice:** Focus on acquiring the top 2 missing skills below.  
         > “Don’t watch the clock; do what it does. Keep going.” – Sam Levenson
         """)
     else:
         st.error("🔴 Low Match")
         st.markdown("""
-        **Insight:** Your current resume doesn't match many active job profiles.
-
-        **Advice:** Pick one role and begin upskilling gradually. Everyone starts somewhere.
-
+        **Insight:** Your resume doesn’t align with most current job needs.  
+        **Advice:** Start small—learn one tool at a time.  
         > “The future depends on what you do today.” – Mahatma Gandhi
         """)
     st.markdown("</div>", unsafe_allow_html=True)
 
+# --- Missing Skills & Career Advice ---
 with st.container():
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.header("📉 Top Missing Skills & Why They Matter")
+    st.markdown("This section highlights the skills most commonly missing from resumes like yours, but highly sought after by employers.")
     for skill in top_missing_skills:
         st.markdown(f"""
         ✅ **{skill}**  
@@ -133,11 +156,13 @@ with st.container():
         - _Where to learn:_ [LinkedIn Learning](#) · [Coursera](#) · [YouTube](#)  
         > “Every expert was once a beginner.”
         """)
+    st.markdown('<div class="feedback-box">💡 <strong>Tip:</strong> Start by focusing on one missing skill. Small consistent steps win the race.</div>', unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
 with st.container():
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.header("🚀 Career Suggestions Tailored to You")
+    st.markdown("Based on your current skills, here are some curated career paths you could consider along with actionable next steps.")
     for suggestion in tailored_suggestions:
         st.markdown(f"""
         💼 **{suggestion['title']}**  
@@ -145,29 +170,30 @@ with st.container():
         - _Your next step:_ {suggestion['tip']}  
         > “Opportunities don’t happen, you create them.” – Chris Grosser
         """)
+    st.markdown('<div class="feedback-box">💬 Remember, your career is a journey. Keep exploring and growing every day!</div>', unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
+# --- Motivational Reminder ---
 with st.container():
     st.markdown('<div class="quote-box">', unsafe_allow_html=True)
     st.markdown("""
-    💬 **Reminder:** Your resume is a snapshot, not a verdict. Your value goes beyond keywords.
-
+    💬 **Reminder:** Your resume is a snapshot, not a verdict.  
     _“Believe you can and you're halfway there.” – Theodore Roosevelt_
     """)
     st.markdown("</div>", unsafe_allow_html=True)
 
-# 💬 Welcome Section
+# --- Intro Expander Section ---
 with st.container():
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown("""
         <h1>💼 Welcome to <em>Resume vs Reality</em></h1>
         <p><strong>Your sassy, smart career wingwoman. 💅</strong></p>
-        <p>Ever stared at your resume wondering, "Will this get me hired or ghosted?" You're not alone. This app helps decode what recruiters truly want.</p>
+        <p>This app decodes what recruiters really want.</p>
         <ul>
-            <li>💥 <strong>Mirror meets mentor:</strong> Know what your resume says <em>and</em> what it’s missing.</li>
-            <li>🎯 <strong>Target your goals:</strong> Understand what job listings actually prioritize.</li>
-            <li>🧠 <strong>Real feedback:</strong> Actionable advice based on real hiring data.</li>
-            <li>🌈 <strong>Grow smart:</strong> Personalized suggestions to level-up fast.</li>
+            <li>💥 <strong>Mirror meets mentor:</strong> Know what your resume says and what it’s missing.</li>
+            <li>🎯 <strong>Target your goals:</strong> See what employers actually look for.</li>
+            <li>🧠 <strong>Real feedback:</strong> Actionable advice from hiring data.</li>
+            <li>🌈 <strong>Grow smart:</strong> Personal tips to level-up faster.</li>
         </ul>
         <div class="quote-box">
             “Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
@@ -175,7 +201,6 @@ with st.container():
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# Expanders
 with st.expander("🛠 How to Use This App"):
     st.markdown("""
 1. 👤 Select a Resume  
@@ -193,14 +218,7 @@ with st.expander("🏡 What You'll Walk Away With"):
 - 💪 Confidence, backed by data
 """)
 
-# Resume Selector Logic
-def get_resume_data():
-    resume_ids = df['ResumeID'].unique()
-    selected_id = st.selectbox("Select a Resume ID", resume_ids, key="resume_selector")
-    resume_data = df[df['ResumeID'] == selected_id].iloc[0]
-    return resume_data
-
-# Tabs Setup
+# --- Interactive Tabs ---
 tabs = st.tabs([
     "👤 Profile Snapshot", 
     "📈 Market Comparison", 
@@ -210,12 +228,13 @@ tabs = st.tabs([
     "📅 Download Report"
 ])
 
-# Tab 1 - Profile Snapshot
+# Tab 1 - Profile
 with tabs[0]:
+    resume_data = get_resume_data()
     with st.container():
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.header("👤 Profile Snapshot")
-        resume_data = get_resume_data()
+        st.markdown("Here’s a quick overview of your profile based on the selected resume. Understand your background and current match score.")
         st.write(f"**Age:** {resume_data['Age']}")
         st.write(f"**Education:** {resume_data['EducationLevel']} in {resume_data['FieldOfStudy']}")
         st.write(f"**Applied For:** {resume_data['JobAppliedFor']}")
@@ -223,41 +242,43 @@ with tabs[0]:
         st.write(f"**Certifications:** {resume_data['Certifications'] if pd.notna(resume_data['Certifications']) else 'None'}")
         st.metric("AI Match Score", f"{resume_data['AI_MatchScore']}/100")
         st.progress(resume_data["AI_MatchScore"] / 100)
-
-        role_mapping = {
+        role_map = {
             'Data Science': ['Data Analyst', 'ML Engineer'],
             'Marketing': ['Brand Associate', 'Content Strategist'],
             'Finance': ['Credit Analyst', 'Business Analyst']
         }
-        field = resume_data['FieldOfStudy']
-        roles = role_mapping.get(field, ['General Analyst', 'Executive Trainee'])
+        roles = role_map.get(resume_data['FieldOfStudy'], ['General Analyst', 'Executive Trainee'])
         st.markdown(f"👀 Suggested Roles: {', '.join(roles)}")
+        st.markdown('<div class="feedback-box">✨ Tip: Keep your resume updated and tailor it per role for best results.</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
-
 
 # Tab 2 - Market Comparison
 with tabs[1]:
     with st.container():
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.header("📈 Market Comparison")
+        st.markdown("Analyze how your resume's domain and skills compare to the broader market and see common skill gaps.")
         st.subheader("AI Match Score by Domain")
         st.plotly_chart(px.box(df, x="Domain", y="AI_MatchScore", color="Domain", template="ggplot2"))
         st.subheader("Top Skill Gaps Across Resumes")
         gap_counts = df['TopSkillGap'].value_counts().head(10)
         st.plotly_chart(px.bar(gap_counts, title="Top Skill Gaps", template="ggplot2"))
+        st.markdown('<div class="feedback-box">🔍 Insight: Focus on bridging the top skill gaps to improve your market fit.</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-# Tab 3 - Match Score
+# Tab 3 - Match Score Pie
 with tabs[2]:
     with st.container():
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.header("📊 Match Score")
+        st.header("📊 Match Score Breakdown")
+        st.markdown("This visual breaks down how many job-required skills you currently match versus the ones missing.")
         listed = set(resume_data.get("SkillsListed", "").split(", "))
         required = set(resume_data.get("JobPostingSkillsRequired", "").split(", "))
         overlap = listed & required
         missing = required - listed
         st.metric("Skill Match", f"{len(overlap)} / {len(required)}")
         st.plotly_chart(px.pie(values=[len(overlap), len(missing)], names=["Matched", "Missing"], template="ggplot2"))
+        st.markdown('<div class="feedback-box">💡 Feedback: Focus your upskilling on the missing skills for a better match.</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
 # Tab 4 - Suggestions
@@ -265,32 +286,34 @@ with tabs[3]:
     with st.container():
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.header("💡 Suggestions")
-        gap = resume_data.get("TopSkillGap", "relevant skills")
+        st.markdown("Based on your resume gaps, here are targeted recommendations to strengthen your profile.")
+        gap = resume_data.get("TopSkillGap", "a key skill")
         st.markdown(f"""
-- 📚 Learn **{gap}** via Coursera, LinkedIn Learning or YouTube  
-- ✍️ Update bullets using STAR format (Situation, Task, Action, Result)  
-- 🪞 Mention **{gap}** naturally in your summary  
-- 💼 Add project links or GitHub if applying for tech/marketing  
-- 🎨 Stick to minimal resumes for Finance/HR roles
+- 📚 Learn **{gap}** via Coursera, LinkedIn Learning, or YouTube  
+- ✍️ Update your resume bullets using the STAR format (Situation, Task, Action, Result)  
+- 🪞 Naturally mention **{gap}** in your summary section  
+- 💼 Add relevant project links or GitHub repos if applying for technical roles  
+- 🎨 Keep it minimal and clear for Finance or HR roles
 """)
+        st.markdown('<div class="feedback-box">🚀 Pro tip: Consistent small improvements in your resume skills can lead to big wins.</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-# Tab 5 - Trends & Insights
+# Tab 5 - Trends
 with tabs[4]:
     with st.container():
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.header("📚 Trends & Insights")
-        avg_score_by_edu = df.groupby("EducationLevel")["AI_MatchScore"].mean().sort_values()
-        st.subheader("Avg. Match Score by Education")
-        st.plotly_chart(px.bar(avg_score_by_edu, orientation='h', template="seaborn"))
-
+        st.markdown("Explore hiring trends by education, fields of study, and popular certifications to inform your career strategy.")
+        avg_score = df.groupby("EducationLevel")["AI_MatchScore"].mean().sort_values()
         top_fields = df.groupby("FieldOfStudy")["AI_MatchScore"].mean().sort_values(ascending=False).head(10)
-        st.subheader("Top Performing Fields")
-        st.plotly_chart(px.bar(top_fields, title="Best Fields by Resume Match", template="seaborn"))
-
         certs = df['Certifications'].dropna().str.split(', ').explode().value_counts().head(10)
+        st.subheader("Avg. Score by Education")
+        st.plotly_chart(px.bar(avg_score, orientation='h', template="seaborn"))
+        st.subheader("Top Performing Fields")
+        st.plotly_chart(px.bar(top_fields, template="seaborn"))
         st.subheader("Popular Certifications")
         st.plotly_chart(px.bar(certs, template="seaborn"))
+        st.markdown('<div class="feedback-box">📈 Insight: Certifications like these boost resume appeal in competitive fields.</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
 # Tab 6 - Download Report
@@ -298,6 +321,8 @@ with tabs[5]:
     with st.container():
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.header("📅 Download Report")
+        st.markdown("Download a personalized report summarizing your resume match and tailored advice.")
+        resume_data = get_resume_data()
         text = f"""
 Resume ID: {resume_data['ResumeID']}
 Score: {resume_data['AI_MatchScore']}
@@ -305,4 +330,5 @@ Gap: {resume_data.get('TopSkillGap', 'N/A')}
 Advice: Improve your skill in {resume_data.get('TopSkillGap', 'a key area')} and enhance formatting.
 """
         st.download_button("📄 Download as TXT", data=text, file_name="resume_vs_reality.txt")
+        st.markdown('<div class="feedback-box">🎉 Great job! Use this report to guide your next career moves.</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
