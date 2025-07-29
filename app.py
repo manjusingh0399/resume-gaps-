@@ -7,119 +7,59 @@ import plotly.graph_objects as go
 # Page config
 st.set_page_config(page_title="Resume vs Reality", layout="wide")
 
+# Midnight theme (dark)
+st.markdown("""
+    <style>
+        body {
+            background-color: #0E1117;
+            color: #FAFAFA;
+        }
+        .stApp {
+            background-color: #0E1117;
+            color: #FAFAFA;
+        }
+        .css-1d391kg, .css-1q8dd3e {
+            background-color: #1E1E2F;
+            color: #FAFAFA;
+        }
+        .st-bw, .st-bv, .st-c2 {
+            color: #FAFAFA;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # Resume Upload (Future expansion)
-uploaded_file = st.sidebar.file_uploader("\U0001F4E4 Upload Your Resume (PDF/DOCX)", type=["pdf", "docx"])
+uploaded_file = st.sidebar.file_uploader("📤 Upload Your Resume (PDF/DOCX)", type=["pdf", "docx"])
 if uploaded_file:
     st.sidebar.success("Resume uploaded. Parsing will be added in next version.")
 
-# Custom CSS styles
-st.markdown("""
-<style>
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
-    h1, h2, h3 {
-        color: #2e2e2e;
-    }
-    .stTabs [role="tab"] {
-        background-color: #f1f3f6;
-        border-radius: 10px;
-        padding: 0.75rem 1.5rem;
-        margin-right: 0.5rem;
-        font-weight: bold;
-    }
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(90deg, #60a5fa, #3b82f6);
-        color: white;
-    }
-    .welcome-container {
-        background: linear-gradient(to right, #e0f7fa, #e8f5e9);
-        border-radius: 15px;
-        padding: 2rem;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        margin-bottom: 2rem;
-        font-family: 'DM Sans', sans-serif;
-        text-align: center;
-    }
-    .quote-box {
-        background-color: #fff8e1;
-        padding: 1rem;
-        border-left: 5px solid #ffd54f;
-        border-radius: 8px;
-        font-style: italic;
-        margin-top: 1.5rem;
-        font-size: 1.05rem;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-# Welcome Message
-with st.container():
-    st.markdown("""
-        <div class="welcome-container">
-            <h1 style="color:#6A0DAD; font-size: 2.2rem; margin-bottom: 0.5rem;">\U0001F4BC Welcome to <em>Resume vs Reality</em></h1>
-            <p><strong>Your sassy, smart career wingwoman. \U0001F91D‍♂️</strong></p>
-            <p>Ever stared at your resume wondering, \"Will this get me hired or ghosted?\" You're not alone — and you're not going in blind anymore.</p>
-            <p><strong>We all build resumes hoping they reflect our potential.</strong> But behind every hiring decision lies a pattern. This project is a search for those patterns — an exploration of the gap between what we write and what employers value.</p>
-            <p>I'm <strong>Manju Singh</strong>, an MBA student and a job seeker like you. I’ve been through the anxious nights of tweaking resumes, unsure if my skills are enough. This app is my way of turning that uncertainty into clarity — a light in the dark for all of us navigating today’s job market.</p>
-            <p>With real data, interactive visuals, and a touch of empathy, <em>Resume vs Reality</em> is your personal career mentor. It doesn’t just show you the gap — it helps you bridge it. Let’s turn guesswork into guidance, and doubt into direction. 🌱</p>
-            <p><strong>Here’s what you’ll discover:</strong></p>
-            <ul style="text-align: left; max-width: 800px; margin: auto;">
-                <li>💥 <strong>Mirror meets mentor:</strong> Know what your resume says <em>and</em> what it’s missing.</li>
-                <li>🎯 <strong>Target your goals:</strong> Understand what job listings actually prioritize.</li>
-                <li>🧠 <strong>Get real feedback:</strong> Actionable advice based on <em>real</em> market data.</li>
-                <li>🌈 <strong>Grow with guidance:</strong> Personalized suggestions to help you level up fast.</li>
-            </ul>
-            <div class="quote-box">
-                “Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
+# Load dataset
 @st.cache_data
-
 def load_data():
     return pd.read_csv("genz_resume_market_data.csv")
 
 df = load_data()
 
-with st.expander("🛠️ How to Use This App"):
-    st.markdown("""
-1. **👤 Profile Snapshot** – Upload or select a sample resume. Get the overview.
-2. **📈 Market Comparison** – How does your resume stand in your chosen field?
-3. **📈 Match Score** – Visual breakdown of how close you are to ideal profiles.
-4. **💡 Suggestions** – Helpful, no-BS advice to close skill and keyword gaps.
-5. **🗕️ Download Report** – Save your growth map as a TXT report.
-""")
-
-with st.expander("🏡 What You'll Walk Away With"):
-    st.markdown("""
-- 🔎 **Insights that matter** — no more guessing what to fix.
-- 🧠 **Understanding your job-readiness** like a hiring manager would.
-- 📌 **Skill roadmaps** based on what others got hired for.
-- 💪 **Confidence** that comes from clarity.
-""")
-
 # Tabs
 tabs = st.tabs([
     "👤 Profile Snapshot", 
     "📈 Market Comparison", 
-    "🎯 Match Score", 
+    "📈 Match Score", 
     "💡 Suggestions", 
     "📚 Trends & Insights", 
-    "🗕️ Download Report"])
+    "📅 Download Report"])
 
+# Resume Selection Logic
 def get_resume_data():
     resume_ids = df['ResumeID'].unique()
     selected_id = st.selectbox("Select a Resume ID", resume_ids, key="resume_selector")
     resume_data = df[df['ResumeID'] == selected_id].iloc[0]
     return resume_data
 
-# Tab 1
+# Tab 1 - Profile Snapshot
 with tabs[0]:
     st.header("👤 Profile Snapshot")
-    st.caption("This section shows a detailed view of the resume you selected.")
+    st.caption("\nThis section shows a detailed view of the resume you selected. It helps you assess the basic profile details, resume style, and overall score before diving deeper.")
     resume_data = get_resume_data()
     st.subheader("Resume Summary")
     st.write(f"**Age:** {resume_data['Age']}")
@@ -128,66 +68,92 @@ with tabs[0]:
     st.write(f"**Resume Style:** {resume_data['ResumeStyle']}")
     st.write(f"**Certifications:** {resume_data['Certifications']}")
     st.metric("AI Match Score", f"{resume_data['AI_MatchScore']}/100")
-    st.progress(resume_data['AI_MatchScore'] / 100)
+    st.progress(resume_data["AI_MatchScore"] / 100)
 
+    # Role Recommendations
     role_mapping = {
         'Data Science': ['Data Analyst', 'ML Engineer'],
-        'Computer Science': ['Software Developer', 'Backend Engineer'],
-        'Marketing': ['Digital Marketer', 'SEO Analyst'],
-        'Finance': ['Financial Analyst', 'Investment Banker'],
-        'Business': ['Business Analyst', 'Ops Manager'],
-        'Economics': ['Policy Analyst', 'Risk Analyst']
+        'Marketing': ['Brand Associate', 'Content Strategist'],
+        'Finance': ['Credit Analyst', 'Business Analyst']
     }
     field = resume_data['FieldOfStudy']
-    st.subheader("\U0001F3AF Suggested Roles")
-    st.success(", ".join(role_mapping.get(field, ['General Analyst', 'Trainee Associate'])))
+    st.markdown(f"👀 Suggested Roles: {', '.join(role_mapping.get(field, ['General Analyst', 'Executive Trainee']))}")
 
-# Tab 2
+    st.markdown("---")
+    st.markdown("✅ *This gives a bird's eye view of your resume profile. Your score indicates how likely your resume is to get shortlisted in the AI-filtered hiring process.*")
+
+# Tab 2 - Market Comparison
 with tabs[1]:
     st.header("📈 Market Comparison")
+    st.caption("\nCompare your score and skills with what the market expects in your field.")
     st.subheader("AI Match Score by Domain")
     st.plotly_chart(px.box(df, x="Domain", y="AI_MatchScore", color="Domain"))
-    st.subheader("Top Skill Gaps Across Resumes")
-    gap_counts = df['TopSkillGap'].value_counts().head(10)
-    st.plotly_chart(px.bar(gap_counts, title="Top Skill Gaps"))
+    st.caption("\n🔍 This graph helps you compare how resumes perform across industries. Domains like Data and Marketing tend to have higher match scores.")
 
-# Tab 3
+    gap_counts = df['TopSkillGap'].value_counts().head(10)
+    st.subheader("Top Skill Gaps Across Resumes")
+    st.plotly_chart(px.bar(gap_counts, title="Top Skill Gaps"))
+    st.caption("\n📉 These are the most common skills missing across applicants. If yours appears here, you're not alone — but it's fixable!")
+
+    st.markdown("---")
+    st.markdown("✅ *This tab helps you understand how competitive your resume is within your target domain. Take note of the common gaps to address them proactively.*")
+
+# Tab 3 - Match Score
 with tabs[2]:
-    st.header("\U0001F3AF Match Score")
+    st.header("📈 Match Score")
+    st.caption("\nFind out how well your skills align with what employers want.")
     listed = set(resume_data["SkillsListed"].split(", "))
     required = set(resume_data["JobPostingSkillsRequired"].split(", "))
     overlap = listed & required
     missing = required - listed
     st.metric("Skill Match", f"{len(overlap)} / {len(required)}")
     st.plotly_chart(px.pie(values=[len(overlap), len(missing)], names=["Matched", "Missing"]))
+    st.caption("\n📊 This pie chart shows how many skills you already have vs what's expected for the job. Fill the gap, boost your chances!")
+    st.markdown("---")
+    st.markdown("✅ *The more overlap you achieve here, the higher your job-fit and recruiter match potential becomes.*")
 
-# Tab 4
+# Tab 4 - Suggestions
 with tabs[3]:
-    st.header("\U0001F4A1 Suggestions")
+    st.header("💡 Suggestions")
+    st.caption("\nHere’s your career coach moment. Let’s make things better.")
     gap = resume_data['TopSkillGap']
+    st.markdown("### Personalized Advice")
     st.markdown(f"""
-- Learn **{gap}** online (LinkedIn, Coursera).
-- Use STAR format in your resume.
-- Mention **{gap}** in summary or bullets.
-- Add project links or portfolios.
-- Avoid overly creative designs for traditional roles.
+- 🎯 Learn **{gap}** on LinkedIn Learning, Coursera, or YouTube.
+- ✍️ Rewrite resume bullets using STAR format (Situation, Task, Action, Result).
+- 💬 Add keywords like "{gap}" naturally in your profile summary.
+- 💼 Use real project links in portfolio if applying for tech/marketing roles.
+- 🎨 Avoid overly creative resume styles if applying to traditional fields like Finance/HR.
 """)
+    st.markdown("---")
+    st.markdown("✅ *These are practical next steps you can take immediately. Don’t wait — recruiters won’t.*")
 
-# Tab 5
+# Tab 5 - Trends & Insights
 with tabs[4]:
-    st.header("\U0001F4DA Trends & Insights")
+    st.header("📚 Trends & Insights")
+    st.caption("\nDiscover macro trends in education, field, and certification performance.")
     avg_score_by_edu = df.groupby("EducationLevel")["AI_MatchScore"].mean().sort_values()
-    st.subheader("Avg Score by Education")
+    st.subheader("Average Match Score by Education Level")
     st.plotly_chart(px.bar(avg_score_by_edu, orientation='h'))
+    st.caption("🎓 See how your education compares in terms of AI-readiness.")
+
     field_score = df.groupby("FieldOfStudy")["AI_MatchScore"].mean().sort_values(ascending=False).head(10)
     st.subheader("Top Performing Fields")
-    st.plotly_chart(px.bar(field_score))
-    cert_counts = df['Certifications'].dropna().str.split(', ').explode().value_counts().head(10)
-    st.subheader("Top Certifications")
-    st.plotly_chart(px.bar(cert_counts))
+    st.plotly_chart(px.bar(field_score, title="Fields with Strongest Resume Match"))
+    st.caption("📘 These fields have the best resume-to-job alignment.")
 
-# Tab 6
+    cert_counts = df['Certifications'].dropna().str.split(', ').explode().value_counts().head(10)
+    st.subheader("Popular Certifications")
+    st.plotly_chart(px.bar(cert_counts, title="Top Certifications"))
+    st.caption("✅ Want to upgrade your resume fast? These are the top certifications recruiters recognize.")
+    st.markdown("---")
+    st.markdown("✅ *This data gives you an edge on how to align your background with real market performance.*")
+
+# Tab 6 - Download Report
 with tabs[5]:
-    st.header("\U0001F5D5\ufe0f Download Report")
+    st.header("📅 Download Report")
+    st.caption("\nSave your personalized advice and resume insight summary.")
     text = f"Resume ID: {resume_data['ResumeID']}\nScore: {resume_data['AI_MatchScore']}\nGap: {resume_data['TopSkillGap']}\nAdvice: Improve your skill in {resume_data['TopSkillGap']} and update resume formatting."
     st.download_button("Download as TXT", data=text, file_name="resume_vs_reality.txt")
+    st.markdown("---")
+    st.markdown("✅ *Take this report with you as a reminder of what to fix and where to grow.*")
