@@ -2,31 +2,14 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# Dummy data for demonstration - replace with your actual dataset
-df = pd.DataFrame({
-    'ResumeID': [1, 2, 3],
-    'Age': [25, 28, 22],
-    'EducationLevel': ['Bachelor', 'Master', 'Bachelor'],
-    'FieldOfStudy': ['CS', 'Finance', 'Marketing'],
-    'JobAppliedFor': ['Data Scientist', 'Analyst', 'Marketing Manager'],
-    'ResumeStyle': ['Modern', 'Conservative', 'Creative'],
-    'Certifications': ['AWS, SQL', None, 'PMP'],
-    'AI_MatchScore': [78, 85, 60],
-    'TopSkillGap': ['Python', 'Excel', 'SEO'],
-    'SkillsListed': ['Python, SQL', 'Excel, PowerPoint', 'Marketing, SEO'],
-    'JobPostingSkillsRequired': ['Python, SQL, ML', 'Excel, SQL', 'SEO, Content Writing']
-})
-
-def get_resume_data():
-    # For demo, return first resume - replace with your own logic/selection widget
-    return df.iloc[0]
-
+# --- Page Config ---
 st.set_page_config(page_title="Job Snob", layout="wide")
 
-# Inject CSS styling for feedback box and main container
+# --- Custom CSS for Tabs and Styling ---
 st.markdown("""
 <style>
-    .main-container {
+    /* Container style for the intro and all main content */
+    .intro-container {
         max-width: 720px;
         margin: 3rem auto 5rem auto;
         padding: 2.5rem 3rem;
@@ -34,13 +17,14 @@ st.markdown("""
         border-radius: 16px;
         box-shadow: 0 12px 40px rgba(255, 140, 0, 0.3);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: #4a2c00;
+        color: #4a2c00; /* Dark brown */
         line-height: 1.65;
         text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
     }
-    .main-container h1 {
+    /* Headings */
+    .intro-container h1 {
         font-family: 'Georgia', serif;
-        color: #5c3300;
+        color: #5c3300; /* Deep brown */
         font-weight: 700;
         font-size: 3rem;
         margin-bottom: 0.2rem;
@@ -48,7 +32,7 @@ st.markdown("""
         text-align: center;
         text-shadow: 2px 2px 4px #f3b14d;
     }
-    .main-container h2 {
+    .intro-container h2 {
         font-weight: 500;
         font-style: italic;
         font-size: 1.3rem;
@@ -58,17 +42,19 @@ st.markdown("""
         text-align: center;
         text-shadow: 1px 1px 3px #e69900;
     }
-    .main-container p, .main-container ul {
+    /* Paragraph and lists */
+    .intro-container p, .intro-container ul {
         font-size: 1.1rem;
         color: #663c00cc;
         margin-bottom: 1.25rem;
     }
-    .main-container ul {
+    .intro-container ul {
         padding-left: 1.4rem;
     }
-    .main-container li {
+    .intro-container li {
         margin-bottom: 0.5rem;
     }
+    /* Feedback box style */
     .feedback-box {
         background-color: #ffdd991a;
         border-left: 5px solid #ffae421a;
@@ -80,64 +66,118 @@ st.markdown("""
         font-size: 1rem;
         box-shadow: inset 0 0 6px #ffae4277;
     }
+    /* Responsive adjustments */
     @media (max-width: 768px) {
-        .main-container {
+        .intro-container {
             margin: 2rem 1rem 3rem 1rem;
             padding: 2rem 1.8rem;
         }
-        .main-container h1 {
+        .intro-container h1 {
             font-size: 2.3rem;
         }
-        .main-container h2 {
+        .intro-container h2 {
             font-size: 1.1rem;
         }
     }
-    .footer {
+    /* Streamlit Tab button active highlight */
+    button[data-baseweb="tab-list-item"][aria-selected="true"] {
+        background-color: #ffae42 !important;
+        color: #4a2c00 !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 12px rgba(255, 140, 0, 0.6);
+        border-radius: 10px 10px 0 0 !important;
+        transition: background-color 0.3s ease;
+    }
+    /* Tab hover effect */
+    button[data-baseweb="tab-list-item"]:not([aria-selected="true"]):hover {
+        background-color: #ffd580 !important;
+        color: #5c3300cc !important;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    /* Conclusive statement styling */
+    .conclusion-box {
+        max-width: 720px;
+        margin: 3rem auto 4rem auto;
+        padding: 1.5rem 2rem;
+        background: #fff8dccc;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(255, 140, 0, 0.25);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #4a2c00;
+        font-size: 1.15rem;
         text-align: center;
-        font-size: 0.8rem;
-        color: #999999;
-        padding: 1rem;
-        margin-top: 4rem;
-        border-top: 1px solid #eee;
+        font-style: italic;
+        letter-spacing: 0.5px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Intro section with your HTML content
-with st.container():
-    st.markdown("""
-    <div class="main-container">
-        <h1>Job Snob</h1>
-        <h2>“Only the best skills make the cut. No basic resumes allowed.”</h2>
+# --- Introductory statement (above intro container) ---
+st.markdown("""
+<div class="conclusion-box" style="background: #fffae6cc; color: #7a4a00; font-weight: 600; font-style: normal;">
+    Welcome to <strong>Job Snob</strong> — your warm, data-driven career companion designed to illuminate your path,  
+    highlight critical skill gaps, and guide you confidently toward your dream job. Let’s transform your resume into a powerful story that recruiters can’t ignore.
+</div>
+""", unsafe_allow_html=True)
 
-        <p>Whether you are just starting your professional journey or aiming for your next career milestone, Job Snob provides clear, data-driven insights to help you grow confidently.</p>
+# --- Intro Section ---
+st.markdown("""
+<div class="intro-container">
+    <h1>Job Snob</h1>
+    <h2>“Only the best skills make the cut. No basic resumes allowed.”</h2>
 
-        <h3>What You Can Expect</h3>
-        <ul>
-            <li><strong>Skill Gap Analysis:</strong> Identify the high-impact skills you’re missing.</li>
-            <li><strong>Market Comparison:</strong> See how your resume stacks up against real hiring data.</li>
-            <li><strong>Personalized Suggestions:</strong> Tailored, actionable steps for improvement.</li>
-            <li><strong>Trends & Insights:</strong> Stay updated on hiring patterns in your field.</li>
-            <li><strong>Easy Report Download:</strong> Save your progress and recommendations for future reference.</li>
-        </ul>
+    <p>Whether you are just starting your professional journey or aiming for your next career milestone, <strong>Job Snob</strong> provides clear, data-driven insights to help you grow confidently.</p>
 
-        <h3>How To Use This App</h3>
-        <ul>
-            <li>Select your resume from the list.</li>
-            <li>Explore your skill match and gaps in detail.</li>
-            <li>Read customized advice to enhance your profile.</li>
-            <li>Download a personal report summarizing your insights.</li>
-            <li>Use the feedback regularly to update and improve your resume.</li>
-        </ul>
+    <h3>What You Can Expect</h3>
+    <ul>
+        <li><strong>Skill Gap Analysis:</strong> Identify the high-impact skills you’re missing.</li>
+        <li><strong>Market Comparison:</strong> See how your resume stacks up against real hiring data.</li>
+        <li><strong>Personalized Suggestions:</strong> Tailored, actionable steps for improvement.</li>
+        <li><strong>Trends & Insights:</strong> Stay updated on hiring patterns in your field.</li>
+        <li><strong>Easy Report Download:</strong> Save your progress and recommendations for future reference.</li>
+    </ul>
 
-        <div class="feedback-box">
-            This app empowers you with clear, warm guidance to confidently build the career you deserve — no stress, just steady growth.
-        </div>
+    <h3>How To Use This App</h3>
+    <ul>
+        <li>Select your resume from the list.</li>
+        <li>Explore your skill match and gaps in detail.</li>
+        <li>Read customized advice to enhance your profile.</li>
+        <li>Download a personal report summarizing your insights.</li>
+        <li>Use the feedback regularly to update and improve your resume.</li>
+    </ul>
+
+    <div class="feedback-box">
+        This app empowers you with clear, warm guidance to confidently build the career you deserve — no stress, just steady growth.
     </div>
-    """, unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
 
-resume_data = get_resume_data()
+# --- Load your dataset ---
+# Dummy data example (replace with your actual dataset)
+data = {
+    "ResumeID": [1, 2, 3],
+    "Age": [24, 28, 22],
+    "EducationLevel": ["Bachelor's", "Master's", "Bachelor's"],
+    "FieldOfStudy": ["Computer Science", "Business", "Engineering"],
+    "JobAppliedFor": ["Data Scientist", "Product Manager", "Software Engineer"],
+    "ResumeStyle": ["Modern", "Conservative", "Creative"],
+    "Certifications": ["AWS, SQL", "PMP", None],
+    "AI_MatchScore": [78, 65, 82],
+    "TopSkillGap": ["Machine Learning", "Agile Methodology", "Cloud Computing"],
+    "SkillsListed": ["Python, SQL, Statistics", "Product Management, Agile", "Java, Git"],
+    "JobPostingSkillsRequired": ["Python, Machine Learning, SQL", "Agile, Scrum, Leadership", "Java, Cloud Computing, Git"]
+}
+df = pd.DataFrame(data)
 
+def get_resume_data(resume_id=1):
+    row = df[df['ResumeID'] == resume_id]
+    if row.empty:
+        return df.iloc[0].to_dict()
+    else:
+        return row.iloc[0].to_dict()
+
+# --- Tabs ---
 tabs = st.tabs([
     "👤 Profile Snapshot", 
     "📈 Market Comparison", 
@@ -147,60 +187,52 @@ tabs = st.tabs([
     "📅 Download Report"
 ])
 
+# Sidebar Resume Selector
+resume_ids = df['ResumeID'].tolist()
+selected_resume = st.sidebar.selectbox("Select Resume ID", options=resume_ids, index=0)
+resume_data = get_resume_data(selected_resume)
+
 # === TAB 1: PROFILE SNAPSHOT ===
 with tabs[0]:
     st.header("Profile Snapshot")
     st.write("""
-    This section provides a detailed overview of your resume profile to help you understand how your background compares in the job market.  
-    From your education level and field of study to the job roles you’re applying for, this snapshot paints a comprehensive picture of your current standing.  
-    By reflecting on this, you can identify how your academic and experiential credentials stack up and prepare to position yourself more strategically for the roles you desire.
+        This section provides a detailed overview of your resume profile to help you understand how your background compares in the job market.  
+        From your education level and field of study to the job roles you’re applying for, this snapshot paints a comprehensive picture of your current standing.
     """)
-
     st.write(f"**Age:** {resume_data['Age']}")
     st.write(f"**Education:** {resume_data['EducationLevel']} in {resume_data['FieldOfStudy']}")
     st.write(f"**Applied For:** {resume_data['JobAppliedFor']}")
     st.write(f"**Resume Style:** {resume_data['ResumeStyle']}")
-    st.write(f"**Certifications:** {resume_data['Certifications'] if pd.notna(resume_data['Certifications']) else 'None'}")
-
-    st.metric("AI Match Score", f"{resume_data['AI_MatchScore']}/100")
+    certs = resume_data['Certifications'] if pd.notna(resume_data['Certifications']) else "None"
+    st.write(f"**Certifications:** {certs}")
+    st.metric("AI Match Score", f"{resume_data['AI_MatchScore']} / 100")
     st.progress(resume_data["AI_MatchScore"] / 100)
 
     st.info("""
-    **Insight:** Your resume style and certifications play a vital role in how recruiters perceive your profile. Ensure your certifications are current and relevant.  
-    **Advice:** Tailor your resume style depending on the job domain — conservative styles work well for finance, creative ones for design.  
-    **Feedback:** Keep refining your profile summary to highlight your unique strengths and how your education connects to your desired role.
+    Your resume style and certifications impact recruiter perception. Keep certifications relevant and resume style tailored to your target industry.
     """)
 
 # === TAB 2: MARKET COMPARISON ===
 with tabs[1]:
     st.header("Market Comparison")
-    st.write("""
-    This tab helps you benchmark your resume against the broader job market by analyzing domain match scores and identifying skill gaps common in your peer group.  
-    Understanding where you stand relative to the competition is crucial for prioritizing skill development and making informed career moves.  
-    The visual charts let you see how your industry or field of study compares and which skills are in demand but missing in many resumes.
-    """)
 
-    st.subheader("AI Match Score by Education Level")
-    st.plotly_chart(px.box(df, x="EducationLevel", y="AI_MatchScore", color="EducationLevel", template="ggplot2"), use_container_width=True)
+    st.subheader("AI Match Score by Domain (Education Level)")
+    fig_box = px.box(df, x="EducationLevel", y="AI_MatchScore", color="EducationLevel", template="ggplot2")
+    st.plotly_chart(fig_box, use_container_width=True)
 
     st.subheader("Top Skill Gaps Across Resumes")
     gap_counts = df['TopSkillGap'].value_counts().head(10)
-    st.bar_chart(gap_counts)
+    fig_bar = px.bar(gap_counts, title="Top Skill Gaps", template="ggplot2")
+    st.plotly_chart(fig_bar, use_container_width=True)
 
-    st.info("""
-    **Insight:** Domains with higher median match scores often require specialized skills or certifications.  
-    **Advice:** Investigate and acquire the top missing skills shown here — these are your best investment areas.  
-    **Feedback:** Use this comparison to set realistic goals; bridging these gaps can significantly boost your hireability.
+    st.success("""
+    Domains with higher median match scores often require specialized skills or certifications.
+    Investigate and acquire the top missing skills shown here to boost your hireability.
     """)
 
 # === TAB 3: MATCH SCORE ===
 with tabs[2]:
     st.header("Match Score Details")
-    st.write("""
-    The match score reflects how well your skills align with what employers expect for your target jobs.  
-    This tab breaks down which skills you have matched successfully and which are missing, offering a clear roadmap to improve.  
-    Evaluating this score regularly can help you measure progress and stay competitive in your field.
-    """)
 
     listed = set(resume_data.get("SkillsListed", "").split(", ")) if pd.notna(resume_data.get("SkillsListed", "")) else set()
     required = set(resume_data.get("JobPostingSkillsRequired", "").split(", ")) if pd.notna(resume_data.get("JobPostingSkillsRequired", "")) else set()
@@ -208,75 +240,65 @@ with tabs[2]:
     missing = required - listed
 
     st.metric("Skill Match", f"{len(overlap)} / {len(required)}")
-    fig = px.pie(values=[len(overlap), len(missing)], names=["Matched", "Missing"], template="ggplot2")
-    st.plotly_chart(fig, use_container_width=True)
+    fig_pie = px.pie(
+        values=[len(overlap), len(missing)],
+        names=["Matched", "Missing"],
+        template="ggplot2",
+        color_discrete_sequence=['#ffae42', '#ffd580']
+    )
+    st.plotly_chart(fig_pie, use_container_width=True)
 
     st.info("""
-    **Insight:** Matching key job skills significantly improves your chances of getting hired.  
-    **Advice:** Prioritize learning missing critical skills in your target roles.  
-    **Feedback:** Focus on quality over quantity — deeply master the top 3 skills required for your dream job.
+    Matching key job skills significantly improves your chances.  
+    Prioritize learning the missing critical skills and focus on mastering the top 3 skills required for your dream job.
     """)
 
 # === TAB 4: SUGGESTIONS ===
 with tabs[3]:
     st.header("Personalized Suggestions")
-    st.write("""
-    Here we provide actionable recommendations based on your current skill gaps and resume profile.  
-    Our suggestions help you focus your learning, improve your resume presentation, and strategize your job applications better.  
-    Taking these steps will increase your confidence and visibility in the hiring market.
-    """)
 
     gap = resume_data.get("TopSkillGap", "relevant skills") if pd.notna(resume_data.get("TopSkillGap", "")) else "relevant skills"
-
     st.markdown(f"""
-- 📚 Learn **{gap}** via Coursera, LinkedIn Learning or YouTube — invest an hour daily to build competence.  
-- ✍️ Use the STAR method (Situation, Task, Action, Result) to detail your accomplishments and projects clearly.  
-- 🪞 Reflect the missing skills naturally in your professional summary and bullet points.  
-- 💼 For tech roles, add project links or GitHub repositories; for other fields, emphasize measurable achievements.  
-- 🎨 Adjust your resume style to fit your target industry’s expectations — be polished but authentic.
-""")
+- 📚 Learn **{gap}** via Coursera, LinkedIn Learning, or YouTube — invest an hour daily to build competence.  
+- ✍️ Use the STAR method (Situation, Task, Action, Result) to detail accomplishments clearly.  
+- 🪞 Reflect missing skills naturally in your summary and bullet points.  
+- 💼 Add project links or GitHub repos for tech roles; emphasize measurable achievements for others.  
+- 🎨 Tailor resume style to fit your industry — polished yet authentic.
+    """)
 
     st.info("""
-    **Insight:** Continuous learning and resume refinement create a strong hiring profile.  
-    **Advice:** Small consistent efforts compound into big results; set weekly learning goals.  
-    **Feedback:** Don’t hesitate to seek mentorship or peer review to polish your presentation.
+    Continuous learning and resume refinement create a strong hiring profile.  
+    Set weekly learning goals and seek peer reviews to polish your presentation.
     """)
 
 # === TAB 5: TRENDS & INSIGHTS ===
 with tabs[4]:
     st.header("Trends & Insights")
-    st.write("""
-    Stay informed on broader hiring trends related to education, fields of study, and certifications.  
-    This helps you anticipate market demands and adjust your career strategy proactively.  
-    Data-backed insights make it easier to understand what works well across the board and where to specialize.
-    """)
 
     avg_score_by_edu = df.groupby("EducationLevel")["AI_MatchScore"].mean().sort_values()
     st.subheader("Average Match Score by Education Level")
-    st.bar_chart(avg_score_by_edu)
+    fig_bar_edu = px.bar(avg_score_by_edu, orientation='h', template="seaborn",
+                        labels={"value":"Avg. Match Score", "index":"Education Level"})
+    st.plotly_chart(fig_bar_edu, use_container_width=True)
 
     top_fields = df.groupby("FieldOfStudy")["AI_MatchScore"].mean().sort_values(ascending=False).head(10)
     st.subheader("Top Performing Fields of Study")
-    st.bar_chart(top_fields)
+    fig_bar_fields = px.bar(top_fields, title="Best Fields by Resume Match", template="seaborn")
+    st.plotly_chart(fig_bar_fields, use_container_width=True)
 
     certs = df['Certifications'].dropna().str.split(', ').explode().value_counts().head(10)
     st.subheader("Popular Certifications")
-    st.bar_chart(certs)
+    fig_bar_certs = px.bar(certs, template="seaborn")
+    st.plotly_chart(fig_bar_certs, use_container_width=True)
 
-    st.info("""
-    **Insight:** Higher education levels and relevant certifications correlate with stronger match scores.  
-    **Advice:** Consider certifications that align with your field to boost your profile.  
-    **Feedback:** Regularly update your skills and credentials to stay competitive.
+    st.success("""
+    Higher education levels and relevant certifications correlate with stronger match scores.  
+    Consider certifications that align with your field and regularly update skills to stay competitive.
     """)
 
 # === TAB 6: DOWNLOAD REPORT ===
 with tabs[5]:
     st.header("Download Your Report")
-    st.write("""
-    This section allows you to download a personalized summary report of your resume analysis and tailored suggestions.  
-    Use this document to track your growth, share with mentors, or revisit your next steps anytime.  
-    Regularly updating this report keeps your career planning focused and proactive.
-    """)
 
     text = f"""
 Job Snob Resume Report
@@ -302,16 +324,20 @@ Stay consistent and keep updating!
     st.download_button("📄 Download Report as TXT", data=text, file_name="job_snob_report.txt", mime="text/plain")
 
     st.info("""
-    Reminder: Keep this report as a living document. Revisit it after every learning milestone or job application round to measure progress and adjust your strategy accordingly.
+    Keep this report as a living document. Revisit it after every learning milestone or job application round to measure progress and adjust your strategy accordingly.
     """)
 
-    st.write("""
-    Closing this app session, remember that your career is a journey—embrace learning, adapt wisely, and keep your ambitions aligned with actionable insights.
-    """)
-
-# Footer
+# --- Conclusive statement (above footer) ---
 st.markdown("""
-<div class="footer">
-© 2025 Job Snob | Built with ❤️ using Streamlit
+<div class="conclusion-box">
+    Remember, your career is a journey — embrace continuous learning, adapt wisely, and let data-driven insights be your trusted mentor along the way.  
+    Here’s to your confident and thriving professional future with Job Snob by your side!
+</div>
+""", unsafe_allow_html=True)
+
+# --- Footer ---
+st.markdown("""
+<div style="text-align:center; margin-top: 2rem; font-size: 0.9rem; color: #666;">
+    © 2025 Job Snob | Built with ❤️ using Streamlit
 </div>
 """, unsafe_allow_html=True)
