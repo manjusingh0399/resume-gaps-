@@ -49,6 +49,9 @@ st.markdown("""
             <div class="quote-box">
                 “Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
 
+  </div>
+        </div>
+    """, unsafe_allow_html=True)
 
 # Load dataset
 @st.cache_data
