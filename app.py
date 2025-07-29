@@ -3,13 +3,35 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import matplotlib.pyplot as plt
-import seaborn as sns
 import io
 
 # Page config
 st.set_page_config(page_title="Resume vs Reality", layout="wide")
-st.title("📄 Resume vs Reality: Which Skills Actually Help You Get Hired?")
+st.markdown("""
+<style>
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    h1, h2, h3 {
+        color: #2e2e2e;
+    }
+    .stTabs [role="tab"] {
+        background-color: #f1f3f6;
+        border-radius: 10px;
+        padding: 0.75rem 1.5rem;
+        margin-right: 0.5rem;
+        font-weight: bold;
+    }
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(90deg, #60a5fa, #3b82f6);
+        color: white;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.title("📄 Resume vs Reality")
+st.caption("Let your resume speak reality, not just aspiration.")
 
 # Load dataset
 @st.cache_data
@@ -18,49 +40,66 @@ def load_data():
 
 df = load_data()
 
-# Tabs for navigation
+# Tabs
 tabs = st.tabs(["📝 Resume Overview", "📈 Market Comparison", "📊 Match Score", "💡 Suggestions", "📥 Download Report"])
 
 # --- Tab 0: Resume Overview ---
 with tabs[0]:
-    st.header("📝 Resume Overview")
+    st.subheader("📝 Resume Overview")
     resume_ids = df["ResumeID"].unique()
-    selected_resume = st.selectbox("Choose a Resume ID", resume_ids)
+    selected_resume = st.selectbox("🎯 Choose a Resume ID to Analyze", resume_ids)
     resume_data = df[df["ResumeID"] == selected_resume].iloc[0]
 
-    st.markdown(f"""
-    - **Age:** {resume_data['Age']}  
-    - **Education Level:** {resume_data['EducationLevel']}  
-    - **Field of Study:** {resume_data['FieldOfStudy']}  
-    - **Applied Job:** {resume_data['JobAppliedFor']}  
-    - **Resume Style:** {resume_data['ResumeStyle']}  
-    - **GenZ Traits:** {resume_data['GenZ_Trait_Tags']}  
-    - **Certifications:** {resume_data['Certifications']}  
-    """)
+    st.markdown("""
+    <div style='background-color:#f0f4ff;padding:20px;border-radius:10px'>
+    <h4>📌 Resume Summary</h4>
+    <ul>
+      <li><b>Age:</b> {}</li>
+      <li><b>Education Level:</b> {}</li>
+      <li><b>Field of Study:</b> {}</li>
+      <li><b>Applied Job:</b> {}</li>
+      <li><b>Resume Style:</b> {}</li>
+      <li><b>GenZ Traits:</b> {}</li>
+      <li><b>Certifications:</b> {}</li>
+    </ul>
+    </div>
+    """.format(
+        resume_data['Age'], resume_data['EducationLevel'], resume_data['FieldOfStudy'],
+        resume_data['JobAppliedFor'], resume_data['ResumeStyle'], resume_data['GenZ_Trait_Tags'], resume_data['Certifications']
+    ), unsafe_allow_html=True)
 
-    st.markdown("### 🧰 Skills in Resume")
-    st.write(resume_data["SkillsListed"].split(", "))
-
-    st.markdown("### 🧠 Skills Required by Job")
-    st.write(resume_data["JobPostingSkillsRequired"].split(", "))
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("### 🧰 Skills in Resume")
+        st.write(resume_data["SkillsListed"].split(", "))
+    with col2:
+        st.markdown("### 🧠 Skills Required by Job")
+        st.write(resume_data["JobPostingSkillsRequired"].split(", "))
 
 # --- Tab 1: Market Comparison ---
 with tabs[1]:
-    st.header("📈 Market Comparison")
+    st.subheader("📈 Market Comparison")
 
-    domain_scores = df.groupby("Domain")["AI_MatchScore"].mean().sort_values()
-    st.subheader("🔍 Average AI Match Score by Domain")
-    fig, ax = plt.subplots()
-    sns.barplot(x=domain_scores.values, y=domain_scores.index, ax=ax)
-    st.pyplot(fig)
+    domain_scores = df.groupby("Domain")["AI_MatchScore"].mean().sort_values().reset_index()
+    fig = px.bar(
+        domain_scores,
+        x="AI_MatchScore", y="Domain",
+        orientation="h",
+        title="🔍 Average AI Match Score by Domain",
+        color="AI_MatchScore",
+        color_continuous_scale="Blues"
+    )
+    st.plotly_chart(fig, use_container_width=True)
 
     st.subheader("📌 Most Common Top Skill Gaps")
-    top_gaps = df["TopSkillGap"].value_counts().head(10)
-    st.bar_chart(top_gaps)
+    top_gaps = df["TopSkillGap"].value_counts().head(10).reset_index()
+    top_gaps.columns = ["Skill", "Count"]
+    fig2 = px.bar(top_gaps, x="Count", y="Skill", orientation="h", title="Top 10 Skill Gaps", color="Count")
+    st.plotly_chart(fig2, use_container_width=True)
 
 # --- Tab 2: Match Score Breakdown ---
 with tabs[2]:
-    st.header("📊 Resume vs Market Match Score")
+    st.subheader("📊 Resume vs Market Match Score")
 
     skills_present = len(resume_data["SkillsListed"].split(", "))
     skills_required = len(resume_data["JobPostingSkillsRequired"].split(", "))
@@ -79,24 +118,24 @@ with tabs[2]:
 
 # --- Tab 3: Suggestions ---
 with tabs[3]:
-    st.header("💡 Mentor Suggestions")
+    st.subheader("💡 Mentor Suggestions")
     gap = resume_data['TopSkillGap']
-    st.markdown(f"### 🚀 Suggestions for Resume ID: {selected_resume}")
+    st.markdown(f"### 🚀 Personalized Tips for Resume ID: {selected_resume}")
 
     if gap != 'None':
-        st.warning(f"Top Skill Gap: **{gap}**. Consider learning it via free resources like Coursera or YouTube.")
+        st.warning(f"🔧 Top Skill Gap: **{gap}**. Consider learning it via free platforms like Coursera or YouTube.")
     else:
-        st.success("No major skill gaps! You're doing great!")
+        st.success("✅ No major skill gaps! You're doing great!")
 
     style = resume_data["ResumeStyle"]
     if style == "Minimalist":
-        st.info("✅ Your resume style is clean. Make sure it also stands out.")
+        st.info("🎨 Your resume style is clean. Make sure it also stands out visually.")
     elif style == "Infographic":
-        st.warning("⚠️ Infographic resumes are trendy but sometimes ATS-unfriendly.")
+        st.warning("⚠️ Infographic resumes look great, but be cautious — ATS systems may not parse them correctly.")
 
 # --- Tab 4: Download Report ---
 with tabs[4]:
-    st.header("📥 Export Results")
+    st.subheader("📥 Export Your Report")
     if st.button("📥 Download My Resume Report"):
         result_text = f"""
         Resume ID: {resume_data['ResumeID']}
