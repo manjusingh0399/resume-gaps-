@@ -1,3 +1,4 @@
+# app.py
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -26,6 +27,21 @@ st.markdown("""
         background: linear-gradient(90deg, #60a5fa, #3b82f6);
         color: white;
     }
+    .welcome-container {
+        background: linear-gradient(to right, #e0f7fa, #e8f5e9);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        margin-bottom: 2rem;
+    }
+    .quote-box {
+        background-color: #fff8e1;
+        padding: 1rem;
+        border-left: 5px solid #ffd54f;
+        border-radius: 8px;
+        font-style: italic;
+        margin-top: 1.5rem;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -38,45 +54,54 @@ def load_data():
 df = load_data()
 
 # --- Welcome Tab ---
-st.title("🎯 Welcome to Resume vs Reality")
 st.markdown("""
-### 📚 What is this?
-This isn’t your typical boring career tool. **This app is your brutally honest best friend (with data)** — part career mirror, part mentor, part motivational chaos. 
+<div class="welcome-container">
+<h1>💼 Welcome to <span style='color:#3b82f6'>Resume vs Reality</span></h1>
+<h3>Your sassy, smart career wingwoman. 💁‍♀️</h3>
+<p>
+Ever stared at your resume wondering, "Will this get me hired or ghosted?" <br>
+You're not alone — and you're not going in blind anymore.
+</p>
+<p>
+This app compares your resume to real job market data and gives you blunt-but-loving advice (like a slightly judgy older sister who just wants to see you win).
+</p>
+</div>
+""", unsafe_allow_html=True)
 
-Every Gen Z'er knows that applying for jobs is stressful, confusing, and often filled with conflicting advice. This app is here to cut through the noise.
-
-We help you:
-- Compare your resume to **real job market data**
-- Spot what’s missing (without making you feel bad about it)
-- Show you how others with similar profiles are getting hired
-- Offer warm, witty advice — because your career deserves clarity AND compassion
-
----
-
-### 💡 How to Use This App
-1. **👤 Profile Snapshot** – Pick a resume, see what it’s got. Skills, job applied, resume style, etc.
-2. **📈 Market Comparison** – What’s hot in your domain? See demand & gaps.
-3. **📊 Match Score** – A radar score of how close you are to your dream job.
-4. **💡 Suggestions** – Actionable advice, learning tips, resume feedback.
-5. **📥 Download Report** – Download all insights to keep or share.
-
----
-
-### ✨ What You’ll Take Away
-- A **clearer understanding** of how well your resume aligns with industry needs
-- A list of **skills you may want to learn** (backed by actual hiring data)
-- Tips on **resume styling and keyword usage** that hiring managers love
-- A boost in **clarity and confidence** to chase the roles you deserve
+st.markdown("""
+### 🔍 What is This App Really?
+- 💥 **Mirror meets mentor**: Know what your resume says *and* what it’s missing.
+- 🔍 **Resume vs Job Data**: We pull trends across domains — what gets people hired, what you’re lacking, what you need to add.
+- 💬 **Witty, real-world advice**: Because the job hunt doesn’t need to be a soul-sucking scroll.
 
 ---
 
-> "Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things."
+### 🛠️ How to Use This App
+1. **👤 Profile Snapshot** – Upload or select a sample resume. Get the overview.
+2. **📈 Market Comparison** – How does your resume stand in your chosen field?
+3. **📊 Match Score** – Visual breakdown of how close you are to ideal profiles.
+4. **💡 Suggestions** – Helpful, no-BS advice to close skill and keyword gaps.
+5. **📥 Download Report** – Save your growth map as a TXT report.
 
-Now let’s dive in like the world is yours, because honestly? It is 💁‍♀️
+---
+
+### 🎁 What You'll Walk Away With
+- 🔎 **Insights that matter** — no more guessing what to fix.
+- 🧠 **Understanding your job-readiness** like a hiring manager would.
+- 📌 **Skill roadmaps** based on what others got hired for.
+- 💪 **Confidence** that comes from clarity.
+
+<div class="quote-box">
+“Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
+</div>
+
+🚀 Ready? Let’s build a resume that doesn’t just talk — it lands you offers.
 """)
 
 # Tabs
 tabs = st.tabs(["👤 Profile Snapshot", "📈 Market Comparison", "📊 Match Score", "💡 Suggestions", "📥 Download Report"])
+
+# ... (existing tab content remains unchanged below)
 
 
 # --- Tab 0: Profile Snapshot ---
