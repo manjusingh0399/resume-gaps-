@@ -15,10 +15,33 @@ def load_data():
 df = load_data()
 
 # Tabs for navigation
-tabs = st.tabs(["🏠 Welcome", "📊 Insights Dashboard", "📁 Resume Analyzer", "🎓 Ideal Resumes", "🧠 Career Mentor", "📥 Download Report"])
+tabs = st.tabs(["📘 Instructions", "🏠 Welcome", "📊 Insights Dashboard", "📁 Resume Analyzer", "🎓 Ideal Resumes", "🧠 Career Mentor", "📥 Download Report"])
+
+# --- Tab 0: Instructions Page ---
+with tabs[0]:
+    st.header("📘 How to Use This App")
+    st.markdown("""
+    This web app is designed to help Gen Z job seekers understand how their resumes align with real-world hiring expectations.
+
+    ### 👉 Step-by-Step Guide:
+    1. **🏠 Welcome Tab**: Learn about the purpose of the app and explore key monologues.
+    2. **📊 Insights Dashboard**: Use filters to view hiring trends, skill gaps, and match scores by domain.
+    3. **📁 Resume Analyzer**: Paste your resume text and compare it with a real job description to get an AI-based match score.
+    4. **🎓 Ideal Resumes**: Browse curated examples of high and low performing resumes by role.
+    5. **🧠 Career Mentor**: Enter your current skills to get suggestions for best-fit roles and missing skills.
+    6. **📥 Download Report**: Export all the resume-market data to CSV for personal analysis or reports.
+
+    ### 💡 Tips for Best Use:
+    - Keep resume text simple and keyword-rich for better parsing.
+    - Explore multiple roles to understand trends across domains.
+    - Use insights to tailor your resume or skill development.
+
+    ---
+    ✅ *This app is your data-powered career buddy. Navigate at your pace, and let the insights guide you.*
+    """)
 
 # --- Tab 1: Welcome Page ---
-with tabs[0]:
+with tabs[1]:
     st.header("Welcome to Resume vs Reality")
     st.markdown("""
     > *“We all build resumes hoping they reflect our potential. But behind every hiring decision lies a pattern. This project is a search for those patterns — an exploration of the gap between what we write and what employers value.”*
@@ -27,7 +50,7 @@ with tabs[0]:
     st.image("https://images.unsplash.com/photo-1549924231-f129b911e442", use_column_width=True)
 
 # --- Tab 2: Insights Dashboard ---
-with tabs[1]:
+with tabs[2]:
     st.header("📊 Dashboard: Explore Resume Trends")
 
     col1, col2 = st.columns(2)
@@ -50,7 +73,7 @@ with tabs[1]:
     st.markdown("**Key Insight:** SQL and React were the most common missing skills in business and tech roles.")
 
 # --- Tab 3: Resume Analyzer ---
-with tabs[2]:
+with tabs[3]:
     st.header("📁 Resume Analyzer")
     uploaded_text = st.text_area("Paste your resume text here:")
     job_role = st.selectbox("Select a Job Role to Compare With:", df["JobAppliedFor"].unique())
@@ -74,7 +97,7 @@ with tabs[2]:
             st.error("Significant skill gap. Consider upskilling.")
 
 # --- Tab 4: Ideal Resume Library ---
-with tabs[3]:
+with tabs[4]:
     st.header("🎓 Ideal Resume Gallery")
     st.markdown("**Explore ideal resume examples for various roles:**")
 
@@ -96,7 +119,7 @@ with tabs[3]:
         """)
 
 # --- Tab 5: Career Mentor ---
-with tabs[4]:
+with tabs[5]:
     st.header("🧠 Career Mentor")
     user_skills = st.text_input("List your current skills (comma separated):")
 
@@ -116,7 +139,7 @@ with tabs[4]:
         st.info("**Tip:** Build depth in your best-matched field. Add key certifications to boost visibility.")
 
 # --- Tab 6: Download Report ---
-with tabs[5]:
+with tabs[6]:
     st.header("📥 Download Report")
     st.markdown("You can download your session summary and insight data.")
     st.download_button("Download Sample Data CSV", data=df.to_csv(index=False), file_name="genz_resume_data.csv")
