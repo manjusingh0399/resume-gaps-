@@ -46,7 +46,6 @@ st.markdown("""
 
 # Load dataset
 @st.cache_data
-
 def load_data():
     return pd.read_csv("genz_resume_market_data.csv")
 
@@ -161,16 +160,34 @@ with tabs[2]:
 with tabs[3]:
     st.header("💡 Suggestions from Your Career Sister")
     gap = resume_data['TopSkillGap']
-    if gap != 'None':
-        st.warning(f"📌 You’re missing: **{gap}**. Try Coursera, LinkedIn Learning, or YouTube tutorials.")
-    else:
-        st.success("🌟 No major skill gaps! Keep up the great work.")
+    advices = [
+        f"1. 📘 Learn **{gap}** from platforms like Coursera or freeCodeCamp. Start with beginner-friendly projects.",
+        "2. 💬 Use quantifiable metrics in your achievements: Instead of 'handled social media', say 'Grew Instagram engagement by 40% in 2 months'.",
+        "3. 🧠 Tailor every resume to the job description. Use keywords from the JD — it’s not cheating, it’s smart marketing.",
+        "4. 🎯 Add a summary section that clearly states your intent and what makes you a match for the role.",
+        "5. 🚀 Build a portfolio site. Even a Notion or Canva link with project summaries makes a difference."
+    ]
+    
+    for advice in advices:
+        st.markdown(advice)
 
     style = resume_data["ResumeStyle"]
     if style == "Minimalist":
-        st.info("✅ Your resume is clean. Consider adding personal branding elements.")
+        st.info("✅ Your resume is clean. Consider adding a touch of color or bold keywords for visibility.")
     elif style == "Infographic":
-        st.warning("⚠️ Infographics can be ATS-unfriendly. Save it for creative roles.")
+        st.warning("⚠️ Infographic resumes are fun but can confuse ATS bots. Consider having a plain version too.")
+
+    st.markdown("---")
+    st.markdown("""
+**👀 Perspective Shift:**
+
+Stop thinking of your resume as a biography — it’s a brochure. You’re the product. Sell the value you bring, not just your history.
+
+**Next Steps:**
+- Pick one gap to work on this week.
+- Revisit your resume after every course/project.
+- Reflect: Would *you* hire someone with your resume?
+    """)
 
 # Tab 5: Download Report
 with tabs[4]:
@@ -180,8 +197,16 @@ Resume ID: {resume_data['ResumeID']}
 Match Score: {ai_score}/100
 Skill Gap: {gap}
 Style: {style}
-Suggested Improvement: Learn {gap} and improve formatting for ATS if needed.
-"""
+
+Top Suggestions:
+- Learn {gap} via online platforms.
+- Quantify your achievements.
+- Tailor your resume to the JD.
+- Add a summary/profile section.
+- Build a project portfolio.
+
+Perspective: Your resume is a marketing tool, not a life story.
+    """
     st.download_button(
         label="Download TXT Report",
         data=result_text,
