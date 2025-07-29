@@ -35,19 +35,19 @@ st.markdown("""
 st.markdown("""
 <div style='background: linear-gradient(to right, #fffde7, #ffe0b2); padding: 2rem; border-radius: 15px; box-shadow: 0 2px 12px rgba(0,0,0,0.04);'>
     <h1 style='text-align:center; color: #5d4037;'>🌞 Welcome to <em>The Resume Reflection Room</em></h1>
-    <p style='text-align:center; font-size: 1.15rem;'>This isn't just a tool — it's your personal space to reflect, realign, and rethink your resume's message and market fit.</p>
-    <p style='text-align:center;'>Think of this as your cozy consultation room — a place where data meets compassion, and your profile meets possibility.</p>
-    <p style='text-align:center;'>We're not here to grade or judge — we're here to unpack, discover, and gently guide.</p>
-    <ul style='font-size: 1.05rem;'>
-        <li>🪞 <strong>Mirror your truth:</strong> What story does your resume tell — and what stories is it missing?</li>
-        <li>📊 <strong>Reveal the real gap:</strong> Match your resume to market standards in a non-intimidating way.</li>
-        <li>🧭 <strong>Get gentle guidance:</strong> Insightful, actionable advice based on actual hiring data.</li>
-        <li>💛 <strong>Build better, not harder:</strong> Whether you’re a fresh grad or career switcher, this room welcomes you in.</li>
-    </ul>
-    <blockquote style='background:#fff3e0; padding:1rem; border-left:5px solid #f9a825; border-radius:8px; font-style: italic;'>“You are not behind — you’re just at the beginning of a better alignment.”</blockquote>
-</div>
-""", unsafe_allow_html=True)
-
+   <p>Ever stared at your resume wondering, "Will this get me hired or ghosted?" You're not alone — and you're not going in blind anymore.</p>
+            <p><strong>We all build resumes hoping they reflect our potential.</strong> But behind every hiring decision lies a pattern. This project is a search for those patterns — an exploration of the gap between what we write and what employers value.</p>
+            <p>I'm <strong>Manju Singh</strong>, an MBA student and a job seeker like you. I’ve been through the anxious nights of tweaking resumes, unsure if my skills are enough. This app is my way of turning that uncertainty into clarity — a light in the dark for all of us navigating today’s job market.</p>
+            <p>With real data, interactive visuals, and a touch of empathy, <em>Resume vs Reality</em> is your personal career mentor. It doesn’t just show you the gap — it helps you bridge it. Let’s turn guesswork into guidance, and doubt into direction. 🌱</p>
+            <p><strong>Here’s what you’ll discover:</strong></p>
+            <ul style="text-align: left; max-width: 800px; margin: auto;">
+                <li>💥 <strong>Mirror meets mentor:</strong> Know what your resume says <em>and</em> what it’s missing.</li>
+                <li>🎯 <strong>Target your goals:</strong> Understand what job listings actually prioritize.</li>
+                <li>🧠 <strong>Get real feedback:</strong> Actionable advice based on <em>real</em> market data.</li>
+                <li>🌈 <strong>Grow with guidance:</strong> Personalized suggestions to help you level up fast.</li>
+            </ul>
+            <div class="quote-box">
+                “Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
 
 
 # Load dataset
