@@ -6,6 +6,8 @@ import plotly.graph_objects as go
 
 # Page config
 st.set_page_config(page_title="Resume vs Reality", layout="wide")
+
+# Custom CSS styles
 st.markdown("""
 <style>
     .block-container {
@@ -47,6 +49,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# Welcome message section
 with st.container():
     st.markdown("""
         <div class="welcome-container">
@@ -62,8 +65,11 @@ with st.container():
         </div>
     """, unsafe_allow_html=True)
 
-# Load dataset
+# Load dataset (Correct placement of decorator)
 @st.cache_data
+
+def load_data():
+    return pd.read_csv("genz_resume_market_data.csv")
 
 
 
