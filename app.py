@@ -49,57 +49,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# app.py
-import streamlit as st
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-
-# Page config
-st.set_page_config(page_title="Resume vs Reality", layout="wide")
-
-# Custom CSS styles
-st.markdown("""
-<style>
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
-    h1, h2, h3 {
-        color: #2e2e2e;
-    }
-    .stTabs [role="tab"] {
-        background-color: #f1f3f6;
-        border-radius: 10px;
-        padding: 0.75rem 1.5rem;
-        margin-right: 0.5rem;
-        font-weight: bold;
-    }
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(90deg, #60a5fa, #3b82f6);
-        color: white;
-    }
-    .welcome-container {
-        background: linear-gradient(to right, #e0f7fa, #e8f5e9);
-        border-radius: 15px;
-        padding: 2rem;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        margin-bottom: 2rem;
-        font-family: 'DM Sans', sans-serif;
-        text-align: center;
-    }
-    .quote-box {
-        background-color: #fff8e1;
-        padding: 1rem;
-        border-left: 5px solid #ffd54f;
-        border-radius: 8px;
-        font-style: italic;
-        margin-top: 1.5rem;
-        font-size: 1.05rem;
-    }
-</style>
-""", unsafe_allow_html=True)
-
 # Welcome message section
 with st.container():
     st.markdown("""
@@ -110,6 +59,13 @@ with st.container():
             <p><strong>We all build resumes hoping they reflect our potential.</strong> But behind every hiring decision lies a pattern. This project is a search for those patterns — an exploration of the gap between what we write and what employers value.</p>
             <p>I'm <strong>Manju Singh</strong>, an MBA student and a job seeker like you. I’ve been through the anxious nights of tweaking resumes, unsure if my skills are enough. This app is my way of turning that uncertainty into clarity — a light in the dark for all of us navigating today’s job market.</p>
             <p>With real data, interactive visuals, and a touch of empathy, <em>Resume vs Reality</em> is your personal career mentor. It doesn’t just show you the gap — it helps you bridge it. Let’s turn guesswork into guidance, and doubt into direction. 🌱</p>
+            <p><strong>Here’s what you’ll discover:</strong></p>
+            <ul style="text-align: left; max-width: 800px; margin: auto;">
+                <li>💥 <strong>Mirror meets mentor:</strong> Know what your resume says <em>and</em> what it’s missing.</li>
+                <li>🎯 <strong>Target your goals:</strong> Understand what job listings actually prioritize.</li>
+                <li>🧠 <strong>Get real feedback:</strong> Actionable advice based on <em>real</em> market data.</li>
+                <li>🌈 <strong>Grow with guidance:</strong> Personalized suggestions to help you level up fast.</li>
+            </ul>
             <div class="quote-box">
                 “Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
             </div>
@@ -118,12 +74,12 @@ with st.container():
 
 # Load dataset (Correct placement of decorator)
 @st.cache_data
+
 def load_data():
     return pd.read_csv("genz_resume_market_data.csv")
 
 # Load the dataset
 df = load_data()
-""", unsafe_allow_html=True)
 
 with st.expander("🔍 What is This App Really About?"):
     st.markdown("""
