@@ -183,4 +183,10 @@ Skill Gap: {gap}
 Style: {style}
 Suggested Improvement: Learn {gap} and improve formatting for ATS if needed.
 """
-    st.download_button("Download TXT Report", data=io.StringIO(result_text), file_name="resume_vs_reality_report.txt")
+   st.download_button(
+    label="Download TXT Report",
+    data=result_text,
+    file_name="resume_vs_reality_report.txt",
+    mime="text/plain"
+)
+
