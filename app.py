@@ -33,6 +33,7 @@ st.markdown("""
         box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         margin-bottom: 2rem;
         font-family: 'DM Sans', sans-serif;
+        text-align: center;
     }
     .quote-box {
         background-color: #fff8e1;
@@ -41,6 +42,7 @@ st.markdown("""
         border-radius: 8px;
         font-style: italic;
         margin-top: 1.5rem;
+        font-size: 1.05rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -48,7 +50,9 @@ st.markdown("""
 with st.container():
     st.markdown("""
         <div class="welcome-container">
-            <h1 style="color:#6A0DAD; font-size: 2.2rem; margin-bottom: 0.5rem;">✨ Welcome to <em>Resume vs Reality</em></h1>
+            <h1 style="color:#6A0DAD; font-size: 2.2rem; margin-bottom: 0.5rem;">💼 Welcome to <em>Resume vs Reality</em></h1>
+            <p><strong>Your sassy, smart career wingwoman. 💅‍♂️</strong></p>
+            <p>Ever stared at your resume wondering, "Will this get me hired or ghosted?" You're not alone — and you're not going in blind anymore.</p>
             <p><strong>We all build resumes hoping they reflect our potential.</strong> But behind every hiring decision lies a pattern. This project is a search for those patterns — an exploration of the gap between what we write and what employers value.</p>
             <p>I'm <strong>Manju Singh</strong>, an MBA student and a job seeker like you. I’ve been through the anxious nights of tweaking resumes, unsure if my skills are enough. This app is my way of turning that uncertainty into clarity — a light in the dark for all of us navigating today’s job market.</p>
             <p>With real data, interactive visuals, and a touch of empathy, <em>Resume vs Reality</em> is your personal career mentor. It doesn’t just show you the gap — it helps you bridge it. Let’s turn guesswork into guidance, and doubt into direction. 🌱</p>
@@ -61,6 +65,9 @@ with st.container():
 # Load dataset
 @st.cache_data
 
+
+
+df = load_data()
 def load_data():
     return pd.read_csv("genz_resume_market_data.csv")
 
