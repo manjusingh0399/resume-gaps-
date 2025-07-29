@@ -49,6 +49,57 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# app.py
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+
+# Page config
+st.set_page_config(page_title="Resume vs Reality", layout="wide")
+
+# Custom CSS styles
+st.markdown("""
+<style>
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    h1, h2, h3 {
+        color: #2e2e2e;
+    }
+    .stTabs [role="tab"] {
+        background-color: #f1f3f6;
+        border-radius: 10px;
+        padding: 0.75rem 1.5rem;
+        margin-right: 0.5rem;
+        font-weight: bold;
+    }
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(90deg, #60a5fa, #3b82f6);
+        color: white;
+    }
+    .welcome-container {
+        background: linear-gradient(to right, #e0f7fa, #e8f5e9);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        margin-bottom: 2rem;
+        font-family: 'DM Sans', sans-serif;
+        text-align: center;
+    }
+    .quote-box {
+        background-color: #fff8e1;
+        padding: 1rem;
+        border-left: 5px solid #ffd54f;
+        border-radius: 8px;
+        font-style: italic;
+        margin-top: 1.5rem;
+        font-size: 1.05rem;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # Welcome message section
 with st.container():
     st.markdown("""
@@ -67,31 +118,11 @@ with st.container():
 
 # Load dataset (Correct placement of decorator)
 @st.cache_data
-
 def load_data():
     return pd.read_csv("genz_resume_market_data.csv")
 
-
-
+# Load the dataset
 df = load_data()
-def load_data():
-    return pd.read_csv("genz_resume_market_data.csv")
-
-df = load_data()
-
-# --- Welcome Tab ---
-st.markdown("""
-<div class="welcome-container">
-<h1>💼 Welcome to <span style='color:#3b82f6'>Resume vs Reality</span></h1>
-<h3>Your sassy, smart career wingwoman. 💅‍♂️</h3>
-<p>
-Ever stared at your resume wondering, "Will this get me hired or ghosted?" <br>
-You're not alone — and you're not going in blind anymore.
-</p>
-<p>
-This app compares your resume to real job market data and gives you blunt-but-loving advice (like a slightly judgy older sister who just wants to see you win).
-</p>
-</div>
 """, unsafe_allow_html=True)
 
 with st.expander("🔍 What is This App Really About?"):
