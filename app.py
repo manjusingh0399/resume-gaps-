@@ -13,35 +13,49 @@ st.markdown("""
         body {
             background-color: #fffdf6;
             color: #333333;
-            font-family: 'Georgia', serif;
+            font-family: 'DM Sans', sans-serif;
         }
         .stApp {
             background-color: #fffdf6;
         }
         .stTabs [role="tab"] {
             background-color: #ffedd5;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 0.75rem 1.25rem;
             margin-right: 0.5rem;
             font-weight: bold;
             color: #4e342e;
+            transition: all 0.3s ease-in-out;
         }
         .stTabs [aria-selected="true"] {
-            background: linear-gradient(90deg, #ffe0b2, #ffd180);
+            background: linear-gradient(90deg, #ffe0b2, #ffcc80);
             color: black;
-            box-shadow: 0px 0px 8px rgba(255, 183, 77, 0.7);
+            box-shadow: 0px 0px 10px rgba(255, 183, 77, 0.8);
         }
         .stProgress > div > div > div > div {
             background-color: #fbc687 !important;
+        }
+        .glow {
+            color: #ff9100;
+            text-shadow: 0 0 10px #ffd54f, 0 0 20px #ffca28;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
     </style>
 """, unsafe_allow_html=True)
 
 # Welcome Header & Intro Section
 st.markdown("""
-<div style='background: linear-gradient(to right, #fffde7, #ffe0b2); padding: 2rem; border-radius: 15px; box-shadow: 0 2px 12px rgba(0,0,0,0.04);'>
-    <h1 style='text-align:center; color: #5d4037;'>🎯 Job Snob</h1>
-    <p style='text-align:center; font-size: 1.1rem;'><em>Where Resumes Meet Reality</em></p>
+<div class='glass-card'>
+    <h1 style='text-align:center;' class='glow'>🎯 Job Snob</h1>
+    <p style='text-align:center; font-size: 1.2rem;'><em>Where Resumes Meet Reality</em></p>
     <p style='text-align:center;'>Navigating today’s job market can feel overwhelming, especially when you're unsure whether your skills are actually what employers want.</p>
     <p style='text-align:center;'>That’s where <strong>Job Snob</strong> steps in — a smart, stylish career companion built to decode the truth behind what gets you hired.</p>
     <p style='text-align:center;'>With real-time insights, role-matching analytics, and resume diagnostics, this app helps you bridge the gap between what you have and what you need.</p>
