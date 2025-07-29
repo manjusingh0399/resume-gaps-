@@ -31,7 +31,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.title("📄 Resume vs Reality")
-st.caption("Let your resume speak reality, not just aspiration.")
+st.caption("Think of this like your older sister giving you the real talk — honest, loving, and full of solid advice.")
 
 # Load dataset
 @st.cache_data
@@ -42,44 +42,57 @@ def load_data():
 df = load_data()
 
 # Tabs
-tabs = st.tabs(["📝 Resume Overview", "📈 Market Comparison", "📊 Match Score", "💡 Suggestions", "📥 Download Report"])
+tabs = st.tabs(["👤 Profile Snapshot", "📈 Market Comparison", "📊 Match Score", "💡 Suggestions", "📥 Download Report"])
 
-# --- Tab 0: Resume Overview ---
+# --- Tab 0: Profile Snapshot ---
 with tabs[0]:
-    st.subheader("📝 Resume Overview")
+    st.subheader("👤 Profile Snapshot")
     resume_ids = df["ResumeID"].unique()
-    selected_resume = st.selectbox("🎯 Choose a Resume ID to Analyze", resume_ids)
+    selected_resume = st.selectbox("🎯 Select a Resume ID to Explore", resume_ids)
     resume_data = df[df["ResumeID"] == selected_resume].iloc[0]
 
-    st.markdown("""
-    <div style='background-color:#f0f4ff;padding:20px;border-radius:10px'>
-    <h4>📌 Resume Summary</h4>
-    <ul>
-      <li><b>Age:</b> {}</li>
-      <li><b>Education Level:</b> {}</li>
-      <li><b>Field of Study:</b> {}</li>
-      <li><b>Applied Job:</b> {}</li>
-      <li><b>Resume Style:</b> {}</li>
-      <li><b>GenZ Traits:</b> {}</li>
-      <li><b>Certifications:</b> {}</li>
-    </ul>
-    </div>
-    """.format(
-        resume_data['Age'], resume_data['EducationLevel'], resume_data['FieldOfStudy'],
-        resume_data['JobAppliedFor'], resume_data['ResumeStyle'], resume_data['GenZ_Trait_Tags'], resume_data['Certifications']
-    ), unsafe_allow_html=True)
+    st.markdown("### 💼 Quick Glance")
+    st.write("Let’s break this down like your favorite sibling explaining what matters — quick, honest, and always with your best interest in mind.")
 
-    st.markdown(f"### 🧠 Insight:")
-    st.info(f"This candidate is applying for **{resume_data['JobAppliedFor']}** with a background in **{resume_data['FieldOfStudy']}**. Let's see how their skills match the market.")
+    col1, col2, col3 = st.columns([1,1,1])
+    with col1:
+        st.metric("🎓 Education Level", resume_data['EducationLevel'])
+        st.metric("🧠 Gen Z Traits", resume_data['GenZ_Trait_Tags'])
+    with col2:
+        st.metric("📌 Applied Role", resume_data['JobAppliedFor'])
+        st.metric("📑 Resume Style", resume_data['ResumeStyle'])
+    with col3:
+        st.metric("🎯 AI Match Score", f"{resume_data['AI_MatchScore']}/100")
+        st.metric("🎟 Certifications", resume_data['Certifications'])
 
+    st.markdown("---")
+    st.markdown("### 🧬 Field of Study")
+    st.info(f"You’re coming from a background in **{resume_data['FieldOfStudy']}**, which is a solid start for someone aiming to become a {resume_data['JobAppliedFor']}. Let's see if your skills align.")
+
+    st.markdown("### 🧰 Skill Comparison")
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("### 🧰 Skills in Resume")
-        st.write(resume_data["SkillsListed"].split(", "))
+        st.markdown("**✅ Skills You Listed**")
+        st.code("\n".join(resume_data["SkillsListed"].split(", ")))
     with col2:
-        st.markdown("### 🧠 Skills Required by Job")
-        st.write(resume_data["JobPostingSkillsRequired"].split(", "))
+        st.markdown("**📌 Skills the Role Wants**")
+        st.code("\n".join(resume_data["JobPostingSkillsRequired"].split(", ")))
 
+    # Insight and advice block
+    listed = len(resume_data['SkillsListed'].split(', '))
+    required = len(resume_data['JobPostingSkillsRequired'].split(', '))
+    gap = required - listed
+    st.markdown("### 💡 Insight + Big Sis Advice")
+    if gap > 0:
+        st.warning(f"You listed **{listed}** skills, but this role expects around **{required}**. That's a gap of {gap} important ones. Don’t panic — now we know what to fix. This is your growth checklist!")
+        st.info("💬 Tip: Try adding **one skill per project** you've done — be specific. Recruiters love context, not just buzzwords.")
+    elif gap == 0:
+        st.success("You're right on target with skill count! Now make sure they're **quality, not just quantity**. Would an employer *feel* your experience from those words?")
+    else:
+        st.success("You've got more skills listed than required — great! But double-check: Are they relevant to **this** job? Sometimes trimming down is powerful.")
+
+    st.markdown("---")
+    st.markdown("👀 Let’s dive deeper into market trends next. If you were a product, how in-demand would you be?")
 # --- Tab 1: Market Comparison ---
 with tabs[1]:
     st.subheader("📈 Market Comparison")
@@ -95,21 +108,20 @@ with tabs[1]:
     )
     st.plotly_chart(fig, use_container_width=True)
 
-    st.markdown("### 📊 Insight:")
-    st.success("Data and Marketing domains currently show the highest match scores among Gen Z applicants.")
+    st.markdown("### 💬 Big Sis Says:")
+    st.info("🧠 If you're in domains like **Data Science** or **Marketing**, you're in high demand — but competition is fierce. Stay sharp and stay learning.")
 
-    st.subheader("📌 Most Common Top Skill Gaps")
+    st.subheader("📌 Top 10 Skill Gaps Across All Resumes")
     top_gaps = df["TopSkillGap"].value_counts().head(10).reset_index()
     top_gaps.columns = ["Skill", "Count"]
-    fig2 = px.bar(top_gaps, x="Count", y="Skill", orientation="h", title="Top 10 Skill Gaps", color="Count")
+    fig2 = px.bar(top_gaps, x="Count", y="Skill", orientation="h", color="Count", title="Top Skill Gaps in Market")
     st.plotly_chart(fig2, use_container_width=True)
 
-    st.info("These are the most common missing skills across all resumes. Prioritize filling these gaps if you're applying to tech-heavy roles.")
+    st.warning("🔎 Tip: Even one missing key skill can get your resume skipped. Focus on high-frequency gaps first.")
 
 # --- Tab 2: Match Score Breakdown ---
 with tabs[2]:
     st.subheader("📊 Resume vs Market Match Score")
-
     skills_present = len(resume_data["SkillsListed"].split(", "))
     skills_required = len(resume_data["JobPostingSkillsRequired"].split(", "))
     match_score = resume_data["AI_MatchScore"]
@@ -121,42 +133,59 @@ with tabs[2]:
         fill='toself',
         name='Resume Match'
     ))
-
     fig.update_layout(polar=dict(radialaxis=dict(visible=True)), showlegend=False)
     st.plotly_chart(fig)
 
-    st.markdown("### 🔍 Insight:")
-    st.warning(f"You listed **{skills_present}** skills, but **{skills_required}** were expected. Your AI match score is **{match_score}/100**. Focus on aligning more with job expectations.")
+    st.markdown("### 💡 Score Insight")
+    if match_score < 50:
+        st.error("🚨 Your match score is quite low. Let’s work on building stronger, more aligned skill sets.")
+    elif match_score < 75:
+        st.warning("⚠️ You’re getting there! Focus on polishing those 2–3 missing skills.")
+    else:
+        st.success("🎉 Your resume is hitting the mark! Still — there's always room to sparkle more ✨.")
 
 # --- Tab 3: Suggestions ---
 with tabs[3]:
-    st.subheader("💡 Mentor Suggestions")
-    gap = resume_data['TopSkillGap']
-    st.markdown(f"### 🚀 Personalized Tips for Resume ID: {selected_resume}")
+    st.subheader("💡 Suggestions from Your Career Mentor")
+    gap = resume_data["TopSkillGap"]
+    st.markdown(f"### 🔎 Personalized Feedback for Resume ID: {selected_resume}")
 
     if gap != 'None':
-        st.warning(f"🔧 Top Skill Gap: **{gap}**. Consider learning it via free platforms like Coursera or YouTube.")
+        st.warning(f"💥 You’re missing **{gap}** — a high-impact skill for this role.")
+        st.markdown(f"📚 **Advice:** Enroll in a free course on {gap} from platforms like Coursera, edX, or YouTube today. Just 1 hour a week can change your life.")
     else:
-        st.success("✅ No major skill gaps! You're doing great!")
+        st.success("🎯 You don’t have any major skill gaps — now focus on telling your story with clarity and confidence.")
 
     style = resume_data["ResumeStyle"]
     if style == "Minimalist":
-        st.info("🎨 Your resume style is clean. Make sure it also stands out visually.")
+        st.info("🧾 Minimalist resumes are clean. Add color blocks or project sections if you’re applying for creative roles.")
     elif style == "Infographic":
-        st.warning("⚠️ Infographic resumes look great, but be cautious — ATS systems may not parse them correctly.")
+        st.warning("📊 Infographics are eye-catching but risky for ATS. Keep a simpler version ready for big company portals.")
 
-    st.markdown("### 📌 Insight:")
-    st.info("Tailoring your resume style to the job you're applying for — while maintaining ATS compatibility — increases your shortlisting chances.")
+    st.markdown("### 🧠 Advice Nuggets")
+    st.markdown("""
+- Use strong verbs like *built*, *led*, *analyzed*, *scaled*.
+- Quantify achievements: “Increased engagement by 45%”, “Reduced churn by 12%”.
+- One resume doesn’t fit all — tweak keywords per job.
+- Confidence doesn’t mean overstuffing — clarity wins.
+""")
 
 # --- Tab 4: Download Report ---
 with tabs[4]:
     st.subheader("📥 Export Your Report")
-    if st.button("📥 Download My Resume Report"):
-        result_text = f"""
-        Resume ID: {resume_data['ResumeID']}
-        Match Score: {match_score}
-        Skill Gap: {gap}
-        Style: {style}
-        Suggested Improvement: Learn {gap} and improve formatting if applying to ATS-heavy roles.
-        """
-        st.download_button("Download as TXT", io.StringIO(result_text), file_name="resume_vs_reality_report.txt")
+
+    report_text = f'''
+    📄 Resume ID: {resume_data["ResumeID"]}
+    🧠 Match Score: {match_score}/100
+    ❌ Skill Gap: {gap}
+    🎨 Style: {style}
+    ✨ Advice:
+    - Close skill gap by learning {gap} if applicable.
+    - Optimize resume structure based on ATS-friendliness.
+    - Use action-driven language and match job keywords.
+    '''
+    st.download_button(
+        "Download as TXT",
+        data=io.StringIO(report_text),
+        file_name="resume_vs_reality_report.txt"
+    )
