@@ -81,14 +81,6 @@ def load_data():
 # Load the dataset
 df = load_data()
 
-with st.expander("🔍 What is This App Really About?"):
-    st.markdown("""
-- 💥 **Mirror meets mentor**: Know what your resume says *and* what it’s missing.
-- 🔍 **Resume vs Job Data**: We pull trends across domains — what gets people hired, what you’re lacking, what you need to add.
-- 💬 **Witty, real-world advice**: Because the job hunt doesn’t need to be a soul-sucking scroll.
-- 📊 **Visual data & coaching**: Get instant charts, skill scores, and action items.
-- 🧱 **Built for Gen Z**: Think: aesthetics + analytics + honest feedback.
-""")
 
 with st.expander("🛠️ How to Use This App"):
     st.markdown("""
