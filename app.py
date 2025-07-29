@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# Dummy data for illustration (replace with your actual DataFrame)
+# Dummy data for demonstration - replace with your actual dataset
 df = pd.DataFrame({
     'ResumeID': [1, 2, 3],
     'Age': [25, 28, 22],
@@ -17,15 +17,13 @@ df = pd.DataFrame({
     'JobPostingSkillsRequired': ['Python, SQL, ML', 'Excel, SQL', 'SEO, Content Writing']
 })
 
-# Function to get selected resume data - simulate selection
 def get_resume_data():
-    # For example, just return first row as dict
-    # Replace with selection widget logic to choose resume
+    # For demo, return first resume - replace with your own logic/selection widget
     return df.iloc[0]
 
 st.set_page_config(page_title="Job Snob", layout="wide")
 
-# Inject CSS
+# Inject CSS styling for feedback box and main container
 st.markdown("""
 <style>
     .main-container {
@@ -105,13 +103,12 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# Intro section with your HTML content
 with st.container():
     st.markdown("""
     <div class="main-container">
         <h1>Job Snob</h1>
         <h2>“Only the best skills make the cut. No basic resumes allowed.”</h2>
-        <p>Welcome to <strong>Job Snob</strong>, your warm and focused career companion inspired by the golden hues of sunrise and autumn leaves.  
-        We help you spot the crucial skill gaps in your resume and guide you to stand out in today’s competitive job market.</p>
 
         <p>Whether you are just starting your professional journey or aiming for your next career milestone, Job Snob provides clear, data-driven insights to help you grow confidently.</p>
 
@@ -139,7 +136,6 @@ with st.container():
     </div>
     """, unsafe_allow_html=True)
 
-# Load resume data (simulate selection)
 resume_data = get_resume_data()
 
 tabs = st.tabs([
