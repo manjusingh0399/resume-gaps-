@@ -1,91 +1,74 @@
+# app.py
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 
-# Page Config
+# Page config
 st.set_page_config(page_title="Job Snob", layout="wide")
 
-# Sample DataFrame
-df = pd.DataFrame({
-    "ResumeID": [1],
-    "Age": [24],
-    "EducationLevel": ["Bachelor's"],
-    "FieldOfStudy": ["Computer Science"],
-    "JobAppliedFor": ["Data Analyst"],
-    "ResumeStyle": ["Modern"],
-    "Certifications": ["SQL, Tableau"],
-    "AI_MatchScore": [76],
-    "TopSkillGap": ["Machine Learning"],
-    "SkillsListed": ["Python, SQL, Excel"],
-    "JobPostingSkillsRequired": ["Python, Machine Learning, SQL"]
-})
-
-# Helper Function
-def get_resume_data():
-    return df.iloc[0]
-
-# Custom CSS Styling
+# Therapeutic Aesthetic Theme - Soft Yellow & Pastel Ombre
 st.markdown("""
-<style>
-.intro-container {
-    max-width: 720px;
-    margin: 3rem auto;
-    padding: 2.5rem 3rem;
-    background: linear-gradient(135deg, #fff8dc, #ffae42);
-    border-radius: 16px;
-    box-shadow: 0 12px 40px rgba(255, 140, 0, 0.3);
-    color: #4a2c00;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.65;
-}
-.intro-container h1, .intro-container h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-.feedback-box {
-    background-color: #fff7e6;
-    border-left: 5px solid #ffae42;
-    padding: 1rem;
-    border-radius: 8px;
-    font-style: italic;
-    color: #5c3300cc;
-    margin-top: 1.5rem;
-}
-[data-baseweb="tab-list"] button[aria-selected="true"] {
-    background-color: #ffae42 !important;
-    color: #4a2c00 !important;
-    font-weight: bold !important;
-    border-radius: 10px 10px 0 0;
-    box-shadow: 0 -4px 10px rgba(255, 174, 66, 0.4);
-    transition: all 0.3s ease-in-out;
-}
-[data-baseweb="tab-list"] button[aria-selected="false"] {
-    background-color: #fff7e6;
-    color: #7a4e00;
-    font-weight: 500;
-}
-</style>
+    <style>
+        body {
+            background-color: #fffdf6;
+            color: #333333;
+            font-family: 'Georgia', serif;
+        }
+        .stApp {
+            background-color: #fffdf6;
+        }
+        .css-1d391kg, .css-1q8dd3e {
+            background-color: #ffffff;
+            color: #333333;
+        }
+        .st-bw, .st-bv, .st-c2 {
+            color: #333333;
+        }
+        .stProgress > div > div > div > div {
+            background-color: #fbc687 !important;
+        }
+    </style>
 """, unsafe_allow_html=True)
 
-# Intro
+# Welcome Page
 st.markdown("""
-<div class="intro-container">
-    <h1>Job Snob</h1>
-    <h2>“Only the best skills make the cut. No basic resumes allowed.”</h2>
-    <p>Welcome to <strong>Job Snob</strong> — your calm, data-driven career mentor. Whether you're beginning your journey or eyeing the next big leap, we provide honest insight and powerful direction to help you thrive in the hiring world.</p>
-    <h3>What You Can Expect</h3>
-    <ul>
-        <li><strong>Skill Gap Analysis:</strong> Find out which essential skills you're missing.</li>
-        <li><strong>Market Comparison:</strong> Benchmark yourself against real hiring data.</li>
-        <li><strong>Personalized Suggestions:</strong> Concrete advice for upskilling and better visibility.</li>
-        <li><strong>Trends & Insights:</strong> Stay sharp with current hiring trends and demands.</li>
-        <li><strong>Download Report:</strong> Track your progress and insights offline.</li>
-    </ul>
-    <div class="feedback-box">
-        This app gives you a warm but realistic reflection of your current profile — with no fluff and all focus.
-    </div>
+<div style='background: linear-gradient(to right, #fffde7, #ffe0b2); padding: 2rem; border-radius: 15px; box-shadow: 0 2px 12px rgba(0,0,0,0.04);'>
+    <h1 style='text-align:center; color: #5d4037;'>🎯 Welcome to <em>Job Snob</em> — Where Resumes Meet Reality</h1>
+    <p style='text-align:center; font-size: 1.15rem;'>Navigating today’s job market can feel overwhelming, especially when you're unsure whether your skills are actually what employers want.</p>
+    <p style='text-align:center;'>That’s where <strong>Job Snob</strong> steps in — a smart, stylish career companion built to decode the truth behind what gets you hired.</p>
+    <p style='text-align:center;'>With real-time insights, role-matching analytics, and resume diagnostics, this app helps you bridge the gap between what you have and what you need.</p>
+    <p style='text-align:center;'>Whether you're reworking your resume, exploring trending roles, or discovering hidden strengths, Job Snob empowers you to confidently take control of your career story — with clarity, elegance, and just the right amount of attitude. 💁‍♀️</p>
 </div>
 """, unsafe_allow_html=True)
+
+# Resume Upload (Future expansion)
+uploaded_file = st.sidebar.file_uploader("📤 Upload Your Resume (PDF/DOCX)", type=["pdf", "docx"])
+if uploaded_file:
+    st.sidebar.success("Resume uploaded. Parsing will be added in next version.")
+
+# Load dataset
+@st.cache_data
+def load_data():
+    return pd.read_csv("genz_resume_market_data.csv")
+
+df = load_data()
+
+# Tabs
+tabs = st.tabs([
+    "👤 Profile Snapshot", 
+    "📈 Market Comparison", 
+    "📈 Match Score", 
+    "💡 Suggestions", 
+    "📚 Trends & Insights", 
+    "📅 Download Report"])
+
+# Resume Selection Logic
+def get_resume_data():
+    resume_ids = df['ResumeID'].unique()
+    selected_id = st.selectbox("Select a Resume ID", resume_ids, key="resume_selector")
+    resume_data = df[df['ResumeID'] == selected_id].iloc[0]
+    return resume_data
 
 resume_data = get_resume_data()
 tabs = st.tabs([
