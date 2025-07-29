@@ -70,6 +70,97 @@ def load_data():
     return pd.read_csv("genz_resume_market_data.csv")
 
 df = load_data()
+# --- LOAD DATA ---
+resumes = pd.read_csv("resumes.csv")
+hired = pd.read_csv("hired_profiles.csv")
+jobs = pd.read_csv("job.csv")
+
+# Simulated matching results
+match_score = 72
+top_missing_skills = ['SQL', 'Tableau', 'Cloud Computing']
+skill_insights = {
+    'SQL': "Structured Query Language is essential for handling and analyzing data in databases.",
+    'Tableau': "A leading tool for data visualization and business intelligence dashboards.",
+    'Cloud Computing': "Increasingly vital for scalable and secure infrastructure (AWS, Azure, GCP)."
+}
+tailored_suggestions = [
+    {'title': 'Data Analyst Path', 'why': 'You already know Excel and Python.', 'tip': 'Boost it with Tableau + SQL.'},
+    {'title': 'Support Engineer', 'why': 'Strong communication skills.', 'tip': 'Pair it with CRM/Jira tools.'},
+]
+
+# --- PAGE LAYOUT ---
+with st.container():
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.title("📄 Resume vs Reality: Are You Job-Ready?")
+    st.subheader("Compare your resume skills with real hiring data and get personalized advice.")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with st.container():
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.header("📊 Resume Match Score")
+    st.metric("🔍 Match Score", f"{match_score}%", delta="Based on hiring trends")
+
+    if match_score > 85:
+        st.success("🌟 Excellent Match!")
+        st.markdown("""
+        **Insight:** You’re highly aligned with the industry. Maintain your momentum!
+        
+        **Advice:** Keep updating your portfolio and prepare for behavioral interviews.
+
+        > “Success usually comes to those who are too busy to be looking for it.” – Thoreau
+        """)
+    elif match_score > 60:
+        st.warning("🟡 Moderate Match")
+        st.markdown("""
+        **Insight:** You're close to market expectations, with a few skill gaps.
+
+        **Advice:** Focus on acquiring the top 2 missing skills below to boost your profile.
+
+        > “Don’t watch the clock; do what it does. Keep going.” – Sam Levenson
+        """)
+    else:
+        st.error("🔴 Low Match")
+        st.markdown("""
+        **Insight:** Your current resume doesn't match many active job profiles.
+
+        **Advice:** Pick one role and begin upskilling gradually. Everyone starts somewhere.
+
+        > “The future depends on what you do today.” – Mahatma Gandhi
+        """)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with st.container():
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.header("📉 Top Missing Skills & Why They Matter")
+    for skill in top_missing_skills:
+        st.markdown(f"""
+        ✅ **{skill}**  
+        - _Why it matters:_ {skill_insights[skill]}  
+        - _Where to learn:_ [LinkedIn Learning](#) · [Coursera](#) · [YouTube](#)  
+        > “Every expert was once a beginner.”
+        """)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with st.container():
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.header("🚀 Career Suggestions Tailored to You")
+    for suggestion in tailored_suggestions:
+        st.markdown(f"""
+        💼 **{suggestion['title']}**  
+        - _Why this fits:_ {suggestion['why']}  
+        - _Your next step:_ {suggestion['tip']}  
+        > “Opportunities don’t happen, you create them.” – Chris Grosser
+        """)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with st.container():
+    st.markdown('<div class="quote-box">', unsafe_allow_html=True)
+    st.markdown("""
+    💬 **Reminder:** Your resume is a snapshot, not a verdict. Your value goes beyond keywords.
+
+    _“Believe you can and you're halfway there.” – Theodore Roosevelt_
+    """)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # 💬 Welcome Section
 with st.container():
@@ -148,6 +239,7 @@ with tabs[0]:
         roles = role_mapping.get(field, ['General Analyst', 'Executive Trainee'])
         st.markdown(f"👀 Suggested Roles: {', '.join(roles)}")
         st.markdown('</div>', unsafe_allow_html=True)
+
 
 # Tab 2 - Market Comparison
 with tabs[1]:
