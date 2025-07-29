@@ -5,7 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 # Page config
-st.set_page_config(page_title="Resume vs Reality", layout="wide")
+st.set_page_config(page_title="The Resume Reflection Room", layout="wide")
 
 # Therapeutic Aesthetic Theme - Soft Yellow & Pastel Ombre
 st.markdown("""
@@ -34,20 +34,20 @@ st.markdown("""
 # Welcome Page
 st.markdown("""
 <div style='background: linear-gradient(to right, #fffde7, #ffe0b2); padding: 2rem; border-radius: 15px; box-shadow: 0 2px 12px rgba(0,0,0,0.04);'>
-    <h1 style='text-align:center; color: #5d4037;'>🌞 Welcome to <em>Resume vs Reality</em></h1>
-    <p style='text-align:center; font-size: 1.15rem;'>Hi, I'm <strong>Manju Singh</strong> — your calm career companion.</p>
-    <p style='text-align:center;'>You’ve landed in a gentle, thoughtful space — a space that holds both your ambitions and anxieties with care.</p>
-    <p style='text-align:center;'>We’re here not to critique, but to listen. Not to judge, but to reflect. Together, we’ll uncover what your resume truly conveys — and what it can still become.</p>
-    <p style='text-align:center;'>This is your moment to breathe, reflect, and evolve — softly and purposefully.</p>
+    <h1 style='text-align:center; color: #5d4037;'>🌞 Welcome to <em>The Resume Reflection Room</em></h1>
+    <p style='text-align:center; font-size: 1.15rem;'>This isn't just a tool — it's your personal space to reflect, realign, and rethink your resume's message and market fit.</p>
+    <p style='text-align:center;'>Think of this as your cozy consultation room — a place where data meets compassion, and your profile meets possibility.</p>
+    <p style='text-align:center;'>We're not here to grade or judge — we're here to unpack, discover, and gently guide.</p>
     <ul style='font-size: 1.05rem;'>
         <li>🪞 <strong>Mirror your truth:</strong> What story does your resume tell — and what stories is it missing?</li>
-        <li>🧘 <strong>Calm, data-informed clarity:</strong> Insights without overwhelm, judgments, or confusion.</li>
-        <li>🌷 <strong>Empathetic, honest suggestions:</strong> Because you deserve a career path that fits your essence.</li>
-        <li>🧭 <strong>Gentle guidance:</strong> Forward momentum rooted in who you are, not just what you do.</li>
+        <li>📊 <strong>Reveal the real gap:</strong> Match your resume to market standards in a non-intimidating way.</li>
+        <li>🧭 <strong>Get gentle guidance:</strong> Insightful, actionable advice based on actual hiring data.</li>
+        <li>💛 <strong>Build better, not harder:</strong> Whether you’re a fresh grad or career switcher, this room welcomes you in.</li>
     </ul>
-    <blockquote style='background:#fff3e0; padding:1rem; border-left:5px solid #f9a825; border-radius:8px; font-style: italic;'>“The right career story doesn’t yell to be seen — it feels aligned. Let’s help yours find that harmony.”</blockquote>
+    <blockquote style='background:#fff3e0; padding:1rem; border-left:5px solid #f9a825; border-radius:8px; font-style: italic;'>“You are not behind — you’re just at the beginning of a better alignment.”</blockquote>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 # Load dataset
