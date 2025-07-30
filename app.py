@@ -4,48 +4,47 @@ import pandas as pd
 
 # Load resume dataset
 @st.cache_data
-
 def load_data():
-    return pd.read_csv("resumegaps_dataset.csv")  # Update this with your actual dataset filename
+    return pd.read_csv("resumegaps_dataset.csv")  # Make sure this file exists in your directory
 
 resume_df = load_data()
 
 # Page Config
 st.set_page_config(page_title="JobSnob: Resume vs Reality", layout="wide")
 
-# Custom CSS for Styling
+# Custom CSS Styling
 st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-        html, body, [class*="css"]  {
+        html, body, [class*="css"] {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #fff7c0, #ffe6b3, #ffd27f);
+            background: linear-gradient(135deg, #fff2b0, #ffd280, #ffb347);
+            color: #1f1f1f;
         }
 
         .stApp {
-            background: linear-gradient(135deg, #FFF9E3, #FFE3AC);
+            background: linear-gradient(135deg, #FFF8DC, #FFEFD5);
         }
 
         .job-snob-hero {
             background: linear-gradient(to right, #FFD700, #FFA500);
             border-radius: 25px;
-            padding: 3rem;
+            padding: 2.5rem;
             text-align: center;
-            color: white;
-            box-shadow: 0 10px 30px rgba(255, 165, 0, 0.2);
-            animation: fadeIn 1.5s ease-in-out;
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(255, 165, 0, 0.25);
+            margin-bottom: 2rem;
         }
 
         .job-snob-title {
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             font-weight: 800;
-            margin-bottom: 0.5rem;
-            letter-spacing: -1px;
+            margin-bottom: 0.3rem;
         }
 
         .job-snob-tagline {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 500;
             font-style: italic;
             margin-bottom: 1rem;
@@ -59,23 +58,17 @@ st.markdown("""
             opacity: 0.95;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .stButton>button {
-            background: linear-gradient(to right, #FFDD00, #FFA500);
+        .stButton > button {
+            background: linear-gradient(to right, #FFCC00, #FF9900);
             color: white;
-            border-radius: 12px;
-            padding: 0.6rem 1.2rem;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(255, 165, 0, 0.4);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
         }
     </style>
 """, unsafe_allow_html=True)
 
-# Resume Selector
+# Sidebar Resume Selector
 st.sidebar.header("🔍 Choose Resume Profile")
 selected_resume = st.sidebar.selectbox("Select a Resume ID:", resume_df["ResumeID"].unique())
 user_data = resume_df[resume_df["ResumeID"] == selected_resume].squeeze()
@@ -83,47 +76,53 @@ user_data = resume_df[resume_df["ResumeID"] == selected_resume].squeeze()
 # Tabs Setup
 tabs = st.tabs([
     "🏠 Welcome", "👤 Profile Snapshot", "📊 Market Comparison",
-    "🎯 Match Score", "💡 Suggestions", "📚 Insights"])
+    "🎯 Match Score", "💡 Suggestions", "📚 Insights"
+])
 
-# Welcome Tab
+# ---------------------- TAB 1: Welcome ---------------------- #
 with tabs[0]:
     st.markdown("""
     <div class="job-snob-hero">
         <div class="job-snob-title">💼 JobSnob</div>
-        <div class="job-snob-tagline">“We judge. But it’s character development.”</div>
-        <div class="job-snob-subtext">Let’s glow up your resume and match it to what the job market actually wants.</div>
+        <div class="job-snob-tagline">“Only the best skills make the cut. No basic resumes allowed.”</div>
+        <div class="job-snob-subtext">Welcome to your personalized resume reality check. Let’s match your skills to the job market and glow up your career potential.</div>
     </div>
     """, unsafe_allow_html=True)
 
+    st.subheader("👋 A New Kind of Resume Reality Check")
     st.markdown("""
-    ### 👋 Welcome to Your Career Glow-Up
-    You're not just here to upload a resume — you're here to understand your standing, identify hidden gaps, and align your strengths with roles that actually value you.
+    Welcome to **JobSnob**, where we unapologetically compare your resume with what the job market *actually* demands.
+    
+    This tool analyzes your skills, benchmarks them against industry expectations, and offers tailored feedback.
+    
+    Whether you're a newbie, a career switcher, or a rising star — this app gives you clarity, not fluff.
 
-    This app compares your resume data to real hiring trends, job market signals, and peer-level benchmarks. Think of it as your brutally honest (but stylish) career mirror.
+    👉 Start by choosing your resume profile on the sidebar.  
+    👉 Then explore each tab — where we don’t just judge, we guide.
+    """)
 
-    👈 Use the sidebar to select a resume profile.
-    🔍 Then, explore each tab to uncover fun, insightful, and actionable insights — one click at a time.
-    """
-    )
-
-# Profile Snapshot Tab
+# ---------------------- TAB 2: Profile Snapshot ---------------------- #
 with tabs[1]:
     st.header("👤 Profile Snapshot")
     st.markdown("""
-    🧾 Here’s a breakdown of what your resume is really saying about you — distilled into digestible data.
-    """
-    )
+    Here’s your resume decoded — clear and data-rich. Use this tab as your baseline.
+    
+    We look at what’s present — and what’s not — to set the stage for advice in later tabs.
+    """)
     st.json(user_data.to_dict())
-    st.info("✨ This is your first impression on paper. Let’s make sure it’s saying the right things!")
-    st.success("📌 Tip: Mirror your dream job descriptions — recruiters notice keyword alignment.")
 
-# Market Comparison Tab
+    st.info("📌 Tip: Highlight job-relevant keywords from listings — they act as magnets for recruiters.")
+    st.warning("⚠️ If your resume is mostly text without metrics or impact — consider rewriting those bullets!")
+
+# ---------------------- TAB 3: Market Comparison ---------------------- #
 with tabs[2]:
     st.header("📊 Market Comparison")
     st.markdown("""
-    🚀 See how your skills stack up against real job market demand and peer-level benchmarks.
-    """
-    )
+    Let’s pit your top skills against market averages. Where are you crushing it? Where can you level up?
+    
+    These gaps are golden — they show where growth = ROI.
+    """)
+
     skills = ["Python", "Excel", "SQL", "Power BI", "Communication"]
     user_scores = [user_data.get(skill, 0) for skill in skills]
     market_avg = [80, 75, 70, 60, 85]
@@ -131,46 +130,69 @@ with tabs[2]:
     fig = px.bar(df_compare, x='Skill', y=['You', 'Market Avg'],
                  barmode='group', title='🧠 Your Skills vs Market Expectations')
     st.plotly_chart(fig, use_container_width=True)
-    st.warning("🧠 Insight: Any skill below market average = prime growth opportunity.")
 
-# Match Score Tab
+    st.success("✨ Skills above market average? Celebrate them in bold resume sections.")
+    st.warning("📉 Skills lagging behind? Choose 1 to focus on for the next 30 days.")
+
+# ---------------------- TAB 4: Match Score ---------------------- #
 with tabs[3]:
     st.header("🎯 Match Score")
     st.markdown("""
-    🎯 This score represents how aligned your resume is with the roles you're targeting.
-    The closer to 100%, the more 'interview-ready' your profile is!
+    This score estimates how aligned your resume is with top industry roles.
+    
+    It’s not the final word — but it’s a strong signal of your current market readiness.
     """)
+    
     score = int(user_data.get("MatchScore", 72))
-    st.metric("🔥 Match Score", f"{score}%")
+    st.metric("📈 Resume Fit Score", f"{score}%")
+
     if score >= 80:
-        st.success("✅ Nailed it! You're closely aligned with what top roles require.")
+        st.success("🔥 Excellent! Your resume is tightly aligned with key job expectations.")
     elif score >= 60:
-        st.info("⚠️ Almost there! A few focused tweaks could level you up big time.")
+        st.info("📌 Almost there! Tweak phrasing or add missing tools to bump your score.")
     else:
-        st.warning("🚧 Work in progress — this is your chance to stand out by upskilling smart.")
+        st.warning("⚠️ Time for a glow-up. Let’s turn this into a comeback story.")
 
-# Suggestions Tab
+    st.caption("💬 Want a higher score? Check role descriptions in your domain and backfill those missing bits!")
+
+# ---------------------- TAB 5: Suggestions ---------------------- #
 with tabs[4]:
-    st.header("💡 Suggestions & Role Fit")
+    st.header("💡 Role Suggestions & Skill Moves")
     st.markdown("""
-    🧩 Based on your strengths and current resume highlights, here are roles you’re already pretty close to:
+    Based on your resume strengths, here are roles where you’re a near-fit.
+    
+    Upgrade one or two key areas and you could be interview-ready in weeks.
     """)
     st.markdown("""
-    - 📌 **Data Analyst** — Strengthen SQL & Power BI to fully qualify.
-    - 📌 **Marketing Associate** — Emphasize your storytelling & communication.
-    - 📌 **Business Analyst** — Try adding certifications in Excel modeling or workflows.
+    - 💼 **Data Analyst** — You’re nearly there. Focus on SQL joins + Power BI dashboards.
+    - 📈 **Business Analyst** — Try learning process modeling or Excel-based simulations.
+    - 📢 **Marketing Executive** — Highlight content strategy and cross-channel campaigns.
     """)
-    st.success("💬 Advice: Even a 5% upgrade in skills can unlock premium opportunities.")
 
-# Insights Tab
+    st.success("🎯 Action Step: Add one real-world project per target role to your portfolio/resume.")
+
+# ---------------------- TAB 6: Career Insights ---------------------- #
 with tabs[5]:
-    st.header("📚 Career Insights & Trends")
+    st.header("📚 Career Insights")
     st.markdown("""
-    💭 Want to future-proof your resume? Check out these growing trends in the job market:
+    What’s trending, what’s dying, and what makes you future-proof?
+    
+    We’ve scraped the signals so you don’t have to.
     """)
     st.markdown("""
-    - 🔥 Soft skills like adaptability and storytelling are more in-demand than ever.
-    - 📈 Excel & Power BI are still industry essentials — even more when paired with Python.
-    - 🚀 AI literacy is the new basic — from prompt crafting to using ChatGPT at work.
+    - 📊 **Excel + SQL = Basic toolkit** (still relevant!)
+    - 🌱 **Adaptability & storytelling** are top soft skills in 2025.
+    - 🤖 **Prompt engineering** and AI co-working are the next resume stars.
     """)
-    st.info("✨ Weekly Challenge: Add one new achievement or learning to your resume every Friday!")
+
+    st.info("🧠 Insight: Employers want proof of *learning ability* more than perfect skills.")
+    st.success("📌 Tip: Weekly goal = 1 micro-certification or portfolio upgrade. Build proof, not fluff.")
+
+# End Message
+st.markdown("""
+---
+✅ **Ready to iterate?**  
+Your resume is a prototype — every improvement gets you closer to your dream role.
+
+🎯 Keep it evolving. Keep it honest. Keep it JobSnob.
+""")
