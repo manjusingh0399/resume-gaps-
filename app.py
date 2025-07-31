@@ -5,7 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 # Page config
-st.set_page_config(page_title="Resume vs Reality", layout="wide")
+st.set_page_config(page_title="Job Snob", layout="wide")
 
 # Custom CSS styles
 st.markdown("""
@@ -54,11 +54,11 @@ with st.container():
     st.markdown("""
         <div class="welcome-container">
             <h1 style="color:#6A0DAD; font-size: 2.2rem; margin-bottom: 0.5rem;">💼 Welcome to <em>Resume vs Reality</em></h1>
-            <p><strong>Your sassy, smart career wingwoman. 💅‍♂</strong></p>
-            <p>Ever stared at your resume wondering, "Will this get me hired or ghosted?" You're not alone — and you're not going in blind anymore.</p>
-            <p><strong>We all build resumes hoping they reflect our potential.</strong> But behind every hiring decision lies a pattern. This project is a search for those patterns — an exploration of the gap between what we write and what employers value.</p>
+            <p><strong>Only the best skills make the cut. No basic resumes allowed.</strong></p>
+            <p>Ever stared at your resume wondering, "Will this get me hired or ghosted?" You're not alone, and you're not going in blind anymore.</p>
+            <p><strong>We all build resumes hoping they reflect our potential.</strong> But behind every hiring decision lies a pattern. This project is a search for those patterns, an exploration of the gap between what we write and what employers value.</p>
             <p>I'm <strong>Manju Singh</strong>, an MBA student and a job seeker like you. I’ve been through the anxious nights of tweaking resumes, unsure if my skills are enough. This app is my way of turning that uncertainty into clarity — a light in the dark for all of us navigating today’s job market.</p>
-            <p>With real data, interactive visuals, and a touch of empathy, <em>Resume vs Reality</em> is your personal career mentor. It doesn’t just show you the gap — it helps you bridge it. Let’s turn guesswork into guidance, and doubt into direction. 🌱</p>
+            <p>With real data, interactive visuals, and a touch of empathy, <em>Resume vs Reality</em> is your personal career mentor. It doesn’t just show you the gap, it helps you bridge it. Let’s turn guesswork into guidance, and doubt into direction. 🌱</p>
             <p><strong>Here’s what you’ll discover:</strong></p>
             <ul style="text-align: left; max-width: 800px; margin: auto;">
                 <li>💥 <strong>Mirror meets mentor:</strong> Know what your resume says <em>and</em> what it’s missing.</li>
