@@ -96,7 +96,7 @@ tabs = st.tabs([
 with tabs[0]:
     st.markdown("""
 <div class="welcome-container">
-    <h1 style="color:#d84315;">💼 Welcome to <em>Job Snob</em></h1>
+    <h1 style="color:#d84315;"> Welcome to <em>Job Snob</em></h1>
     <p><strong>Only the best skills make the cut. No basic resumes allowed.</strong></p>
     <p>Ever stared at your resume wondering, \"Will this get me hired or ghosted?\" You're not alone, and you're not going in blind anymore.</p>
     <p><strong>We all build resumes hoping they reflect our potential.</strong> But behind every hiring decision lies a pattern.</p>
@@ -168,11 +168,11 @@ with tabs[4]:
     st.markdown("Based on your profile and detected gaps, here are some highly actionable tips.")
     gap = resume_data['TopSkillGap']
     st.markdown(f"""
-    - 🎯 Learn **{gap}** through a project-based course.
-    - ✍ Rewrite your resume bullets using **STAR** format.
-    - 💬 Add keywords like **{gap}** to your summary.
-    - 📌 Include links to live projects or portfolios.
-    - 🧹 Format your resume cleanly — recruiters scan in seconds.
+    -  Learn **{gap}** through a project-based course.
+    -  Rewrite your resume bullets using **STAR** format.
+    -  Add keywords like **{gap}** to your summary.
+    -  Include links to live projects or portfolios.
+    -  Format your resume cleanly — recruiters scan in seconds.
     """)
     st.markdown("""<div class="quote-box">✅ Small actions compound into big results. Believe in progress, not perfection.</div>""", unsafe_allow_html=True)
 
@@ -193,7 +193,7 @@ with tabs[5]:
 
 # Page 6: Download Report
 with tabs[6]:
-    st.header("📅 Download Report")
+    st.header(" Download Report")
     st.markdown("Here’s your personalized career clarity digest. Save it and revisit as you grow.")
     text = f"""
     📄 Resume Summary Report
