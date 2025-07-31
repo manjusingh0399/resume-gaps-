@@ -103,10 +103,10 @@ with tabs[0]:
     <p>I’m <strong>Manju Singh</strong>, an MBA student and job seeker. This app is your personal clarity engine — using real data and empathy to guide your career growth.</p>
     <p><em>Resume vs Reality</em> shows you the gap, and then helps you bridge it. Let’s turn guesswork into guidance. 🌱</p>
     <ul style="text-align:left; max-width:800px; margin:auto;">
-        <li>💥 <strong>Mirror meets mentor:</strong> Know what your resume says <em>and</em> what it’s missing.</li>
-        <li>🎯 <strong>Target your goals:</strong> Understand what job listings actually prioritize.</li>
-        <li>🧠 <strong>Get real feedback:</strong> Actionable advice based on real market data.</li>
-        <li>🌈 <strong>Grow with guidance:</strong> Personalized suggestions to help you level up fast.</li>
+        <li> <strong>Mirror meets mentor:</strong> Know what your resume says <em>and</em> what it’s missing.</li>
+        <li> <strong>Target your goals:</strong> Understand what job listings actually prioritize.</li>
+        <li> <strong>Get real feedback:</strong> Actionable advice based on real market data.</li>
+        <li> <strong>Grow with guidance:</strong> Personalized suggestions to help you level up fast.</li>
     </ul>
     <div class="quote-box">
     “Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
@@ -115,12 +115,12 @@ with tabs[0]:
 <div class="instruction-box">
     <h3>🛠 How to Use This App:</h3>
     <ol>
-        <li>👤 <strong>Profile Snapshot</strong> — Select your resume ID and get an overview of your profile.</li>
-        <li>📈 <strong>Market Comparison</strong> — See how your resume stacks up in the market.</li>
-        <li>📈 <strong>Match Score</strong> — Compare your skills with job requirements.</li>
-        <li>💡 <strong>Suggestions</strong> — Get tailored advice based on your resume’s gaps.</li>
-        <li>📚 <strong>Trends</strong> — Discover which education, skills, and certs work best.</li>
-        <li>📅 <strong>Download</strong> — Export a neat summary of your performance & advice.</li>
+        <li> <strong>Profile Snapshot</strong> — Select your resume ID and get an overview of your profile.</li>
+        <li> <strong>Market Comparison</strong> — See how your resume stacks up in the market.</li>
+        <li <strong>Match Score</strong> — Compare your skills with job requirements.</li>
+        <li> <strong>Suggestions</strong> — Get tailored advice based on your resume’s gaps.</li>
+        <li> <strong>Trends</strong> — Discover which education, skills, and certs work best.</li>
+        <li> <strong>Download</strong> — Export a neat summary of your performance & advice.</li>
     </ol>
     <p>✨ Click on the tab headers at the top to explore each section. No more guessing — just growth.</p>
 </div>
