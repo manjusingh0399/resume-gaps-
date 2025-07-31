@@ -31,6 +31,7 @@ h1, h2, h3 {
     font-weight: bold;
     color: #6d4c41;
     border: 2px solid transparent;
+    cursor: pointer;
 }
 .stTabs [aria-selected="true"] {
     background: linear-gradient(90deg, #ffe082, #f48fb1);
@@ -53,6 +54,15 @@ h1, h2, h3 {
     font-style: italic;
     margin-top: 1.5rem;
     font-size: 1.05rem;
+}
+.instruction-box {
+    background-color: #fffde7;
+    border: 1px solid #ffe082;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    font-size: 1.05rem;
+    color: #4e342e;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -102,7 +112,22 @@ with tabs[0]:
         “Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
         </div>
     </div>
+    <div class="instruction-box">
+        <h3>🛠 How to Use This App:</h3>
+        <ol>
+            <li>👤 <strong>Profile Snapshot</strong> — Select your resume ID and get an overview of your profile.</li>
+            <li>📈 <strong>Market Comparison</strong> — See how your resume stacks up in the market.</li>
+            <li>📈 <strong>Match Score</strong> — Compare your skills with job requirements.</li>
+            <li>💡 <strong>Suggestions</strong> — Get tailored advice based on your resume’s gaps.</li>
+            <li>📚 <strong>Trends</strong> — Discover which education, skills, and certs work best.</li>
+            <li>📅 <strong>Download</strong> — Export a neat summary of your performance & advice.</li>
+        </ol>
+        <p>✨ Click on the tab headers at the top to explore each section. No more guessing — just growth.</p>
+    </div>
     """, unsafe_allow_html=True)
+
+# The rest of the code remains unchanged...
+
 
 # Page 1: Profile Snapshot
 with tabs[1]:
