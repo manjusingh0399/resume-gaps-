@@ -7,113 +7,82 @@ import plotly.graph_objects as go
 # Page config
 st.set_page_config(page_title="Job Snob", layout="wide")
 
-st.markdown("""
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap');
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
 
-    html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
-        background: linear-gradient(to right, #f9f9ff, #f0f4ff);
-        color: #1f2937;
+    html, body {
+        background: linear-gradient(145deg, #ffb347, #ff4da6, #f9ff75);
+        font-family: 'Raleway', sans-serif;
+        color: #1a1a1a;
     }
 
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
-
-    h1, h2, h3 {
-        font-weight: 800;
-        color: transparent;
-        background: linear-gradient(to right, #7b2ff7, #f107a3);
+    .title-glow {
+        font-size: 3.2em;
+        font-weight: 700;
+        background: linear-gradient(45deg, #ff8c00, #ff4da6, #f9ff75);
         -webkit-background-clip: text;
-        background-clip: text;
-    }
-
-    .welcome-container {
-        background: rgba(255, 255, 255, 0.35);
-        border-radius: 25px;
-        padding: 2rem 3rem;
-        box-shadow: 0 12px 32px rgba(123, 97, 255, 0.2);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        margin-bottom: 2rem;
+        -webkit-text-fill-color: transparent;
+        animation: glow 4s ease-in-out infinite;
         text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        margin-top: 40px;
     }
 
-    .quote-box {
-        background: rgba(255, 250, 240, 0.75);
-        border-left: 5px solid #ffdd57;
-        padding: 1rem;
-        margin: 2rem auto 1rem auto;
-        max-width: 700px;
-        font-style: italic;
-        border-radius: 12px;
-        font-size: 1.05rem;
-        color: #4b5563;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    @keyframes glow {
+        0% { text-shadow: 0 0 10px #fff199, 0 0 20px #ff8c00, 0 0 30px #ff4da6; }
+        50% { text-shadow: 0 0 20px #ff4da6, 0 0 30px #fff199, 0 0 40px #ff8c00; }
+        100% { text-shadow: 0 0 10px #fff199, 0 0 20px #ff8c00, 0 0 30px #ff4da6; }
     }
 
-    ul {
-        list-style-type: none;
-        padding-left: 0;
-    }
-
-    ul li::before {
-        content: "✨";
-        margin-right: 0.5rem;
-    }
-
-    ul li {
-        text-align: left;
-        margin: 0.5rem auto;
-        max-width: 700px;
-        font-size: 1.1rem;
-        color: #374151;
-    }
-
-    .stTabs [role="tab"] {
-        background-color: #ffffff33;
-        border-radius: 10px;
-        padding: 0.75rem 1.5rem;
-        margin-right: 0.5rem;
-        font-weight: bold;
-        color: #4b5563;
+    .glassbox {
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 20px;
+        padding: 40px;
+        margin: 30px auto;
+        width: 85%;
+        max-width: 1000px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
         backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.25);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #1a1a1a;
     }
 
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(90deg, #8a2be2, #ff4da6);
-        color: white;
+    ul li::marker {
+        color: #ff4da6;
     }
-</style>
-""", unsafe_allow_html=True)
+    </style>
 
+    <div class='title-glow'>💼 Welcome to <i>Job Snob</i></div>
 
-# Welcome message section
-with st.container():
-    st.markdown("""
-        <div class="welcome-container">
-            <h1 style="color:#6A0DAD; font-size: 2.2rem; margin-bottom: 0.5rem;">💼 Welcome to <em>Job Snob</em></h1>
-            <p><strong>Only the best skills make the cut. No basic resumes allowed.</strong></p>
-            <p>Ever stared at your resume wondering, "Will this get me hired or ghosted?" You're not alone, and you're not going in blind anymore.</p>
-            <p><strong>We all build resumes hoping they reflect our potential.</strong> But behind every hiring decision lies a pattern. This project is a search for those patterns, an exploration of the gap between what we write and what employers value.</p>
-            <p>I'm <strong>Manju Singh</strong>, an MBA student and a job seeker like you. I’ve been through the anxious nights of tweaking resumes, unsure if my skills are enough. This app is my way of turning that uncertainty into clarity — a light in the dark for all of us navigating today’s job market.</p>
-            <p>With real data, interactive visuals, and a touch of empathy, <em>Resume vs Reality</em> is your personal career mentor. It doesn’t just show you the gap, it helps you bridge it. Let’s turn guesswork into guidance, and doubt into direction. 🌱</p>
-            <p><strong>Here’s what you’ll discover:</strong></p>
-            <ul style="text-align: left; max-width: 800px; margin: auto;">
-                <li>💥 <strong>Mirror meets mentor:</strong> Know what your resume says <em>and</em> what it’s missing.</li>
-                <li>🎯 <strong>Target your goals:</strong> Understand what job listings actually prioritize.</li>
-                <li>🧠 <strong>Get real feedback:</strong> Actionable advice based on <em>real</em> market data.</li>
-                <li>🌈 <strong>Grow with guidance:</strong> Personalized suggestions to help you level up fast.</li>
-            </ul>
-            <div class="quote-box">
-                “Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
+    <div class="glassbox">
+        <h3><b>Only the best skills make the cut. No basic resumes allowed.</b></h3>
+        <p>
+            Ever stared at your resume wondering, <i>"Will this get me hired or ghosted?"</i> You're not alone, and you're not going in blind anymore.
+        </p>
+        <p>
+            <b>We all build resumes hoping they reflect our potential.</b> But behind every hiring decision lies a pattern. This project is a search for those patterns, an exploration of the gap between what we write and what employers value.
+        </p>
+        <p>
+            I'm <b>Manju Singh</b>, an MBA student and a job seeker like you. I’ve been through the anxious nights of tweaking resumes, unsure if my skills are enough. This app is my way of turning that uncertainty into clarity — a light in the dark for all of us navigating today’s job market.
+        </p>
+        <p>
+            With real data, interactive visuals, and a touch of empathy, <i>Resume vs Reality</i> is your personal career mentor. It doesn’t just show you the gap, it helps you bridge it. Let’s turn guesswork into guidance, and doubt into direction. 🌱
+        </p>
+
+        <h4><b>Here’s what you’ll discover:</b></h4>
+        <ul>
+            <li>💥 <b>Mirror meets mentor:</b> Know what your resume says <i>and</i> what it’s missing.</li>
+            <li>🎯 <b>Target your goals:</b> Understand what job listings actually prioritize.</li>
+            <li>🧠 <b>Get real feedback:</b> Actionable advice based on <i>real</i> market data.</li>
+            <li>🌈 <b>Grow with guidance:</b> Personalized suggestions to help you level up fast.</li>
+        </ul>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # Load dataset (Correct placement of decorator)
 @st.cache_data
