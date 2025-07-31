@@ -85,12 +85,12 @@ resume_data = get_resume_data()
 # Tabs
 tabs = st.tabs([
     "🏡 Welcome", 
-    "👤 Profile Snapshot", 
-    "📈 Market Comparison", 
-    "📈 Match Score", 
-    "💡 Suggestions", 
-    "📚 Trends & Insights", 
-    "📅 Download Report"])
+    " Profile Snapshot", 
+    " Market Comparison", 
+    " Match Score", 
+    " Suggestions", 
+    " Trends & Insights", 
+    " Download Report"])
 
 # Welcome Page
 with tabs[0]:
