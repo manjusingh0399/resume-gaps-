@@ -126,16 +126,10 @@ with tabs[0]:
 </div>
 """, unsafe_allow_html=True)
 
-
-
-
 # Page 1: Profile Snapshot
 with tabs[1]:
     st.header("👤 Profile Snapshot")
-    st.markdown("""
-    This section breaks down the essentials — your education, age, resume style, and how your skills reflect on paper.
-    Think of it as your resume’s first impression.
-    """)
+    st.markdown("This is your resume's reflection. Think of it like a first impression on the recruiter.")
     st.subheader("Resume Summary")
     st.write(f"Age: {resume_data['Age']}")
     st.write(f"Education: {resume_data['EducationLevel']} in {resume_data['FieldOfStudy']}")
@@ -143,73 +137,49 @@ with tabs[1]:
     st.write(f"Resume Style: {resume_data['ResumeStyle']}")
     st.write(f"Certifications: {resume_data['Certifications']}")
     st.metric("AI Match Score", f"{resume_data['AI_MatchScore']}/100")
-    st.markdown("""
-    <div class="quote-box">
-    ✅ Use this snapshot to assess how you're presenting yourself before diving into what the market wants.
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div class="quote-box">✅ Use this snapshot to assess how you're presenting yourself before diving into what the market wants.</div>""", unsafe_allow_html=True)
 
 # Page 2: Market Comparison
 with tabs[2]:
     st.header("📈 Market Comparison")
-    st.markdown("""
-    Compare your resume to others in the same domain. See where you stand and what's commonly missing.
-    """)
+    st.markdown("Understanding the competition helps you stand out. Here's how you compare with the crowd.")
     st.subheader("AI Match Score by Domain")
     st.plotly_chart(px.box(df, x="Domain", y="AI_MatchScore", color="Domain"))
     gap_counts = df['TopSkillGap'].value_counts().head(10)
     st.subheader("Top Skill Gaps Across Resumes")
     st.plotly_chart(px.bar(gap_counts))
-    st.markdown("""
-    <div class="quote-box">
-    ✅ Know your playing field. Understanding where you stand lets you compete smarter — not harder.
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div class="quote-box">✅ Know your playing field. Understanding where you stand lets you compete smarter — not harder.</div>""", unsafe_allow_html=True)
 
 # Page 3: Match Score
 with tabs[3]:
     st.header("📈 Match Score")
-    st.markdown("""
-    How aligned are your skills with job requirements? Here's the breakdown.
-    """)
+    st.markdown("How aligned are your skills with job requirements? Here's the breakdown.")
     listed = set(resume_data["SkillsListed"].split(", "))
     required = set(resume_data["JobPostingSkillsRequired"].split(", "))
     overlap = listed & required
     missing = required - listed
     st.metric("Skill Match", f"{len(overlap)} / {len(required)}")
     st.plotly_chart(px.pie(values=[len(overlap), len(missing)], names=["Matched", "Missing"]))
-    st.markdown("""
-    <div class="quote-box">
-    ✅ Every matched skill improves your odds. The missing ones? They’re just opportunities in disguise.
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div class="quote-box">✅ Every matched skill improves your odds. The missing ones? They’re just opportunities in disguise.</div>""", unsafe_allow_html=True)
 
 # Page 4: Suggestions
 with tabs[4]:
     st.header("💡 Suggestions")
-    st.markdown("""
-    Based on your top gap, here are targeted, real-world tips to level up.
-    """)
+    st.markdown("Based on your profile and detected gaps, here are some highly actionable tips.")
     gap = resume_data['TopSkillGap']
     st.markdown(f"""
-    - 🎯 Learn **{gap}** on Coursera or YouTube.
+    - 🎯 Learn **{gap}** through a project-based course.
     - ✍ Rewrite your resume bullets using **STAR** format.
     - 💬 Add keywords like **{gap}** to your summary.
-    - 💼 Include project links or GitHub if relevant.
-    - 🧹 Clean up formatting — clarity wins over creativity.
+    - 📌 Include links to live projects or portfolios.
+    - 🧹 Format your resume cleanly — recruiters scan in seconds.
     """)
-    st.markdown("""
-    <div class="quote-box">
-    ✅ Small steps, big results. Just start.
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div class="quote-box">✅ Small actions compound into big results. Believe in progress, not perfection.</div>""", unsafe_allow_html=True)
 
 # Page 5: Trends
 with tabs[5]:
     st.header("📚 Trends & Insights")
-    st.markdown("""
-    Zooming out. See which degrees, fields, and certs actually perform.
-    """)
+    st.markdown("Zoom out to see what's working for others — then personalize it for yourself.")
     avg_score_by_edu = df.groupby("EducationLevel")["AI_MatchScore"].mean().sort_values()
     st.subheader("Avg Match Score by Education Level")
     st.plotly_chart(px.bar(avg_score_by_edu, orientation='h'))
@@ -219,20 +189,35 @@ with tabs[5]:
     cert_counts = df['Certifications'].dropna().str.split(', ').explode().value_counts().head(10)
     st.subheader("Popular Certifications")
     st.plotly_chart(px.bar(cert_counts))
-    st.markdown("""
-    <div class="quote-box">
-    ✅ Learn from the best — then make it your own.
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div class="quote-box">✅ Be aware of patterns, but build your own story. These trends are here to guide — not define — you.</div>""", unsafe_allow_html=True)
 
 # Page 6: Download Report
 with tabs[6]:
     st.header("📅 Download Report")
-    st.markdown("""
-    Wrap it up and take it with you. Here's your personal growth report.
-    """)
-    text = f"Resume ID: {resume_data['ResumeID']}\nScore: {resume_data['AI_MatchScore']}\nGap: {resume_data['TopSkillGap']}\nAdvice: Improve your skill in {resume_data['TopSkillGap']} and update resume formatting."
-    st.download_button("📄 Download TXT", data=text, file_name="resume_vs_reality.txt")
-    st.markdown("""
-    <div class="quote-box">
-    ✅ Save it. S
+    st.markdown("Here’s your personalized career clarity digest. Save it and revisit as you grow.")
+    text = f"""
+    📄 Resume Summary Report
+
+    Resume ID: {resume_data['ResumeID']}
+    Name: {resume_data.get('Name', 'Anonymous')}
+    Applied For: {resume_data['JobAppliedFor']}
+    Education: {resume_data['EducationLevel']} in {resume_data['FieldOfStudy']}
+    Certifications: {resume_data['Certifications']}
+    Resume Style: {resume_data['ResumeStyle']}
+
+    AI Match Score: {resume_data['AI_MatchScore']}/100
+    Skill Match: {len(overlap)} / {len(required)}
+    Top Skill Gap: {resume_data['TopSkillGap']}
+
+    Suggestions:
+    - Strengthen skill in {resume_data['TopSkillGap']}
+    - Add missing skills to resume strategically
+    - Use STAR method in your experience descriptions
+    - Highlight real projects or portfolio links
+    - Keep resume style clean and ATS-friendly
+
+    Encouragement:
+    You're closer than you think. Keep learning, keep iterating, and remember — every step you take brings you one closer to your dream role. 🚀
+    """
+    st.download_button("📄 Download Full Report", data=text, file_name="resume_vs_reality_detailed_report.txt")
+    st.markdown("""<div class="quote-box">✅ Save your progress and use it as a roadmap. You’ve got this!</div>""", unsafe_allow_html=True)
