@@ -53,7 +53,7 @@ st.markdown("""
 with st.container():
     st.markdown("""
         <div class="welcome-container">
-            <h1 style="color:#6A0DAD; font-size: 2.2rem; margin-bottom: 0.5rem;">💼 Welcome to <em>Resume vs Reality</em></h1>
+            <h1 style="color:#6A0DAD; font-size: 2.2rem; margin-bottom: 0.5rem;">💼 Welcome to <em>Job Snob</em></h1>
             <p><strong>Only the best skills make the cut. No basic resumes allowed.</strong></p>
             <p>Ever stared at your resume wondering, "Will this get me hired or ghosted?" You're not alone, and you're not going in blind anymore.</p>
             <p><strong>We all build resumes hoping they reflect our potential.</strong> But behind every hiring decision lies a pattern. This project is a search for those patterns, an exploration of the gap between what we write and what employers value.</p>
