@@ -9,10 +9,12 @@ st.set_page_config(page_title="Job Snob", layout="wide")
 
 st.markdown("""
 <style>
-    /* Background Magic */
-    body {
-        background: linear-gradient(to right, #f5f7fa, #e0f7fa);
-        font-family: 'Segoe UI', sans-serif;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap');
+
+    html, body, [class*="css"] {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(to right, #f9f9ff, #f0f4ff);
+        color: #1f2937;
     }
 
     .block-container {
@@ -20,62 +22,72 @@ st.markdown("""
         padding-bottom: 2rem;
     }
 
-    /* Gradient Headings */
     h1, h2, h3 {
-        background: linear-gradient(to right, #8e2de2, #ff4da6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
         font-weight: 800;
+        color: transparent;
+        background: linear-gradient(to right, #7b2ff7, #f107a3);
+        -webkit-background-clip: text;
+        background-clip: text;
     }
 
-    /* Tab style */
+    .welcome-container {
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 25px;
+        padding: 2rem 3rem;
+        box-shadow: 0 12px 32px rgba(123, 97, 255, 0.2);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        margin-bottom: 2rem;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .quote-box {
+        background: rgba(255, 250, 240, 0.75);
+        border-left: 5px solid #ffdd57;
+        padding: 1rem;
+        margin: 2rem auto 1rem auto;
+        max-width: 700px;
+        font-style: italic;
+        border-radius: 12px;
+        font-size: 1.05rem;
+        color: #4b5563;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    ul li::before {
+        content: "✨";
+        margin-right: 0.5rem;
+    }
+
+    ul li {
+        text-align: left;
+        margin: 0.5rem auto;
+        max-width: 700px;
+        font-size: 1.1rem;
+        color: #374151;
+    }
+
     .stTabs [role="tab"] {
-        background-color: #f1f3f6;
+        background-color: #ffffff33;
         border-radius: 10px;
         padding: 0.75rem 1.5rem;
         margin-right: 0.5rem;
         font-weight: bold;
+        color: #4b5563;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
     }
+
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(90deg, #60a5fa, #3b82f6);
+        background: linear-gradient(90deg, #8a2be2, #ff4da6);
         color: white;
-        box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
     }
-
-    /* Welcome Hero Style - Glassmorphism */
-    .welcome-container {
-        background: rgba(255, 255, 255, 0.35);
-        border-radius: 20px;
-        padding: 2.5rem;
-        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        font-family: 'DM Sans', sans-serif;
-        text-align: center;
-        max-width: 960px;
-        margin: auto;
-    }
-
-    /* Quote box styling */
-    .quote-box {
-        background-color: rgba(255, 255, 255, 0.15);
-        padding: 1.25rem;
-        border-left: 6px solid #ffd54f;
-        border-radius: 12px;
-        font-style: italic;
-        margin-top: 1.5rem;
-        font-size: 1.1rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-
-    ul {
-        text-align: left;
-        max-width: 700px;
-        margin: 1.5rem auto;
-        font-size: 1.05rem;
-    }
-
 </style>
 """, unsafe_allow_html=True)
 
