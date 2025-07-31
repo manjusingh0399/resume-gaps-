@@ -7,16 +7,28 @@ import plotly.graph_objects as go
 # Page config
 st.set_page_config(page_title="Job Snob", layout="wide")
 
-# Custom CSS styles
 st.markdown("""
 <style>
+    /* Background Magic */
+    body {
+        background: linear-gradient(to right, #f5f7fa, #e0f7fa);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
     .block-container {
         padding-top: 2rem;
         padding-bottom: 2rem;
     }
+
+    /* Gradient Headings */
     h1, h2, h3 {
-        color: #2e2e2e;
+        background: linear-gradient(to right, #8e2de2, #ff4da6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
     }
+
+    /* Tab style */
     .stTabs [role="tab"] {
         background-color: #f1f3f6;
         border-radius: 10px;
@@ -27,27 +39,46 @@ st.markdown("""
     .stTabs [aria-selected="true"] {
         background: linear-gradient(90deg, #60a5fa, #3b82f6);
         color: white;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
     }
+
+    /* Welcome Hero Style - Glassmorphism */
     .welcome-container {
-        background: linear-gradient(to right, #e0f7fa, #e8f5e9);
-        border-radius: 15px;
-        padding: 2rem;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        margin-bottom: 2rem;
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
         font-family: 'DM Sans', sans-serif;
         text-align: center;
+        max-width: 960px;
+        margin: auto;
     }
+
+    /* Quote box styling */
     .quote-box {
-        background-color: #fff8e1;
-        padding: 1rem;
-        border-left: 5px solid #ffd54f;
-        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.15);
+        padding: 1.25rem;
+        border-left: 6px solid #ffd54f;
+        border-radius: 12px;
         font-style: italic;
         margin-top: 1.5rem;
+        font-size: 1.1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    ul {
+        text-align: left;
+        max-width: 700px;
+        margin: 1.5rem auto;
         font-size: 1.05rem;
     }
+
 </style>
 """, unsafe_allow_html=True)
+
 
 # Welcome message section
 with st.container():
