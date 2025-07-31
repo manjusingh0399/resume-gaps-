@@ -101,10 +101,10 @@ with st.expander("🏡 What You'll Walk Away With"):
 
 st.markdown("""
 <div class="quote-box">
-“Resumes don’t just speak for you — they whisper to recruiters. Let’s make sure yours is saying the right things.”
+"🚀 Ready? Let’s build a resume that doesn’t just talk — it lands you offers."
 </div>
 
-🚀 Ready? Let’s build a resume that doesn’t just talk — it lands you offers.
+🚀 Let's GOOOO !!!
 """, unsafe_allow_html=True)
 
 # Tabs
